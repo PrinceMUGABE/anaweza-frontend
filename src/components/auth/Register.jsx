@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import loginImage from '../../assets/pictures/tea1.jpg'; // Assuming the path to the image
+import loginImage from '../../assets/pictures/system/logo.png'; // Assuming the path to the image
 
 const Register = () => {
   const navigate = useNavigate();

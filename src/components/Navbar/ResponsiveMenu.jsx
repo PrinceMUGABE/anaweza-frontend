@@ -1,54 +1,67 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-// ResponsiveMenu.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { MenuLinks } from "./Navbar";
+import { Link, useNavigate } from "react-router-dom";
 
 const ResponsiveMenu = ({ showMenu, setShowMenu }) => {
-  const handleLinkClick = (e) => {
-    setShowMenu(false); // Close the menu when a link is clicked
+  const { i18n, t } = useTranslation();
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate("/login");
+    setShowMenu(false); // Close menu after clicking login
   };
 
-  const handleLinkedInClick = (e) => {
-    e.preventDefault(); // Prevent React Router from trying to handle this
-    setShowMenu(false); // Close the menu
-    window.open('https://www.linkedin.com/in/mugabe-prince-2b377621b/', '_blank', 'noopener,noreferrer');
+  const handleLinkClick = () => {
+    setShowMenu(false); // Close menu when a link is clicked
   };
 
   return (
     <div
       className={`${
         showMenu ? "left-0" : "-left-[100%]"
-      } fixed bottom-0 top-0 z-20 flex h-screen w-[75%] flex-col justify-between bg-sky-900 text-white px-8 pb-6 pt-16 transition-all duration-200 md:hidden rounded-r-xl shadow-md`}
+      } fixed bottom-0 top-0 z-20 flex h-screen w-[75%] flex-col justify-between bg-sky-900 text-white px-6 pb-6 pt-16 transition-all duration-200 md:hidden rounded-r-xl shadow-md`}
     >
-      <div className="card">
-        <nav className="mt-12 ">
-          <ul className="space-y-4 text-xl">
-            {MenuLinks.map((data) => (
-              <li key={data.name}>
-                <a 
-                  href={data.link} 
-                  className="mb-5 inline-block"
-                  onClick={handleLinkClick}
-                >
-                  {data.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-      <div className="footer mt-8">
-        <h1>
-          By{" "}
-          <a 
-            href="https://www.linkedin.com/in/mugabe-prince-2b377621b/"
-            onClick={handleLinkedInClick}
-            className="hover:text-gray-300 underline"
-          >
-            By Jonas
-          </a>
-        </h1>
+      {/* Navigation Links */}
+      <nav className="mt-12">
+        <ul className="space-y-6 text-lg">
+          {MenuLinks.map(({ id, name, link }) => (
+            <li key={id}>
+              <a 
+                href={link} 
+                className="block py-2"
+                onClick={handleLinkClick}
+              >
+                {t(name)}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {/* Language Selector & Login Button */}
+      <div className="mt-auto">
+        {/* Language Selector */}
+        <label className="block text-white text-sm mb-2">{t("language")}</label>
+        <select
+          onChange={(e) => i18n.changeLanguage(e.target.value)}
+          className="w-full bg-white text-black px-3 py-2 rounded"
+          value={i18n.language}
+        >
+          <option value="en">ENG</option>
+          <option value="fr">FR</option>
+          <option value="rw">RW</option>
+        </select>
+
+        {/* Login Button */}
+        <button
+          onClick={handleLoginClick}
+          className="w-full mt-4 bg-white text-sky-900 font-semibold py-2 rounded-lg shadow-md hover:bg-gray-200 transition duration-300"
+        >
+          {t("login")}
+        </button>
       </div>
     </div>
   );

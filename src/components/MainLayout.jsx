@@ -1,29 +1,16 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import Navbar from "./Navbar/Navbar.jsx";
+import { I18nextProvider } from "react-i18next";
+import i18n from "../i18n";
+import Navbar from "./Navbar/Navbar";
 import Hero from "./Hero/Hero";
-import BrandsLogo from "./BrandsLogo/BrandsLogo.jsx";
-import Services from "./Services/Services";
-import Footer from "./Footer/Footer";
-import About from "./about/About.jsx";
-import Contact from "./contact/Contact.jsx";
-import Partners from "./partners/Partners.jsx";
-
 
 const MainLayout = () => {
-
-
   return (
-    <>
+    <I18nextProvider i18n={i18n}>
       <Navbar />
       <Hero />
-     <About />
-      <Services />
-      <Partners />
-      <Contact />
-      
-      <Footer />
-    </>
+    </I18nextProvider>
   );
 };
 

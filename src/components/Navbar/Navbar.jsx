@@ -1,80 +1,80 @@
 /* eslint-disable no-unused-vars */
-// Navbar.jsx
 import React, { useState } from "react";
 import { HiMenuAlt3, HiMenuAlt1 } from "react-icons/hi";
 import ResponsiveMenu from "./ResponsiveMenu";
-import Logo from "../../assets/pictures/system/logo.jpg";
+import Logo from "../../assets/pictures/system/anaweza.jpg";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const MenuLinks = [
-  { id: 1, name: "Home", link: "/#home" },
-  { id: 2, name: "About", link: "/#about" },
-  { id: 3, name: "Services", link: "/#service" },
-  { id: 4, name: "Contact", link: "/#contact" },
-  { id: 5, name: "Partners", link: "/#partner" },
+  { id: 1, name: "home", link: "/#home" },
+  { id: 2, name: "jobs", link: "/#jobs" },
+  { id: 3, name: "about", link: "/#about" },
+  { id: 4, name: "services", link: "/#service" },
+  { id: 5, name: "contact", link: "/#contact" },
+  { id: 6, name: "partners", link: "/#partner" },
 ];
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const { i18n, t } = useTranslation();
   const navigate = useNavigate();
 
-  const toggleMenu = () => setShowMenu(!showMenu);
-
+  const toggleMenu = () => setShowMenu((prev) => !prev);
   const handleLoginClick = () => navigate("/login");
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-10 w-full bg-white text-black">
+    <div className="fixed top-0 left-0 right-0 z-10 w-full bg-white text-black shadow-md">
       <div className="container py-3 md:py-2">
         <div className="flex justify-between items-center">
-          {/* Logo section */}
+          {/* Logo */}
           <a href="#home" className="flex items-center gap-3 bg-white p-1 rounded">
-            <img src={Logo} alt="Logo" className="w-24 rounded-full" />
-            <span className="text-2xl sm:text-3xl font-semibold">Ministry of Health</span>
+            <img src={Logo} alt="Logo" className="w-12 h-12 rounded-full" />
           </a>
-          
-          {/* Desktop view Navigation */}
-          <nav className="hidden md:block">
-            <ul className="flex items-center gap-8">
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-4">
+            <ul className="flex items-center gap-6">
               {MenuLinks.map(({ id, name, link }) => (
-                <li key={id} className="py-4">
-                  <a
-                    href={link}
-                    className="text-lg font-medium hover:text-blue-700 py-2 hover:border-b-2 hover:border-black transition-colors duration-500"
-                  >
-                    {name}
+                <li key={id} className="py-2">
+                  <a href={link} className="text-lg font-medium hover:text-blue-700 py-2 hover:border-b-2 hover:border-black transition-colors duration-500">
+                    {t(name)}
                   </a>
                 </li>
               ))}
-              {/* Login Button */}
-              <li className="py-4">
-                <button
-                  onClick={handleLoginClick}
-                  className="bg-sky-900 text-white py-2 px-4 rounded hover:bg-black transition-colors duration-300"
-                >
-                  Login
-                </button>
-              </li>
             </ul>
+
+            
+
+            {/* Login Button */}
+            <button onClick={handleLoginClick} className="bg-sky-900 text-white py-2 px-4 rounded hover:bg-black transition-colors duration-300">
+              {t("login")}
+            </button>
+
+            {/* Language Selector */}
+            <select
+              onChange={(e) => i18n.changeLanguage(e.target.value)}
+              className="border rounded px-2 py-1 text-sm"
+              value={i18n.language}
+            >
+              <option value="en">ENG</option>
+              <option value="fr">FR</option>
+              <option value="rw">RW</option>
+            </select>
           </nav>
 
-          {/* Mobile view Drawer */}
-          <div className="flex items-center gap-4 md:hidden">
+          {/* Mobile Menu */}
+          <div className="md:hidden flex items-center">
             {showMenu ? (
-              <HiMenuAlt1
-                onClick={toggleMenu}
-                className="cursor-pointer transition-all"
-                size={30}
-              />
+              <HiMenuAlt1 onClick={toggleMenu} className="cursor-pointer transition-all" size={30} />
             ) : (
-              <HiMenuAlt3
-                onClick={toggleMenu}
-                className="cursor-pointer transition-all"
-                size={30}
-              />
+              <HiMenuAlt3 onClick={toggleMenu} className="cursor-pointer transition-all" size={30} />
             )}
           </div>
         </div>
       </div>
+
+      {/* Mobile Sidebar */}
       <ResponsiveMenu showMenu={showMenu} setShowMenu={setShowMenu} />
     </div>
   );

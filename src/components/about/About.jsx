@@ -1,15 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import AboutImg from '../../assets/pictures/system/home1.jpeg';
-import image2 from '../../assets/pictures/system/image2.png';
-import image3 from '../../assets/pictures/system/image3.jpg';
-import image4 from '../../assets/pictures/system/image4.jpg';
-import image5 from '../../assets/pictures/system/image5.png';
-import image6 from '../../assets/pictures/system/image6.jpg';
+import AboutImg from '../../assets/pictures/system/logo.png';
 
 function About() {
   // Array of images
-  const images = [image5];
+  const images = [AboutImg];
 
   // State to keep track of the current image index
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

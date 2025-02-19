@@ -13,7 +13,7 @@ import { FiActivity } from "react-icons/fi";
 import { BiAccessibility } from "react-icons/bi";
 import { AiFillDatabase } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "../../assets/pictures/system/logo.jpg";
+import Logo from "../../assets/pictures/system/logo.png";
 
 function Sidebar() {
   const [activeLink, setActiveLink] = useState(null);

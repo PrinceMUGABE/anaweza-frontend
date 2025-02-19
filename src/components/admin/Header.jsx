@@ -5,7 +5,7 @@ import { MdDashboard } from "react-icons/md";
 import { BsEvStationFill } from "react-icons/bs";
 import { X, Menu } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "../../assets/pictures/logo.png";
+import Logo from "../../assets/pictures/system/logo.png";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
