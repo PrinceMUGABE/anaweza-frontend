@@ -29,7 +29,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <a href="#home" className="flex items-center gap-3 bg-white p-1 rounded">
-            <img src={Logo} alt="Logo" className="w-12 h-12 rounded-full" />
+            <img src={Logo} alt="Logo" className="w-1/2 h-3/4" />
           </a>
 
           {/* Desktop Navigation */}
@@ -47,7 +47,7 @@ const Navbar = () => {
             
 
             {/* Login Button */}
-            <button onClick={handleLoginClick} className="bg-sky-900 text-white py-2 px-4 rounded hover:bg-black transition-colors duration-300">
+            <button onClick={handleLoginClick} className="bg-blue-700 text-white py-2 px-4 rounded hover:bg-black transition-colors duration-300">
               {t("login")}
             </button>
 
