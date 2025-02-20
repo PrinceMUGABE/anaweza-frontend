@@ -1,80 +1,69 @@
-import React from "react";
-import Slider from "react-slick";
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable no-unused-vars */
+import React from 'react';
 
-const testimonialData = [
-  {
-    id: 1,
-    name: "David Calathan - Director of Design Operations, New York",
-    text: "The results have been incredible. With Power Digital, it feels like they’re in our trench, supporting and understanding us. They’re like a partner and mentor in helping us get where we want to be.",
-    img: "https://picsum.photos/101/101",
-  },
-  {
-    id: 1,
-    name: "David Calathan - Director of Design Operations, New York",
-    text: "The results have been incredible. With Power Digital, it feels like they’re in our trench, supporting and understanding us. They’re like a partner and mentor in helping us get where we want to be.",
-    img: "https://picsum.photos/102/102",
-  },
-  {
-    id: 1,
-    name: "Smith - Director of Operations, New York",
-    text: "The results have been incredible. With Power Digital, it feels like they’re in our trench, supporting and understanding us. They’re like a partner and mentor in helping us get where we want to be.",
-    img: "https://picsum.photos/103/103",
-  },
-];
+const Testimonials = () => {
+  const testimonials = [
+    {
+      id: 1,
+      name: "James Mwangi",
+      role: "Software Developer",
+      company: "Tech Solutions Ltd",
+      image: "/api/placeholder/80/80",
+      quote: "Through Anaweza, I found my dream job within weeks. The platform made it easy to showcase my skills and connect with top employers.",
+    },
+    {
+      id: 2,
+      name: "Mary Njeri",
+      role: "HR Manager",
+      company: "BuildRight Construction",
+      image: "/api/placeholder/80/80",
+      quote: "As an employer, Anaweza has transformed our recruitment process. We've found excellent candidates who perfectly match our requirements.",
+    },
+    {
+      id: 3,
+      name: "Peter Ochieng",
+      role: "Account Manager",
+      company: "Financial Solutions",
+      image: "/api/placeholder/80/80",
+      quote: "The platform's professional network helped me transition to a better role. The job matching system is incredibly accurate.",
+    }
+  ];
 
-const Testimonial = () => {
-  var settings = {
-    dots: true,
-    arrows: false,
-    infinite: true,
-    speed: 600,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: false,
-    autoplaySpeed: 3000,
-    cssEase: "linear",
-    pauseOnHover: true,
-    pauseOnFocus: true,
-  };
   return (
-    <>
-      <div className="py-10">
-        <div className="container">
-          {/* testimonial section */}
-          <div
-            data-aos="fade-up"
-            className="grid grid-cols-1 max-w-screen-xl mx-auto gap-6"
-          >
-            <Slider {...settings}>
-              {testimonialData.map(({ id, name, text, img }) => {
-                return (
-                  <div key={id} className="my-6">
-                    {/* card */}
-                    <div className="flex flex-col sm:flex-row gap-5 md:gap-14 p-4 mx-4 rounded-xl dark:bg-gray-800 relative">
-                      <img
-                        src={img}
-                        alt=""
-                        className="block mx-auto h-[300px] w-full sm:w-[200px] object-cover"
-                      />
-                      <div className="space-y-4">
-                        <p className="text-gray-500 text-black/80 dark:text-white/80 xl:pr-40">
-                          “{text}”
-                        </p>
-                        <h1 className="text-xl font-bold">{name}</h1>
-                      </div>
-                      <p className="text-black/10 text-[12rem] font-serif absolute bottom-0 right-0">
-                        ,,
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </Slider>
-          </div>
+    <div className="py-16 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4 text-black">Success Stories</h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Hear from professionals who found success through Anaweza
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {testimonials.map((testimonial) => (
+            <div key={testimonial.id} className="bg-white rounded-lg p-6 shadow-lg">
+              <div className="flex items-center mb-4">
+                <img
+                  src={testimonial.image}
+                  alt={testimonial.name}
+                  className="w-16 h-16 rounded-full"
+                />
+                <div className="ml-4">
+                  <h3 className="font-semibold text-lg text-gray-950">{testimonial.name}</h3>
+                  <p className="text-gray-600">{testimonial.role}</p>
+                  <p className="text-gray-500 text-sm">{testimonial.company}</p>
+                </div>
+              </div>
+              <blockquote className="text-gray-600 italic">
+                "{testimonial.quote}"
+              </blockquote>
+            </div>
+          ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
-export default Testimonial;
+export default Testimonials;
