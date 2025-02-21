@@ -76,7 +76,7 @@ function Users() {
 
   const handleFetch = async () => {
     try {
-      const res = await axios.get("http://127.0.0.1:8000/users/", {
+      const res = await axios.get("https://anaweza-backend.up.railway.app/users/", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUserData(Array.isArray(res.data.users) ? res.data.users : []);
@@ -88,7 +88,7 @@ function Users() {
   const handleDelete = async (id) => {
     if (!window.confirm("Do you want to delete this user?")) return;
     try {
-      await axios.delete(`http://127.0.0.1:8000/delete/${id}/`, {
+      await axios.delete(`https://anaweza-backend.up.railway.app/delete/${id}/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       await handleFetch();
@@ -131,137 +131,147 @@ function Users() {
     },
   };
 
+  // Updated role display names
   const getRoleDisplayName = (role) =>
     ({
       admin: "Admin",
-      analyst: "Data Analyst",
-      data_entry_clerk: "Data Entery Clerk",
+      employee: "Employee",
+      job_seeker: "Job Seeker",
+      job_offer: "Job Offer Manager",
     }[role] || role);
 
   const renderCharts = () => {
-      if (!userData.length) return null;
-    
-      // Role distribution data
-      const roleData = Object.entries(
-        userData.reduce((acc, user) => {
-          acc[user.role] = (acc[user.role] || 0) + 1;
-          return acc;
-        }, {})
-      ).map(([role, value]) => ({ name: getRoleDisplayName(role), value }));
-    
-      // User growth trend data
-      const userGrowthData = Object.entries(
-        userData.reduce((acc, user) => {
-          const date = new Date(user.created_at).toLocaleDateString();
-          acc[date] = acc[date] || {
-            total: 0,
-            admin: 0,
-            analyst: 0,
-            data_entry_clerk: 0,
-          };
-          acc[date].total += 1;
-          acc[date][user.role] += 1;
-          return acc;
-        }, {})
-      )
-        .map(([date, counts]) => ({
-          date,
-          total: counts.total,
-          admin: counts.admin || 0,
-          analyst: counts.analyst || 0,
-          data_entry_clerk: counts.data_entry_clerk || 0,
-        }))
-        .sort((a, b) => new Date(a.date) - new Date(b.date));
-    
-      return (
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-          <ErrorBoundary>
-            <div className="bg-white p-4 rounded-lg shadow-md">
-              <h3 className="text-sm font-semibold mb-4 text-green-700">
-                User Role Distribution
-              </h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={roleData}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius="80%"
-                    label
-                  >
-                    {roleData.map((_, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                  <Legend 
-                    layout="horizontal" 
-                    verticalAlign="bottom" 
-                    align="center"
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </ErrorBoundary>
-    
-          <ErrorBoundary>
-            <div className="bg-white p-4 rounded-lg shadow-md">
-              <h3 className="text-sm font-semibold mb-4 text-green-700">
-                User Growth Trend
-              </h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={userGrowthData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis
-                    dataKey="date"
-                    padding={{ left: 10, right: 10 }}
-                    tick={{ fontSize: 10 }}
-                  />
-                  <YAxis
-                    tick={{ fontSize: 10 }}
-                    padding={{ top: 10, bottom: 10 }}
-                  />
-                  <Tooltip />
-                  <Legend 
-                    layout="horizontal" 
-                    verticalAlign="bottom" 
-                    align="center"
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="total"
-                    stroke="#8884d8"
-                    name="Total Users"
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="admin"
-                    stroke="#82ca9d"
-                    name="Admins"
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="analyst"
-                    stroke="#6B7280"
-                    name="Analysts"
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="data_entry_clerk"
-                    stroke="#5521B5"
-                    name="Data Entry Clerks"
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </ErrorBoundary>
-        </div>
-      );
+    if (!userData.length) return null;
+  
+    // Role distribution data
+    const roleData = Object.entries(
+      userData.reduce((acc, user) => {
+        acc[user.role] = (acc[user.role] || 0) + 1;
+        return acc;
+      }, {})
+    ).map(([role, value]) => ({ name: getRoleDisplayName(role), value }));
+  
+    // User growth trend data
+    const userGrowthData = Object.entries(
+      userData.reduce((acc, user) => {
+        const date = new Date(user.created_at).toLocaleDateString();
+        acc[date] = acc[date] || {
+          total: 0,
+          admin: 0,
+          employee: 0,
+          job_seeker: 0,
+          job_offer: 0,
+        };
+        acc[date].total += 1;
+        acc[date][user.role] += 1;
+        return acc;
+      }, {})
+    )
+      .map(([date, counts]) => ({
+        date,
+        total: counts.total,
+        admin: counts.admin || 0,
+        employee: counts.employee || 0,
+        job_seeker: counts.job_seeker || 0, 
+        job_offer: counts.job_offer || 0,
+      }))
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
+  
+    return (
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ErrorBoundary>
+          <div className="bg-white p-4 rounded-lg shadow-md">
+            <h3 className="text-sm font-semibold mb-4 text-green-700">
+              User Role Distribution
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={roleData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius="80%"
+                  label
+                >
+                  {roleData.map((_, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend 
+                  layout="horizontal" 
+                  verticalAlign="bottom" 
+                  align="center"
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </ErrorBoundary>
+  
+        <ErrorBoundary>
+          <div className="bg-white p-4 rounded-lg shadow-md">
+            <h3 className="text-sm font-semibold mb-4 text-green-700">
+              User Growth Trend
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={userGrowthData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="date"
+                  padding={{ left: 10, right: 10 }}
+                  tick={{ fontSize: 10 }}
+                />
+                <YAxis
+                  tick={{ fontSize: 10 }}
+                  padding={{ top: 10, bottom: 10 }}
+                />
+                <Tooltip />
+                <Legend 
+                  layout="horizontal" 
+                  verticalAlign="bottom" 
+                  align="center"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="total"
+                  stroke="#8884d8"
+                  name="Total Users"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="admin"
+                  stroke="#82ca9d"
+                  name="Admins"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="employee"
+                  stroke="#6B7280"
+                  name="Employees"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="job_seeker"
+                  stroke="#5521B5"
+                  name="Job Seekers"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="job_offer"
+                  stroke="#FF8042"
+                  name="Job Offer Managers"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </ErrorBoundary>
+      </div>
+    );
   };
     
   const filteredData = userData.filter((user) =>

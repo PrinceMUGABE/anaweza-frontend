@@ -11,6 +11,7 @@ const CreateUser = () => {
     email: '',
     role: 'Choose Role',
   });
+
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -23,9 +24,9 @@ const CreateUser = () => {
       newErrors.phone = 'Phone number must be 10 digits starting with 078, 079, 072, or 073.';
     }
 
-    // Email validation (basic regex check)
-    if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address.';
+    // Email validation (ONLY required if role is "admin")
+    if (formData.role === 'admin' && !/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is required for Admin and must be valid.';
     }
 
     // Role validation
@@ -36,37 +37,37 @@ const CreateUser = () => {
     return newErrors;
   };
 
-  const token = localStorage.getItem("token"); // Retrieve the token from local storage
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validateFields();
-  
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-  
+
     const dataToSubmit = {
       phone: formData.phone,
-      email: formData.email,
       role: formData.role,
+      is_admin_creating: true,
     };
-  
+
+    // Include email only if it's provided (optional for non-admin roles)
+    if (formData.email) {
+      dataToSubmit.email = formData.email;
+    }
+
     setLoading(true);
     try {
-      const token = localStorage.getItem('token'); // Retrieve the token from local storage
+      const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://127.0.0.1:8000/register/',
+        'https://anaweza-backend.up.railway.app/register/',
         dataToSubmit,
         {
-          headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
-  
+
       if (response.status === 201) {
         setMessage('Registration successful!');
         setTimeout(() => navigate('/admin/users'), 2000);
@@ -75,14 +76,14 @@ const CreateUser = () => {
       if (error.response?.data) {
         const backendErrors = error.response.data;
         const errorMessages = {};
-  
+
         if (backendErrors.phone) {
           errorMessages.phone = backendErrors.phone;
         }
         if (backendErrors.email) {
           errorMessages.email = backendErrors.email;
         }
-  
+
         setErrors((prev) => ({
           ...prev,
           ...errorMessages,
@@ -98,11 +99,18 @@ const CreateUser = () => {
       setLoading(false);
     }
   };
-  
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData({ ...formData, [name]: value });
+
+    if (name === "role" && value !== "admin") {
+      setFormData((prev) => ({ ...prev, email: "" })); // Clear email if role is not admin
+      setErrors((prev) => ({ ...prev, email: "" })); // Clear email error if role changes
+    }
+
     setErrors((prev) => ({ ...prev, [name]: '' }));
   };
 
@@ -139,10 +147,11 @@ const CreateUser = () => {
                 value={formData.email}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900"
-                required
+                required={formData.role === "admin"} // Required only if role is admin
               />
               {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
             </div>
+
 
             <div>
               <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
@@ -156,8 +165,9 @@ const CreateUser = () => {
               >
                 <option value="Choose Role" disabled>Choose Role</option>
                 <option value="admin">Admin</option>
-                <option value="analyst">Data Analyst</option>
-                <option value="data_entry_clerk">Data Entry Clerk</option>
+                <option value="employee">Employee</option>
+                <option value="job_offer">Job Provider</option>
+                <option value="job_seeker">Job Seeker</option>
               </select>
               {errors.role && <p className="text-red-500 text-sm">{errors.role}</p>}
             </div>

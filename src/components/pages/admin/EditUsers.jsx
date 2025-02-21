@@ -23,7 +23,7 @@ const EditUser = () => {
 
     setLoading(true); // Start loading before making the request
     axios
-      .get(`http://127.0.0.1:8000/user/${id}/`, {
+      .get(`https://anaweza-backend.up.railway.app/user/${id}/`, {
         headers: {
           Authorization: `Bearer ${token}`, // Include the token in the headers
         },
@@ -57,7 +57,7 @@ const EditUser = () => {
     setLoading(true); // Start loading when the form is submitted
     setErrorMessage(""); // Clear any previous error message
     axios
-      .put(`http://127.0.0.1:8000/update/${id}/`, data, {
+      .put(`https://anaweza-backend.up.railway.app/update/${id}/`, data, {
         headers: {
           Authorization: `Bearer ${token}`, // Include the token in the headers
         },
@@ -134,7 +134,7 @@ const EditUser = () => {
                 type="email"
                 value={data.email || ""}
                 onChange={(e) => setData({ ...data, email: e.target.value })}
-                required
+        
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
@@ -157,8 +157,9 @@ const EditUser = () => {
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               >
                 <option value="admin">Admin</option>
-                <option value="analyst">Health Analyst</option>
-                <option value="data_entry_clerk">Data Entry Clerk</option>
+                <option value="employee">Employee</option>
+                <option value="job_offer">Job Provider</option>
+                <option value="job_seeker">Job Seeker</option>
               </select>
             </div>
           </div>

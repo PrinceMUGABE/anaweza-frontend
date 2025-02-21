@@ -1,70 +1,40 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  LockClosedIcon,
-  EyeIcon,
-  EyeSlashIcon,
-} from "@heroicons/react/20/solid";
+import { LockClosedIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
 import loginImage from "../../assets/pictures/system/logo.png";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const validateEmail = (email) => {
-    // Check if email starts with lowercase letter
-    if (!/^[a-z]/.test(email)) {
-      return false;
-    }
-
-    // Regular expression for basic email validation
-    const emailRegex = /^[a-z][a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
-    return emailRegex.test(email);
-  };
+  const validateEmail = (input) => /^[a-zA-Z0-9._-]+@gmail\.com$/i.test(input);
+  const validatePhone = (input) => /^[0-9]{10}$/.test(input);
 
   const validatePassword = (password) => {
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
     const hasDigit = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    const isValidLength = password.length >= 8;
-
-    return (
-      hasUpperCase &&
-      hasLowerCase &&
-      hasDigit &&
-      hasSpecialChar &&
-      isValidLength
-    );
-  };
-
-  const handleEmailChange = (e) => {
-    const newEmail = e.target.value.toLowerCase();
-    setEmail(newEmail);
-
-    if (newEmail && !validateEmail(newEmail)) {
-      setError(
-        "Email must start with a lowercase letter and be in a valid format (e.g., example@domain.com)"
-      );
-    } else {
-      setError("");
-    }
+    const hasSpecialChar = /[!@#$%^&*(),.?\":{}|<>]/.test(password);
+    return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar && password.length >= 8;
   };
 
   const handleLogin = (e) => {
     e.preventDefault();
     setError("");
 
-    if (!validateEmail(email)) {
-      setError(
-        "Email must start with a lowercase letter and be in a valid format (e.g., example@domain.com)"
-      );
+    const isEmail = validateEmail(identifier);
+    const isPhone = validatePhone(identifier);
+
+    if (!isEmail && !isPhone) {
+      setError("Please enter a valid email ending with @gmai.com or a valid phone number.");
       return;
     }
 
@@ -80,7 +50,7 @@ const Login = () => {
     axios
       .post(
         "http://127.0.0.1:8000/login/",
-        { email, password },
+        { identifier, password },
         { headers: { "Content-Type": "application/json" } }
       )
       .then((res) => {
@@ -99,77 +69,57 @@ const Login = () => {
           localStorage.setItem("userData", JSON.stringify(user));
           localStorage.setItem("token", res.data.token.access);
 
-          if (user.role.trim().toLowerCase() === "admin") {
-            navigate("/admin");
-          } else if (user.role.trim().toLowerCase() === "data_entry_clerk") {
-            navigate("/data_entry_clerk");
-          } else if (user.role.trim().toLowerCase() === "analyst") {
-            navigate("/data_analyst/data");
-          } else {
-            console.log("Unknown user role. Please contact support.");
-          }
+          const role = user.role.trim().toLowerCase();
+          if (role === "admin") navigate("/admin");
+          else if (role === "data_entry_clerk") navigate("/data_entry_clerk");
+          else if (role === "analyst") navigate("/data_analyst/data");
+          else console.log("Unknown user role. Please contact support.");
         } else {
           console.log("No data received from the API.");
         }
       })
       .catch((error) => {
         setIsLoading(false);
-        console.error(
-          "Error during login:",
-          error.response || error.message || error
-        );
-        setError("Invalid email or password.");
+        if (error.response && error.response.data && error.response.data.detail) {
+          setError(error.response.data.detail);
+        } else {
+          setError("Invalid email, phone number, or password.");
+        }
       });
   };
 
   return (
     <div className="relative flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 px-4 sm:px-6 lg:px-8">
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-50"
-        style={{ backgroundImage: `url(${loginImage})` }}
-      ></div>
+      <div className="absolute inset-0 bg-cover bg-center opacity-50" style={{ backgroundImage: `url(${loginImage})` }}></div>
 
       <div className="max-w-md w-full space-y-8 bg-white bg-opacity-90 rounded-lg shadow-lg p-8 z-10">
         <div className="text-center">
-          <h2 className="mt-2 text-2xl font-bold text-gray-900">
-            Login to Your Account
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Enter your credentials to access the system.
-          </p>
+          <h2 className="mt-2 text-2xl font-bold text-gray-900">Login to Your Account</h2>
+          <p className="mt-2 text-sm text-gray-600">Enter your credentials to access the system.</p>
         </div>
         {error && <div className="text-red-500 text-sm">{error}</div>}
         <form className="mt-6 space-y-6" onSubmit={handleLogin}>
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email
+            <label htmlFor="identifier" className="block text-sm font-medium text-gray-700">
+              Email (ending with @gmai.com) or Phone Number
             </label>
             <input
-              id="email"
-              name="email"
-              type="email"
-              value={email}
-              onChange={handleEmailChange}
+              id="identifier"
+              name="identifier"
+              type="text"
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-700"
               required
             />
           </div>
 
-          <Link
-            to="/passwordreset"
-            className="text-sm text-blue-700 hover:text-black text-end"
-          >
+          <Link to="/passwordreset" className="text-sm text-blue-700 hover:text-black text-end">
             Forgot your password?
           </Link>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
             </label>
             <div className="relative mt-1">
@@ -207,19 +157,8 @@ const Login = () => {
                   fill="none"
                   viewBox="0 0 24 24"
                 >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                  ></path>
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                 </svg>
               ) : (
                 "Sign In"
