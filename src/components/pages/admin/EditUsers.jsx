@@ -6,82 +6,94 @@ import { LockClosedIcon, ArrowPathIcon } from "@heroicons/react/20/solid"; // Us
 
 const EditUser = () => {
   const { id } = useParams();
-  const [data, setData] = useState({}); // Store the user data
-  const [loading, setLoading] = useState(false); // Loading state for spinner
-  const [errorMessage, setErrorMessage] = useState(""); // Error message to show on the page
+  const [data, setData] = useState({
+    phone_number: "",
+    email: "",
+    role: "",
+    is_active: true, // Add is_active field with default value
+  });
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   // Fetch the user data by ID
   useEffect(() => {
-    const token = localStorage.getItem("token"); // Retrieve the token from local storage
+    const token = localStorage.getItem("token");
 
     if (!token) {
       console.error("No token found. User is not authenticated.");
       setErrorMessage("No token found. Please login first.");
-      return; // Stop the request if there's no token
+      return;
     }
 
-    setLoading(true); // Start loading before making the request
+    setLoading(true);
     axios
       .get(`https://anaweza-backend.up.railway.app/user/${id}/`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the headers
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
         if (res.data) {
           console.log("The related data is:", res.data);
-          setData(res.data); // Set the fetched user data
+          // Ensure boolean values are properly set
+          const userData = {
+            ...res.data,
+            is_active: res.data.is_active === true || res.data.is_active === "true",
+          };
+          setData(userData);
         }
       })
       .catch((err) => {
-        console.error("Error fetching user data:", err); // Log the error
+        console.error("Error fetching user data:", err);
         setErrorMessage(err.response?.data?.message || "Error fetching user data.");
       })
       .finally(() => {
-        setLoading(false); // Stop loading after the request finishes
+        setLoading(false);
       });
   }, [id]);
 
   // Update the user data
   const handleSubmit = (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token"); // Retrieve the token from local storage
+    const token = localStorage.getItem("token");
   
     if (!token) {
       console.error("No token found. User is not authenticated.");
       setErrorMessage("No token found. Please login first.");
-      return; // Stop the request if there's no token
+      return;
     }
+    
+    // Ensure boolean fields are properly formatted
+    const updatedData = {
+      ...data,
+      is_active: data.is_active === true || data.is_active === "true",
+    };
   
-    setLoading(true); // Start loading when the form is submitted
-    setErrorMessage(""); // Clear any previous error message
+    setLoading(true);
+    setErrorMessage("");
     axios
-      .put(`https://anaweza-backend.up.railway.app/update/${id}/`, data, {
+      .put(`https://anaweza-backend.up.railway.app/update/${id}/`, updatedData, {
         headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the headers
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
         if (res.data) {
-          // alert("Data updated successfully");
-          navigate("/admin/users"); // Navigate back to the users list page
+          navigate("/admin/users");
         }
       })
       .catch((err) => {
-        console.error("Error updating user:", err); // Log the error
-  
-        // Attempt to extract detailed error message from the backend
-        const backendMessage = err.response?.data?.message || err.response?.data?.detail || "Error updating user.";
-  
-        // Set the error message to be displayed
+        console.error("Error updating user:", err);
+        const backendMessage = err.response?.data?.message || 
+                              err.response?.data?.detail || 
+                              "Error updating user.";
         setErrorMessage(backendMessage);
       })
       .finally(() => {
-        setLoading(false); // Stop loading after the request finishes
+        setLoading(false);
       });
   };
-  
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-white">
@@ -99,7 +111,6 @@ const EditUser = () => {
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" onSubmit={handleSubmit}>
-
           <div>
             <label
               htmlFor="phone_number"
@@ -134,7 +145,6 @@ const EditUser = () => {
                 type="email"
                 value={data.email || ""}
                 onChange={(e) => setData({ ...data, email: e.target.value })}
-        
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
@@ -160,6 +170,27 @@ const EditUser = () => {
                 <option value="employee">Employee</option>
                 <option value="job_offer">Job Provider</option>
                 <option value="job_seeker">Job Seeker</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="is_active"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Status
+            </label>
+            <div className="mt-2">
+              <select
+                id="is_active"
+                name="is_active"
+                value={data.is_active === true ? "true" : "false"}
+                onChange={(e) => setData({ ...data, is_active: e.target.value === "true" })}
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              >
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
               </select>
             </div>
           </div>
