@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-function AdminProfile() {
+function Job_seeker_Profile() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
@@ -218,4 +218,4 @@ function AdminProfile() {
   );
 }
 
-export default AdminProfile;
+export default Job_seeker_Profile;

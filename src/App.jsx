@@ -26,6 +26,13 @@ import AdminHome from "./components/pages/admin/Home.jsx"
 
 
 import AdminProfile from "./components/pages/admin/AdminProfile.jsx";
+import Register_as_jobSeeker from "./components/job seeker/Register_as_jobSeeker.jsx";
+import JobSeeker_Layout from "./components/job seeker/Layout.jsx";
+import Job_seeker_home from "./components/job seeker/pages/Home.jsx";
+import Manage_Job_categories from "./components/pages/admin/Manage_Job_cetegories.jsx";
+import Admin_Manage_Jobs from "./components/pages/admin/ManageJobOffers.jsx";
+import Admin_Manage_JobSeekers from "./components/pages/admin/ManageJobSeekers.jsx";
+import Admin_ManageAdvertisements from "./components/pages/admin/manage_advertisements.jsx";
 
 
 
@@ -69,12 +76,23 @@ const App = () => {
             <Route path="/admin/users" element={<Users />} />
             <Route path="/admin/edituser/:id" element={<EditUsers />} />
             <Route path="/admin/createUser/" element={<CreateUser />} />
+            <Route path="/admin/job_categories" element={<Manage_Job_categories />} />
+            <Route path="/admin/job_offers" element={<Admin_Manage_Jobs />} />
+            <Route path="/admin/job_seekers" element={<Admin_Manage_JobSeekers />} />
+            <Route path="/admin/advertisements" element={<Admin_ManageAdvertisements />} />
 
             <Route path="/admin/profile/:id" element={<AdminProfile />} />
 
           </Route>
 
 
+          <Route path="/registerAsJobSeeker" element={<Register_as_jobSeeker />} />
+
+          <Route path="/job_seeker" element={<JobSeeker_Layout />}>
+             <Route index element={<Job_seeker_home />} />
+
+
+          </Route>
 
         </Routes>
       </BrowserRouter>

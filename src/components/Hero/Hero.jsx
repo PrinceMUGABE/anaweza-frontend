@@ -13,28 +13,8 @@ const Hero = () => {
   const { t } = useTranslation();
   const images = [constImage2, itImage, constImage, accImage, drivImage, teachImage];
 
-
-
-  // Dummy data examples
-  const featuredJobs = [
-    { id: 1, title: "Software Engineer", company: "Tech Corp", location: "New York, USA" },
-    { id: 2, title: "Marketing Specialist", company: "Brand Ltd", location: "London, UK" },
-    { id: 3, title: "Data Analyst", company: "Data Insights", location: "Berlin, Germany" }
-  ];
-
-  const featuredSeekers = [
-    { id: 1, name: "Alice Johnson", profession: "Web Developer", experience: "5 years" },
-    { id: 2, name: "Bob Smith", profession: "Graphic Designer", experience: "3 years" },
-    { id: 3, name: "Charlie Brown", profession: "Project Manager", experience: "7 years" }
-  ];
-
-  const testimonials = [
-    { id: 1, name: "John Doe", feedback: "Anaweza helped me find my dream job!" },
-    { id: 2, name: "Jane Smith", feedback: "Great platform for connecting with employers." }
-  ];
-
   return (
-    <div className="bg-gradient-to-b from-gray-100 to-gray-200 pt-16 min-h-screen" id="home">
+    <div className="bg-gradient-to-b from-gray-100 to-gray-200 pt-8 pb-12" id="home">
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center gap-8">
           {/* Left Side - Infinite Scrolling Image Slider */}
@@ -54,7 +34,7 @@ const Hero = () => {
           </div>
 
           {/* Right Side - Content */}
-          <div className="lg:w-1/2 space-y-6">
+          <div className="lg:w-1/2 space-y-2">
             <h1 className="text-4xl lg:text-5xl font-bold text-gray-800">
               {t("Connect with Your Next Opportunity")}
             </h1>
@@ -62,7 +42,7 @@ const Hero = () => {
               {t("Bridging the gap between talented job seekers and promising opportunities across all sectors")}
             </p>
 
-            <div className="space-y-4">
+            <div className="space-y-4 my-6">
               <div className="flex items-start space-x-3">
                 <div className="p-2 bg-blue-100 rounded-full">
                   <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,7 +68,7 @@ const Hero = () => {
               </div>
             </div>
 
-            <div className="flex gap-4 pt-6">
+            <div className="flex gap-4 pt-4">
               <button
                 onClick={() => (window.location.href = "/register")}
                 className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
@@ -119,12 +99,6 @@ const Hero = () => {
         }
       `}</style>
     </div>
-
-
-
-
-
-    
   );
 };
 

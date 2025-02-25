@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Users, Activity, Building2, PieChart } from "lucide-react";
@@ -41,7 +43,7 @@ const COLORS = [
   "#82ca9d",
 ];
 
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "https://anaweza-backend.up.railway.app";
 
 function AdminHome() {
   const navigate = useNavigate();

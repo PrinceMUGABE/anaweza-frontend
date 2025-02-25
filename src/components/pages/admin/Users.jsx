@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -20,7 +21,129 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import {
+  UserGroupIcon,
+  UserPlusIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+  BriefcaseIcon,
+  UserIcon,
+  ShieldCheckIcon,
+  BuildingOfficeIcon
+} from "@heroicons/react/24/outline";
 
+// StatCards Component
+const StatCards = ({ userData }) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const stats = {
+    totalUsers: userData.length,
+    newUsers: userData.filter(user => {
+      const createdDate = new Date(user.created_at);
+      createdDate.setHours(0, 0, 0, 0);
+      return createdDate.getTime() === today.getTime();
+    }).length,
+    activeUsers: userData.filter(user => user.status === "Active").length,
+    inactiveUsers: userData.filter(user => user.status === "Non-Active").length,
+    roles: {
+      admin: userData.filter(user => user.role === "admin").length,
+      employee: userData.filter(user => user.role === "employee").length,
+      jobSeeker: userData.filter(user => user.role === "job_seeker").length,
+      jobOffer: userData.filter(user => user.role === "job_offer").length
+    }
+  };
+
+  const cards = [
+    {
+      title: "Total Users",
+      value: stats.totalUsers,
+      icon: UserGroupIcon,
+      color: "bg-blue-500",
+      textColor: "text-blue-600"
+    },
+    {
+      title: "New Users Today",
+      value: stats.newUsers,
+      icon: UserPlusIcon,
+      color: "bg-green-500",
+      textColor: "text-green-600"
+    },
+    {
+      title: "Active Users",
+      value: stats.activeUsers,
+      icon: CheckCircleIcon,
+      color: "bg-emerald-500",
+      textColor: "text-emerald-600"
+    },
+    {
+      title: "Inactive Users",
+      value: stats.inactiveUsers,
+      icon: XCircleIcon,
+      color: "bg-red-500",
+      textColor: "text-red-600"
+    },
+    {
+      title: "Admins",
+      value: stats.roles.admin,
+      icon: ShieldCheckIcon,
+      color: "bg-purple-500",
+      textColor: "text-purple-600"
+    },
+    {
+      title: "Employees",
+      value: stats.roles.employee,
+      icon: UserIcon,
+      color: "bg-indigo-500",
+      textColor: "text-indigo-600"
+    },
+    {
+      title: "Job Seekers",
+      value: stats.roles.jobSeeker,
+      icon: BriefcaseIcon,
+      color: "bg-yellow-500",
+      textColor: "text-yellow-600"
+    },
+    {
+      title: "Job Providers",
+      value: stats.roles.jobOffer,
+      icon: BuildingOfficeIcon,
+      color: "bg-orange-500",
+      textColor: "text-orange-600"
+    }
+  ];
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      {cards.map((card, index) => (
+        <div
+          key={index}
+          className="bg-white rounded-lg shadow-md p-4 border border-gray-200 transition-transform duration-300 hover:transform hover:scale-105"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600 mb-1">{card.title}</p>
+              <h3 className="text-2xl font-bold text-gray-800">{card.value}</h3>
+            </div>
+            <div className={`${card.color} p-3 rounded-full bg-opacity-20`}>
+              <card.icon className={`h-6 w-6 ${card.textColor}`} />
+            </div>
+          </div>
+          <div className="mt-2">
+            <div className={`h-2 rounded-full ${card.color} bg-opacity-20`}>
+              <div
+                className={`h-2 rounded-full ${card.color}`}
+                style={{ width: `${(card.value / stats.totalUsers) * 100}%` }}
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// ErrorBoundary Component remains the same...
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -285,6 +408,11 @@ function Users() {
     currentPage * usersPerPage
   );
 
+
+
+
+  
+
   return (
     <div className="justify-center w-full px-12 ml-4">
       <ErrorBoundary className="justify-center ml-4">
@@ -292,6 +420,10 @@ function Users() {
         <h1 className="text-center text-green-700 font-bold text-xl mb-4">
           Manage Users
         </h1>
+
+
+        {/* Add StatCards component here */}
+        <StatCards userData={userData} />
   
         {message && (
           <div
@@ -369,6 +501,7 @@ function Users() {
                     <th className="px-6 py-3">Phone</th>
                     <th className="px-6 py-3">Email</th>
                     <th className="px-6 py-3">Role</th>
+                    <th className="px-6 py-3">Status</th>
                     <th className="px-6 py-3">Created Date</th>
                     <th className="px-6 py-3">Actions</th>
                   </tr>
@@ -393,6 +526,9 @@ function Users() {
                         <td className="px-6 py-4 text-black">{user.email}</td>
                         <td className="px-6 py-4 text-black">
                           {getRoleDisplayName(user.role)}
+                        </td>
+                        <td className="px-6 py-4 text-black">
+                          {getRoleDisplayName(user.status)}
                         </td>
                         <td className="px-6 py-4 text-black">
                           {new Date(user.created_at).toLocaleDateString()}

@@ -14,19 +14,24 @@ import HowItWorks from "./howItWorks/HowItWorks";
 import CTASection from "./ctaSectio/CTASection";
 import NewsletterSignup from "./newsLetter/NewsLetter";
 import Footer from "./Footer/Footer";
+import Advertisements from "./advertisement/advertisements"
+import Cards from "./cards/cards";
 
 const MainLayout = () => {
   return (
     <I18nextProvider i18n={i18n}>
       <Navbar />
-      <Hero />
+      <Advertisements />
       <SearchBar />
+      {/* <Hero /> */}
+      <Cards />
+  
       <FeaturedJobs/>
       <FeaturedSeekers />
       <HowItWorks />
       <Testimonials />
       <CTASection />
-      <Blog />
+      {/* <Blog /> */}
       <NewsletterSignup />
       <Footer />
     </I18nextProvider>

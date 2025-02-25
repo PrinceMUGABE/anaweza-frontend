@@ -10,7 +10,7 @@ import axios from "axios";
 // Constants
 const JOBS_PER_PAGE = 2;
 const SLIDE_INTERVAL = 5000;
-const API_URL = "http://localhost:8000/job_offer/offers/";
+const API_URL = "https://anaweza-backend.up.railway.app/job_offer/offers/";
 
 // Animation variants
 const containerVariants = {
@@ -307,3 +307,239 @@ if (error) {
 };
 
 export default Manage_Jobs;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* eslint-disable no-unused-vars */
+// import React, { useState, useEffect } from "react";
+// import { useTranslation } from "react-i18next";
+// import axios from "axios";
+
+// // Import custom card component
+// import CustomCard from "../../customCards";
+
+// import { 
+//   Search,
+//   Plus,
+//   Edit,
+//   Trash2,
+//   AlertCircle,
+//   CheckCircle2
+// } from "lucide-react";
+
+// const JobManagement = () => {
+//   const { t } = useTranslation();
+//   const [jobs, setJobs] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+//   const [filters, setFilters] = useState({
+//     status: "",
+//     category: "",
+//     type: "",
+//     search: "",
+//   });
+
+//   // Modal and selected job states
+//   const [isModalOpen, setIsModalOpen] = useState(false);
+//   const [selectedJob, setSelectedJob] = useState(null);
+//   const [categories, setCategories] = useState([]);
+//   const [types, setTypes] = useState([]);
+
+//   // Fetch all necessary data
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         setLoading(true);
+//         const [jobsRes, categoriesRes, typesRes] = await Promise.all([
+//           axios.get("http://localhost:8000/job_offer/offers/"),
+//           axios.get("http://127.0.0.1:8000/category/categories/"),
+//           axios.get("http://127.0.0.1:8000/category/types/"),
+//         ]);
+
+//         setJobs(jobsRes.data);
+//         setCategories(categoriesRes.data);
+//         setTypes(typesRes.data);
+//         setError(null);
+//       } catch (err) {
+//         setError("Failed to fetch data. Please try again.");
+//         console.error("Error:", err);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, []);
+
+//   // Filter jobs based on search and filter criteria
+//   const filteredJobs = jobs.filter((job) => {
+//     const matchesSearch =
+//       job.title.toLowerCase().includes(filters.search.toLowerCase()) ||
+//       job.company_name?.toLowerCase().includes(filters.search.toLowerCase());
+//     const matchesStatus = !filters.status || job.status === filters.status;
+//     const matchesCategory = !filters.category || job.job_category?.id === filters.category;
+//     const matchesType = !filters.type || job.job_type?.id === filters.type;
+
+//     return matchesSearch && matchesStatus && matchesCategory && matchesType;
+//   });
+
+//   // Handle job deletion
+//   const handleDelete = async (jobId) => {
+//     if (!window.confirm(t("Are you sure you want to delete this job offer?"))) {
+//       return;
+//     }
+
+//     try {
+//       await axios.delete(`http://localhost:8000/job_offer/offers/delete/${jobId}/`);
+//       setJobs(jobs.filter((job) => job.id !== jobId));
+//       setError(null);
+//     } catch (err) {
+//       setError("Failed to delete job offer. Please try again.");
+//       console.error("Error:", err);
+//     }
+//   };
+
+//   if (loading) {
+//     return (
+//       <div className="flex justify-center items-center min-h-screen">
+//         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="container mx-auto px-4 py-8">
+//       {/* Header Section */}
+//       <div className="flex justify-between items-center mb-6">
+//         <h1 className="text-2xl font-bold text-gray-800">{t("Job Offers Management")}</h1>
+//         <button
+//           onClick={() => {
+//             setSelectedJob(null);
+//             setIsModalOpen(true);
+//           }}
+//           className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+//         >
+//           <Plus size={20} />
+//           {t("Add New Job")}
+//         </button>
+//       </div>
+
+//       {/* Filters and Search Section */}
+//       <CustomCard className="mb-6">
+//         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+//           {/* Search Input */}
+//           <div className="relative">
+//             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+//             <input
+//               type="text"
+//               placeholder={t("Search jobs...")}
+//               className="pl-10 w-full rounded-lg border border-gray-300 p-2"
+//               value={filters.search}
+//               onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+//             />
+//           </div>
+
+//           {/* Status Filter */}
+//           <select
+//             value={filters.status}
+//             onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+//             className="rounded-lg border border-gray-300 p-2"
+//           >
+//             <option value="">{t("All Statuses")}</option>
+//             <option value="draft">Draft</option>
+//             <option value="active">Active</option>
+//             <option value="closed">Closed</option>
+//             <option value="expired">Expired</option>
+//           </select>
+
+//           {/* Category Filter */}
+//           <select
+//             value={filters.category}
+//             onChange={(e) => setFilters({ ...filters, category: e.target.value })}
+//             className="rounded-lg border border-gray-300 p-2"
+//           >
+//             <option value="">{t("All Categories")}</option>
+//             {categories.map((category) => (
+//               <option key={category.id} value={category.id}>{category.name}</option>
+//             ))}
+//           </select>
+
+//           {/* Type Filter */}
+//           <select
+//             value={filters.type}
+//             onChange={(e) => setFilters({ ...filters, type: e.target.value })}
+//             className="rounded-lg border border-gray-300 p-2"
+//           >
+//             <option value="">{t("All Types")}</option>
+//             {types.map((type) => (
+//               <option key={type.id} value={type.id}>{type.name}</option>
+//             ))}
+//           </select>
+//         </div>
+//       </CustomCard>
+
+//       {/* Error Alert */}
+//       {error && (
+//         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-red-700">
+//           <AlertCircle size={20} />
+//           {error}
+//         </div>
+//       )}
+
+//       {/* Jobs List */}
+//       <div className="grid grid-cols-1 gap-4">
+//         {filteredJobs.map((job) => (
+//           <CustomCard key={job.id} className="hover:shadow-lg transition-shadow">
+//             <div className="flex justify-between items-start">
+//               <h3 className="text-xl font-semibold text-gray-800">{job.title}</h3>
+//               <div className="flex items-center gap-2">
+//                 <button onClick={() => handleDelete(job.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-full">
+//                   <Trash2 size={20} />
+//                 </button>
+//               </div>
+//             </div>
+//           </CustomCard>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default JobManagement;

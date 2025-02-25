@@ -26,7 +26,30 @@ const Login = () => {
     return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar && password.length >= 8;
   };
 
-  const handleLogin = (e) => {
+  const checkJobSeekerRegistration = async (userId) => {
+    try {
+      console.log("Making request to:", `http://127.0.0.1:8000/job_seeker/by-user/${userId}/`);
+      const response = await axios.get(
+        `http://127.0.0.1:8000/job_seeker/by-user/${userId}/`,
+        {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+      console.log("Response:", response);
+      return response.status === 200;
+    } catch (error) {
+      console.error("Error checking registration:", error);
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+        console.error("Error status:", error.response.status);
+      }
+      return false;
+    }
+  };
+
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -34,7 +57,7 @@ const Login = () => {
     const isPhone = validatePhone(identifier);
 
     if (!isEmail && !isPhone) {
-      setError("Please enter a valid email ending with @gmai.com or a valid phone number.");
+      setError("Please enter a valid email ending with @gmail.com or a valid phone number.");
       return;
     }
 
@@ -47,45 +70,50 @@ const Login = () => {
 
     setIsLoading(true);
 
-    axios
-      .post(
-        "https://anaweza-backend.up.railway.app/login/",
+    try {
+      const res = await axios.post(
+        "http://127.0.0.1:8000/login/",
         { identifier, password },
         { headers: { "Content-Type": "application/json" } }
-      )
-      .then((res) => {
-        setIsLoading(false);
+      );
 
-        if (res.data) {
-          const user = {
-            id: res.data.id,
-            role: res.data.role,
-            email: res.data.email,
-            created_at: res.data.created_at,
-            refresh_token: res.data.token.refresh,
-            access_token: res.data.token.access,
-          };
+      setIsLoading(false);
 
-          localStorage.setItem("userData", JSON.stringify(user));
-          localStorage.setItem("token", res.data.token.access);
+      if (res.data) {
+        const user = {
+          id: res.data.id,
+          role: res.data.role,
+          email: res.data.email,
+          created_at: res.data.created_at,
+          refresh_token: res.data.token.refresh,
+          access_token: res.data.token.access,
+        };
 
-          const role = user.role.trim().toLowerCase();
-          if (role === "admin") navigate("/admin");
-          else if (role === "data_entry_clerk") navigate("/data_entry_clerk");
-          else if (role === "analyst") navigate("/data_analyst/data");
-          else console.log("Unknown user role. Please contact support.");
+        localStorage.setItem("userData", JSON.stringify(user));
+        localStorage.setItem("token", res.data.token.access);
+
+        const role = user.role.trim().toLowerCase();
+
+        if (role === "admin") navigate("/admin");
+        else if (role === "data_entry_clerk") navigate("/data_entry_clerk");
+        else if (role === "analyst") navigate("/data_analyst/data");
+        else if (role === "job_seeker") {
+          const isRegistered = await checkJobSeekerRegistration(user.id);
+          navigate(isRegistered ? "/job_seeker" : "/registerAsJobSeeker");
         } else {
-          console.log("No data received from the API.");
+          console.log("Unknown user role. Please contact support.");
         }
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        if (error.response && error.response.data && error.response.data.detail) {
-          setError(error.response.data.detail);
-        } else {
-          setError("Invalid email, phone number, or password.");
-        }
-      });
+      } else {
+        console.log("No data received from the API.");
+      }
+    } catch (error) {
+      setIsLoading(false);
+      if (error.response && error.response.data && error.response.data.detail) {
+        setError(error.response.data.detail);
+      } else {
+        setError("Invalid email, phone number, or password.");
+      }
+    }
   };
 
   return (
@@ -101,7 +129,7 @@ const Login = () => {
         <form className="mt-6 space-y-6" onSubmit={handleLogin}>
           <div>
             <label htmlFor="identifier" className="block text-sm font-medium text-gray-700">
-              Email (ending with @gmai.com) or Phone Number
+              Email (ending with @gmail.com) or Phone Number
             </label>
             <input
               id="identifier"
