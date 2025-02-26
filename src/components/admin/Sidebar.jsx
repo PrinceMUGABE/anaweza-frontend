@@ -58,7 +58,7 @@ function Sidebar() {
       <div className="md:hidden fixed top-4 left-4 z-20">
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="text-white bg-black p-2 rounded-full shadow-md focus:outline-none"
+          className="text-white bg-blue-700 p-2 rounded-full shadow-md focus:outline-none"
         >
           {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
         </button>
@@ -77,7 +77,7 @@ function Sidebar() {
           />
         </div>
 
-        <ul className="space-y-6 mt-16">
+        <ul className="space-y-4 mt-8">
           {Sidebar_Links.map((link, index) => (
             <li key={index} className="relative">
               <div
@@ -87,7 +87,7 @@ function Sidebar() {
                 onClick={() => handleLinkClick(index)}
               >
                 <div className="flex items-center space-x-3">
-                  <span className="text-indigo-500">{link.icon}</span>
+                  <span className="text-white">{link.icon}</span>
                   <Link
                     to={link.path || "#"}
                     className="text-sm text-white hover:text-gray-700"
@@ -105,7 +105,7 @@ function Sidebar() {
               onClick={handleLogout}
             >
               <div className="flex items-center space-x-3 cursor-pointer">
-                <span className="text-indigo-500">
+                <span className="text-white">
                   <FaSignOutAlt />
                 </span>
                 <span className="text-sm text-white hover:text-gray-700">
