@@ -95,15 +95,10 @@ const Login = () => {
         const role = user.role.trim().toLowerCase();
 
         if (role === "admin") navigate("/admin");
-        else if (role === "data_entry_clerk") navigate("/data_entry_clerk");
-        else if (role === "analyst") navigate("/data_analyst/data");
         else if (role === "job_seeker") {
           const isRegistered = await checkJobSeekerRegistration(user.id);
           navigate(isRegistered ? "/job_seeker" : "/registerAsJobSeeker");
-        } else if (role === "job_offer") {
-     
-          navigate("/employer");
-        }
+        } else if (role === "job_offer") navigate("/employer");
         
         else {
           console.log("Unknown user role. Please contact support.");
