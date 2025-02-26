@@ -28,9 +28,9 @@ const Login = () => {
 
   const checkJobSeekerRegistration = async (userId) => {
     try {
-      console.log("Making request to:", `http://127.0.0.1:8000/job_seeker/by-user/${userId}/`);
+      console.log("Making request to:", `https://anaweza-backend.up.railway.app/job_seeker/by-user/${userId}/`);
       const response = await axios.get(
-        `http://127.0.0.1:8000/job_seeker/by-user/${userId}/`,
+        `https://anaweza-backend.up.railway.app/job_seeker/by-user/${userId}/`,
         {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -72,7 +72,7 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        "http://127.0.0.1:8000/login/",
+        "https://anaweza-backend.up.railway.app/login/",
         { identifier, password },
         { headers: { "Content-Type": "application/json" } }
       );
