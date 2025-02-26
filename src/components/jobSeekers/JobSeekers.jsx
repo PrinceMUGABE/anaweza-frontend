@@ -61,11 +61,16 @@ const FeaturedSeekers = () => {
     return `${seeker.first_name} ${seeker.last_name}`;
   };
 
+  // Get initials for the avatar
+  const getInitials = (seeker) => {
+    return `${seeker.first_name.charAt(0)}${seeker.last_name.charAt(0)}`;
+  };
+
   if (loading) {
     return (
       <div className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 text-center">
-          <p>Loading job seekers...</p>
+          <p className='text-gray-700'>Loading job seekers...</p>
         </div>
       </div>
     );
@@ -98,11 +103,21 @@ const FeaturedSeekers = () => {
               return (
                 <div key={seeker.id} className="bg-white rounded-lg p-6 hover:shadow-lg transition-shadow">
                   <div className="flex flex-col items-center text-center">
-                    {seeker.resume && (
-                      <div className="w-24 h-24 rounded-full mb-4 bg-gray-200 flex items-center justify-center">
-                        <span className="text-gray-500 text-3xl">{seeker.first_name.charAt(0)}{seeker.last_name.charAt(0)}</span>
-                      </div>
-                    )}
+                    {/* Profile picture or initials */}
+                    <div className="w-24 h-24 rounded-full mb-4 overflow-hidden">
+                      {seeker.user?.profile_picture ? (
+                        <img 
+                          src={seeker.user.profile_picture} 
+                          alt={formatFullName(seeker)}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                          <span className="text-gray-500 text-3xl">{getInitials(seeker)}</span>
+                        </div>
+                      )}
+                    </div>
+                    
                     <h3 className="font-semibold text-lg text-gray-950">{formatFullName(seeker)}</h3>
                     <p className="text-blue-600">{seeker.education_sector || seeker.education_level}</p>
                     <p className="text-gray-600 mt-2">{seeker.experience} years experience</p>
@@ -167,10 +182,19 @@ const FeaturedSeekers = () => {
             <div className="p-6">
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="md:w-1/3 flex flex-col items-center">
-                  <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center mb-4">
-                    <span className="text-gray-500 text-5xl">
-                      {selectedSeeker.first_name.charAt(0)}{selectedSeeker.last_name.charAt(0)}
-                    </span>
+                  {/* Profile picture or initials in modal */}
+                  <div className="w-32 h-32 rounded-full mb-4 overflow-hidden">
+                    {selectedSeeker.user?.profile_picture ? (
+                      <img 
+                        src={selectedSeeker.user.profile_picture} 
+                        alt={formatFullName(selectedSeeker)}
+                        className="w-full h-full object-cover border-2 border-gray-200"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                        <span className="text-gray-500 text-5xl">{getInitials(selectedSeeker)}</span>
+                      </div>
+                    )}
                   </div>
                   <h2 className="text-xl font-bold text-center">{formatFullName(selectedSeeker)}</h2>
                   <p className="text-blue-600 text-center">{selectedSeeker.education_sector || selectedSeeker.education_level}</p>
@@ -246,12 +270,6 @@ const FeaturedSeekers = () => {
                       </a>
                     </div>
                   )}
-                  
-                  {/* <div className="mt-6 pt-6 border-t">
-                    <p className="text-sm text-gray-500">
-                      Profile created: {new Date(selectedSeeker.created_at).toLocaleDateString()}
-                    </p>
-                  </div> */}
                 </div>
               </div>
             </div>

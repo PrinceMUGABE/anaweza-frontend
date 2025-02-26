@@ -22,7 +22,8 @@
   ],
   "scripts": {},
   "dependencies": {
-    "leaflet": "*"
+    "leaflet": "*",
+    "leaflet-search": "file:"
   },
   "devDependencies": {
     "grunt": "^1.4.1",
