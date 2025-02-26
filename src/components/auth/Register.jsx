@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
@@ -8,18 +8,27 @@ import loginImage from '../../assets/pictures/system/logo.png'; // Assuming the 
 
 const Register = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const webcamRef = useRef(null);
   const [formData, setFormData] = useState({
     phone: '',
     email: '',
     password: '',
     confirmPassword: '',
+    role: ''
   });
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Extract role from location state instead of URL query parameters
+  useEffect(() => {
+    if (location.state?.role) {
+      setFormData(prev => ({ ...prev, role: location.state.role }));
+    }
+  }, [location]);
 
   const validateFields = () => {
     const newErrors = {};
@@ -28,8 +37,9 @@ const Register = () => {
       newErrors.phone = 'Phone number must be 10 digits starting with 078, 079, 072, or 073.';
     }
 
-    if (formData.email === '') {
-      newErrors.role = 'Enter valid email.';
+    // Email validation only if provided
+    if (formData.email && !/^\S+@\S+\.\S+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address.';
     }
 
     if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(formData.password)) {
@@ -55,12 +65,18 @@ const Register = () => {
     const dataToSubmit = {
       phone: formData.phone,
       password: formData.password,
-      email: formData.email,
+      confirmPassword: formData.confirmPassword,
+      role: formData.role
     };
+
+    // Add email to payload only if it's provided
+    if (formData.email) {
+      dataToSubmit.email = formData.email;
+    }
 
     setLoading(true);
     try {
-      const response = await axios.post('http://127.0.0.1:8000/register/', dataToSubmit);
+      const response = await axios.post('https://anaweza-backend.up.railway.app/register/', dataToSubmit);
 
       if (response.status === 201) {
         setMessage('Registration successful!');
@@ -76,6 +92,9 @@ const Register = () => {
         }
         if (backendErrors.password) {
           errorMessages.password = backendErrors.password;
+        }
+        if (backendErrors.email) {
+          errorMessages.email = backendErrors.email;
         }
 
         setErrors((prev) => ({
@@ -125,6 +144,13 @@ const Register = () => {
         {message && <p className="text-green-500 text-sm">{message}</p>}
 
         <form className="mt-8 space-y-2" onSubmit={handleSubmit}>
+          {/* Hidden Role Field */}
+          <input
+            type="hidden"
+            name="role"
+            value={formData.role}
+          />
+          
           <div>
             <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
             <input
@@ -139,7 +165,9 @@ const Register = () => {
             {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email <span className="text-gray-400 text-xs">(Optional)</span>
+            </label>
             <input
               id="email"
               name="email"
@@ -147,7 +175,6 @@ const Register = () => {
               value={formData.email}
               onChange={handleChange}
               className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900"
-              required
             />
             {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
           </div>
@@ -194,13 +221,16 @@ const Register = () => {
               className="w-full bg-green-700 text-white py-2 px-4 rounded-md shadow-sm hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               disabled={loading}
             >
-              {loading ? <AiOutlineLoading3Quarters className="animate-spin h-5 w-5" /> : 'Sign Up'}
+              {loading ? <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mx-auto" /> : 'Sign Up'}
             </button>
           </div>
         </form>
 
         <div className="mt-3 text-sm text-gray-600">
           Already have an account? <Link to="/login" className="text-green-700 hover:text-black">Log in here</Link>
+        </div>
+        <div className="mt-3 text-sm text-gray-600">
+           <Link to="/" className="text-green-700 hover:text-black">Back Home</Link>
         </div>
       </div>
     </div>

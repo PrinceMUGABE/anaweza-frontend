@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import itImage from "../../assets/pictures/system/it1.jpg";
 import constImage from "../../assets/pictures/system/workers2.jpg";
 import constImage2 from "../../assets/pictures/system/workers1.jpg";
@@ -11,7 +12,16 @@ import teachImage from "../../assets/pictures/system/teaching1.jpg";
 
 const Cards = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const images = [constImage2, itImage, constImage, accImage, drivImage, teachImage];
+
+  const handleJobSeekerRegistration = () => {
+    navigate("/signup", { state: { role: "job_seeker" } });
+  };
+
+  const handleEmployerRegistration = () => {
+    navigate("/signup", { state: { role: "job_offer" } });
+  };
 
   return (
     <div className="bg-gradient-to-b from-gray-100 to-gray-200 pt-8 pb-12" id="home">
@@ -104,7 +114,7 @@ const Cards = () => {
               </li>
             </ul>
             <button
-              onClick={() => (window.location.href = "/register?role=seeker")}
+              onClick={handleJobSeekerRegistration}
               className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
             >
               {t("Register as Job Seeker")}
@@ -143,7 +153,7 @@ const Cards = () => {
               </li>
             </ul>
             <button
-              onClick={() => (window.location.href = "/register?role=employer")}
+              onClick={handleEmployerRegistration}
               className="w-full py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold"
             >
               {t("Register as Employer")}
