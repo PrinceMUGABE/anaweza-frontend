@@ -11,7 +11,8 @@ function Job_seeker_Profile() {
     phone_number: '',
     email: '',
     role: '',
-    profile_picture: null
+    profile_picture: null,
+    status: true // Added default status
   });
   const [previewImage, setPreviewImage] = useState(null);
   const [isCapturing, setIsCapturing] = useState(false);
@@ -29,11 +30,20 @@ function Job_seeker_Profile() {
       // Fix: Properly set phone_number from whichever property exists
       const phoneValue = storedUser.phone_number || storedUser.phone || '';
       
+      // Parse status to boolean if it's a string
+      let userStatus = storedUser.status;
+      if (typeof userStatus === 'string') {
+        userStatus = userStatus.toLowerCase() === 'active' || userStatus.toLowerCase() === 'true';
+      } else if (userStatus === undefined) {
+        userStatus = true; // Default to true if undefined
+      }
+      
       setFormData({
         phone_number: phoneValue,
         email: storedUser.email || '',
         role: storedUser.role || '',
-        profile_picture: null
+        profile_picture: null,
+        status: userStatus // Set status properly
       });
       
       // Set preview image if user already has a profile picture
@@ -82,11 +92,21 @@ function Job_seeker_Profile() {
       // Important: Reset form data when entering edit mode to ensure current values
       if (userData) {
         const phoneValue = userData.phone_number || userData.phone || '';
+        
+        // Parse status to boolean
+        let userStatus = userData.status;
+        if (typeof userStatus === 'string') {
+          userStatus = userStatus.toLowerCase() === 'active' || userStatus.toLowerCase() === 'true';
+        } else if (userStatus === undefined) {
+          userStatus = true; // Default to true if undefined
+        }
+        
         setFormData({
           phone_number: phoneValue,
           email: userData.email || '',
           role: userData.role || '',
-          profile_picture: null
+          profile_picture: null,
+          status: userStatus // Make sure to include status
         });
       }
     }
@@ -185,6 +205,7 @@ function Job_seeker_Profile() {
       email: formData.email,
       role: formData.role,
       profile_picture: formData.profile_picture,
+      status: formData.status // Include status in update
     };
 
     try {
@@ -198,12 +219,25 @@ function Job_seeker_Profile() {
       });
     
       if (response.ok) {
-        // Your existing success code
+        const data = await response.json();
+        // Update local storage with new data
+        const updatedUserData = {
+          ...userData,
+          phone_number: data.phone_number,
+          email: data.email,
+          role: data.role,
+          profile_picture: data.profile_picture,
+          status: data.status === "Active"
+        };
+        localStorage.setItem('userData', JSON.stringify(updatedUserData));
+        setUserData(updatedUserData);
+        setIsEditing(false);
+        alert('Profile updated successfully!');
       } else {
         // Better error handling
         const errorData = await response.json().catch(() => ({}));
         console.error('Failed to update user data:', response.status, errorData);
-        alert(`Update failed: ${errorData.detail || 'Unknown error'}`);
+        alert(`Update failed: ${errorData.detail || errorData.message || 'Unknown error'}`);
       }
     } catch (error) {
       console.error('Error updating user data:', error);
@@ -270,6 +304,13 @@ function Job_seeker_Profile() {
               <div className="p-4 bg-gray-50 rounded-lg">
                 <strong className="text-gray-700 block mb-1">Role</strong>
                 <span className="text-gray-800 text-lg">{userData.role}</span>
+              </div>
+
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <strong className="text-gray-700 block mb-1">Status</strong>
+                <span className="text-gray-800 text-lg">
+                  {typeof userData.status === 'string' ? userData.status : (userData.status ? 'Active' : 'Non-Active')}
+                </span>
               </div>
 
               <div className="p-4 bg-gray-50 rounded-lg">
@@ -440,6 +481,29 @@ function Job_seeker_Profile() {
                   className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 bg-gray-50 cursor-not-allowed"
                   required
                 />
+              </div>
+              
+              {/* Add status field display/toggle */}
+              <div>
+                <label 
+                  className="block text-gray-700 text-sm font-medium mb-2" 
+                  htmlFor="status"
+                >
+                  Status
+                </label>
+                <select
+                  id="status"
+                  name="status"
+                  value={formData.status === true || formData.status === "true" || formData.status === "Active" ? "true" : "false"}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    status: e.target.value === "true"
+                  })}
+                  className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                >
+                  <option value="true">Active</option>
+                  <option value="false">Non-Active</option>
+                </select>
               </div>
             </div>
 

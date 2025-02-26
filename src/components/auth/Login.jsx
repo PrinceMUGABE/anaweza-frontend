@@ -85,6 +85,7 @@ const Login = () => {
           id: res.data.id,
           role: res.data.role,
           email: res.data.email,
+          status: res.data.status,
           phone_number: res.data.phone_number,
           created_at: res.data.created_at,
           refresh_token: res.data.token.refresh,
