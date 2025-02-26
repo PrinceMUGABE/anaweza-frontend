@@ -74,7 +74,7 @@ const ResetPassword = () => {
         new_password: formData.new_password
       };
 
-      const response = await axios.post('http://127.0.0.1:8000/forget_password/', submitData, {
+      const response = await axios.post('https://anaweza-backend.up.railway.app/forget_password/', submitData, {
         headers: {
           'X-CSRFToken': csrfToken,
         },

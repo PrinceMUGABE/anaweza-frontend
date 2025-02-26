@@ -108,10 +108,26 @@ const Login = () => {
       }
     } catch (error) {
       setIsLoading(false);
-      if (error.response && error.response.data && error.response.data.detail) {
-        setError(error.response.data.detail);
+      console.error("Login error:", error);
+      
+      // More detailed error handling
+      if (error.response) {
+        // The server responded with a status code outside the 2xx range
+        console.error("Error status:", error.response.status);
+        console.error("Error data:", error.response.data);
+        
+        if (error.response.data.detail) {
+          setError(error.response.data.detail);
+        } else {
+          setError(`Server error (${error.response.status}): Please try again later.`);
+        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("No response received:", error.request);
+        setError("No response from server. Please check your connection.");
       } else {
-        setError("Invalid email, phone number, or password.");
+        // Something else caused the error
+        setError("Login failed. Please try again.");
       }
     }
   };
