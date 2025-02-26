@@ -22,7 +22,7 @@ const ResponsiveMenu = ({ showMenu, setShowMenu }) => {
     <div
       className={`${
         showMenu ? "left-0" : "-left-[100%]"
-      } fixed bottom-0 top-0 z-20 flex h-screen w-[75%] flex-col justify-between bg-sky-900 text-white px-6 pb-6 pt-16 transition-all duration-200 md:hidden rounded-r-xl shadow-md`}
+      } fixed bottom-0 top-0 z-20 flex h-screen w-[75%] flex-col justify-between bg-blue-700 text-white px-6 pb-6 pt-16 transition-all duration-200 md:hidden rounded-r-xl shadow-md`}
     >
       {/* Navigation Links */}
       <nav className="mt-12">
