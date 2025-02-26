@@ -80,13 +80,16 @@ const Login = () => {
       setIsLoading(false);
 
       if (res.data) {
+        console.log("Found User Data: ", res.data);
         const user = {
           id: res.data.id,
           role: res.data.role,
           email: res.data.email,
+          phone_number: res.data.phone_number,
           created_at: res.data.created_at,
           refresh_token: res.data.token.refresh,
           access_token: res.data.token.access,
+          profile_picture: res.data.profile_picture
         };
 
         localStorage.setItem("userData", JSON.stringify(user));

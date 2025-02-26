@@ -37,13 +37,13 @@ const Header = () => {
 
   const Navbar_Links = useMemo(() => [
     { id: 1, name: "My Jobs", path: "/employeer", icon: <MdDashboard className="text-xl" /> },
-    { id: 2, name: "About Us", path: "/job_seeker/about", icon: <FaInfoCircle className="text-xl" /> },
-    { id: 3, name: "Contact Us", path: "/job_seeker/contact", icon: <FaPhone className="text-xl" /> },
-    { id: 4, name: "Jobs", path: "/job_seeker/jobs", icon: <FaBriefcase className="text-xl" /> },
-    { id: 5, name: "Job Seekers", path: "/job_seeker/job_seekers", icon: <FaUsersCog className="text-xl" /> },
-    { id: 6, name: "Testimonials", path: "/job_seeker/testimonials", icon: <FaStar className="text-xl" /> },
-    { id: 7, name: "Publicity", path: "/job_seeker/publicity", icon: <FaBullhorn className="text-xl" /> },
-    { id: 8, name: "Profile", path: `/job_seeker/profile/${userId}`, icon: <FaUserCircle className="text-xl" /> },
+    { id: 2, name: "About Us", path: "/employer/about", icon: <FaInfoCircle className="text-xl" /> },
+    { id: 3, name: "Contact Us", path: "/employer/contact", icon: <FaPhone className="text-xl" /> },
+    { id: 4, name: "Jobs", path: "/employer/jobs", icon: <FaBriefcase className="text-xl" /> },
+    { id: 5, name: "Job Seekers", path: "/employer/job_seekers", icon: <FaUsersCog className="text-xl" /> },
+    { id: 6, name: "Testimonials", path: "/employer/testimonials", icon: <FaStar className="text-xl" /> },
+    { id: 7, name: "Publicity", path: "/employer/publicity", icon: <FaBullhorn className="text-xl" /> },
+    { id: 8, name: "Profile", path: `/employer/profile/${userId}`, icon: <FaUserCircle className="text-xl" /> },
   ], [userId]);
 
   return (
