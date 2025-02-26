@@ -293,7 +293,7 @@ function AdminProfile() {
             <div className="grid grid-cols-1 gap-6">
               <div className="p-4 bg-gray-50 rounded-lg">
                 <strong className="text-gray-700 block mb-1">Phone</strong>
-                <span className="text-gray-800 text-lg">{userData.phone_number || userData.phone}</span>
+                <span className="text-gray-800 text-lg">{userData.phone_number}</span>
               </div>
 
               <div className="p-4 bg-gray-50 rounded-lg">
