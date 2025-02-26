@@ -33,6 +33,8 @@ import Manage_Job_categories from "./components/pages/admin/Manage_Job_cetegorie
 import Admin_Manage_Jobs from "./components/pages/admin/ManageJobOffers.jsx";
 import Admin_Manage_JobSeekers from "./components/pages/admin/ManageJobSeekers.jsx";
 import Admin_ManageAdvertisements from "./components/pages/admin/manage_advertisements.jsx";
+import Employer_Layout from "./components/pages/job_provider/account/Layout.jsx";
+import Employer_Home from "./components/pages/job_provider/pages/Home.jsx";
 
 
 
@@ -90,6 +92,14 @@ const App = () => {
 
           <Route path="/job_seeker" element={<JobSeeker_Layout />}>
              <Route index element={<Job_seeker_home />} />
+
+
+          </Route>
+
+
+
+          <Route path="/employer" element={<Employer_Layout />}>
+             <Route index element={<Employer_Home />} />
 
 
           </Route>
