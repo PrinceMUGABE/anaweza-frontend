@@ -247,11 +247,11 @@ const FeaturedSeekers = () => {
                     </div>
                   )}
                   
-                  <div className="mt-6 pt-6 border-t">
+                  {/* <div className="mt-6 pt-6 border-t">
                     <p className="text-sm text-gray-500">
                       Profile created: {new Date(selectedSeeker.created_at).toLocaleDateString()}
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
