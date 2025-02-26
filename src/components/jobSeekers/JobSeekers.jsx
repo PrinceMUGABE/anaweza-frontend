@@ -220,7 +220,7 @@ const FeaturedSeekers = () => {
                   </div>
                   
                   <div className="mb-6">
-                    <h3 className="font-semibold text-lg mb-2">Skills</h3>
+                    <h3 className="font-semibold text-lg mb-2 text-gray-700">Skills</h3>
                     <div className="flex flex-wrap gap-2">
                       {parseSkills(selectedSeeker.skills).map((skill, index) => (
                         <span key={index} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full">
