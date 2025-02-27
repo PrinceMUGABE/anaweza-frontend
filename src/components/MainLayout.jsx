@@ -16,8 +16,11 @@ import NewsletterSignup from "./newsLetter/NewsLetter";
 import Footer from "./Footer/Footer";
 import Advertisements from "./advertisement/advertisements"
 import Cards from "./cards/cards";
+import WhatsAppButton from "./whatsapp";
 
 const MainLayout = () => {
+  const whatsappNumber = "+250788457408"; // Replace with your WhatsApp number
+
   return (
     <I18nextProvider i18n={i18n}>
       <Navbar />
@@ -34,6 +37,9 @@ const MainLayout = () => {
       {/* <Blog /> */}
       <NewsletterSignup />
       <Footer />
+
+      {/* WhatsApp Button */}
+      <WhatsAppButton phoneNumber={whatsappNumber} />
     </I18nextProvider>
   );
 };

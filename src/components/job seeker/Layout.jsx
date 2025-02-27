@@ -3,8 +3,10 @@ import React from 'react';
 import Header from './Header';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import WhatsAppButton from '../whatsapp';
 
 function JobSeeker_Layout() {
+  const whatsappNumber = "+250788457408";
   return (
     <div className="bg-gray-100 min-h-screen">
      <Header />
@@ -13,6 +15,8 @@ function JobSeeker_Layout() {
       <main className="max-w-7xl mx-auto ">
         <Outlet />
       </main>
+      {/* WhatsApp Button */}
+      <WhatsAppButton phoneNumber={whatsappNumber} />
     </div>
   );
 }
