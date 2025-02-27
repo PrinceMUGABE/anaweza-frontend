@@ -37,6 +37,10 @@ import Employer_Layout from "./components/pages/job_provider/account/Layout.jsx"
 import Employer_Home from "./components/pages/job_provider/pages/Home.jsx";
 import Employer_About_Us from "./components/pages/job_provider/pages/about_anaweza.jsx";
 import Job_seeker_Profile from "./components/job seeker/pages/job_seeker_Profile.jsx";
+import Job_Seeker_ContactUs from "./components/job seeker/ContactUs.jsx";
+import Job_Seeker_About from "./components/job seeker/pages/AboutUs.jsx";
+import Job_Seeker_FeaturedJobs from "./components/job seeker/All_Jobs.jsx";
+
 
 
 
@@ -91,10 +95,14 @@ const App = () => {
 
 
           <Route path="/registerAsJobSeeker" element={<Register_as_jobSeeker />} />
+          
 
           <Route path="/job_seeker" element={<JobSeeker_Layout />}>
              <Route index element={<Job_seeker_home />} />
              <Route path="/job_seeker/profile/:id" element={<Job_seeker_Profile />} />
+             <Route path="/job_seeker/contact" element={<Job_Seeker_ContactUs />} />
+             <Route path="/job_seeker/about" element={<Job_Seeker_About />} />
+             <Route path="/job_seeker/jobs" element={<Job_Seeker_FeaturedJobs />} />
 
 
           </Route>

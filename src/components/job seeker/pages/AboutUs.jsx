@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import AboutImg from '../../assets/pictures/system/logo.png';
 
-function About() {
+function Job_Seeker_About() {
   return (
     <section id="about" className="py-10 bg-slate-100 dark:text-white">
       <div className="bg-gray-300 mt-2 py-2">
@@ -16,13 +15,7 @@ function About() {
 
       <main className="container mx-auto flex flex-col items-center justify-center">
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center p-4 md:p-8 bg-white rounded-lg shadow-lg">
-          <div data-aos="fade-right">
-            <img
-              src={AboutImg} 
-              alt="Anaweza Platform"
-              className="w-full h-80 object-cover rounded-lg"
-            />
-          </div>
+          <div data-aos="fade-right" className="w-full h-80 bg-blue-700 rounded-lg p-4"></div>
           <div data-aos="fade-left" className="flex flex-col gap-4">
             <div className="p-4 border-l-4 border-gray-700">
               <h3 className="text-2xl font-semibold mb-2 text-black">Who We Are</h3>
@@ -53,4 +46,4 @@ function About() {
   );
 }
 
-export default About;
+export default Job_Seeker_About;
