@@ -194,9 +194,9 @@ const Policy = () => {
               We accept various payment methods to ensure convenience for all our users:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-gray-700">
-              <li>Mobile Money (MTN Mobile Money, Airtel Money)</li>
-              {/* <li>Bank Transfer</li>
-              <li>Credit/Debit Cards</li>
+              <li>Mobile Money: 0788457408</li>
+              <li>MOMO: 1492396</li>
+              {/* <li>Credit/Debit Cards</li>
               <li>PayPal (for international users)</li> */}
             </ul>
             <p className="text-gray-700 mt-4">
@@ -206,7 +206,7 @@ const Policy = () => {
           
           {/* Refund Policy */}
           <div className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-800">Refund Policy</h2>
+            {/* <h2 className="text-2xl font-semibold mb-4 text-gray-800">Refund Policy</h2> */}
             {/* <p className="text-gray-700 mb-4">
               We want you to be completely satisfied with our services. If you are not satisfied for any reason:
             </p> */}

@@ -10,14 +10,14 @@ const Footer = () => {
   const footerLinks = {
     forJobSeekers: [
       { name: 'Browse Jobs', href: '/jobs' },
-      { name: 'Create Profile', href: '/profile/create' },
-      { name: 'Job Alerts', href: '/job-alerts' },
-      { name: 'Career Resources', href: '/resources' },
+      { name: 'Create Profile', href: '' },
+      { name: 'Job Alerts', href: '' },
+      // { name: 'Career Resources', href: '' },
       // { name: 'Resume Tips', href: '/resume-tips' }
     ],
     forEmployers: [
-      { name: 'Post a Job', href: '/post-job' },
-      { name: 'Browse Candidates', href: '/job_seekers' },
+      { name: 'Post a Job', href: '' },
+      { name: 'Browse Candidates', href: '' },
       // { name: 'Recruitment Solutions', href: '/solutions' },
       // { name: 'Pricing Plans', href: '/pricing' },
       // { name: 'Enterprise Solutions', href: '/enterprise' }
@@ -27,7 +27,7 @@ const Footer = () => {
       // { name: 'Contact', href: '/contact' },
       { name: 'Privacy Policy', href: '/policy' },
       { name: 'Terms of Service', href: '/terms_and_conditions' },
-      { name: 'FAQ', href: '/faq' }
+      { name: 'FAQ', href: '' }
     ],
     social: [
       { 
