@@ -46,6 +46,8 @@ import Job_Seeker_Job_Seekers from "./components/job seeker/Job_Seeker_Job_Seeke
 import Job_Seeker_Advertisements from "./components/job seeker/advertisements.jsx";
 import All_Job_Seekers from "./components/jobSeekers/all_job_seeker.jsx";
 import About from "./components/about/About.jsx";
+import Policy from "./components/policy/policy.jsx";
+import TermsAndConditions from "./components/policy/terms_and_condition.jsx";
 
 
 
@@ -83,6 +85,9 @@ const App = () => {
           <Route path="/jobs" element={<List_of_Jobs />} />
           <Route path="/job_seekers" element={<All_Job_Seekers />} />
           <Route path="/about" element={<About />} />
+          <Route path="/policy" element={<Policy />} />
+          <Route path="/terms_and_conditions" element={<TermsAndConditions />} />
+     
 
           {/* End Home view */}
 

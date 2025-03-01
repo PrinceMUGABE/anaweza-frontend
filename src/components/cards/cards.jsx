@@ -60,7 +60,7 @@ const Cards = () => {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-800">For Job Seekers</h3>
+                  <h3 className="font-semibold text-gray-800">Job Seekers</h3>
                   <p className="text-gray-600">Create your professional profile and get discovered by employers</p>
                 </div>
               </div>
@@ -72,7 +72,7 @@ const Cards = () => {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-800">For Employers</h3>
+                  <h3 className="font-semibold text-gray-800">Employers</h3>
                   <p className="text-gray-600">Post opportunities and find the perfect candidates for your positions</p>
                 </div>
               </div>
