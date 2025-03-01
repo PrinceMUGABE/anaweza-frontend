@@ -1,13 +1,20 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const FeaturedJobs = () => {
+  const navigate = useNavigate();
   const [featuredJobs, setFeaturedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedJob, setSelectedJob] = useState(null);
   const [showModal, setShowModal] = useState(false);
+
+  const userData = useMemo(() => JSON.parse(localStorage.getItem("userData")) || {}, []);
+  const [applying, setApplying] = useState(false);
+  const [applicationStatus, setApplicationStatus] = useState(null);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchFeaturedJobs = async () => {
@@ -33,6 +40,120 @@ const FeaturedJobs = () => {
 
     fetchFeaturedJobs();
   }, []);
+
+  const checkJobSeekerRegistration = async (userId) => {
+    try {
+      console.log("Making request to:", `https://anaweza-backend.up.railway.app/job_seeker/by-user/${userId}/`);
+      const response = await axios.get(
+        `https://anaweza-backend.up.railway.app/job_seeker/by-user/${userId}/`,
+        {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+      console.log("Response:", response);
+      return response.status === 200;
+    } catch (error) {
+      console.error("Error checking registration:", error);
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+        console.error("Error status:", error.response.status);
+      }
+      return false;
+    }
+  };
+
+  // Handle job application
+  const handleApply = async (jobId) => {
+    if (!token) {
+      // Redirect to login page if user is not logged in
+      navigate('/login');
+      return;
+    }
+
+    try {
+      setApplying(true);
+      // Get user ID from token
+      const userId = JSON.parse(atob(token.split('.')[1])).user_id;
+
+      // Check if user is registered as job seeker
+      const isRegistered = await checkJobSeekerRegistration(userId);
+
+      if (!isRegistered) {
+        setApplicationStatus({
+          type: 'error',
+          message: 'You must complete your job seeker profile before applying.'
+        });
+        setApplying(false);
+        return;
+      }
+
+      // Submit application with the correct field name
+      console.log(`Submitting application for job ID: ${jobId}`);
+      const response = await axios.post(
+        'https://anaweza-backend.up.railway.app/application/create/',
+        { job_offer: jobId },  // Use 'job_offer' instead of 'job_offer_id'
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      console.log("Application response:", response.data);
+      setApplicationStatus({
+        type: 'success',
+        message: 'Your application has been submitted successfully!'
+      });
+    } catch (error) {
+      // Error handling code remains the same
+      console.error('Error applying for job:', error);
+
+      let errorMessage = 'Failed to submit application. Please try again.';
+
+      if (error.response) {
+        console.error('Error status:', error.response.status);
+        console.error('Error data:', error.response.data);
+
+        if (error.response.data) {
+          if (error.response.data.error) {
+            errorMessage = error.response.data.error;
+          } else if (typeof error.response.data === 'string') {
+            errorMessage = error.response.data;
+          } else if (typeof error.response.data === 'object') {
+            const errorFields = Object.keys(error.response.data);
+            if (errorFields.length > 0) {
+              const firstErrorField = errorFields[0];
+              const fieldError = error.response.data[firstErrorField];
+
+              if (Array.isArray(fieldError) && fieldError.length > 0) {
+                errorMessage = `${firstErrorField}: ${fieldError[0]}`;
+              } else if (typeof fieldError === 'string') {
+                errorMessage = `${firstErrorField}: ${fieldError}`;
+              }
+            }
+          }
+        }
+
+        console.error(`HTTP Error ${error.response.status}: ${errorMessage}`);
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+        errorMessage = 'No response received from server. Please check your connection.';
+      } else {
+        console.error('Request setup error:', error.message);
+        errorMessage = `Error setting up request: ${error.message}`;
+      }
+
+      setApplicationStatus({
+        type: 'error',
+        message: errorMessage
+      });
+    } finally {
+      setApplying(false);
+    }
+  };
 
   // Format salary range for display
   const formatSalary = (salaryRange) => {
@@ -60,6 +181,11 @@ const FeaturedJobs = () => {
     if (e.target.classList.contains('modal-overlay')) {
       closeModal();
     }
+  };
+
+  // Handle view all jobs click
+  const handleViewAllJobs = () => {
+    navigate('/jobs');
   };
 
   if (loading) {
@@ -95,24 +221,24 @@ const FeaturedJobs = () => {
   }
 
   return (
-    <div className="py-16 bg-white">
+    <div className="py-16 bg-white" id='jobs'>
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold text-blue-800">Featured Jobs</h2>
-          <a href="/jobs" className="text-blue-600 hover:text-blue-700">View All Jobs →</a>
+          <button 
+            onClick={handleViewAllJobs} 
+            className="text-blue-600 hover:text-blue-700"
+          >
+            View All Jobs →
+          </button>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {featuredJobs.map((job) => (
             <div key={job.id} className="border rounded-lg p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start gap-4">
-                {/* <img
-                  src="/api/placeholder/50/50"
-                  alt={`${job.company_name || 'Company'} logo`}
-                  className="w-12 h-12 rounded"
-                /> */}
                 <div>
-                  <h3 className="font-semibold text-lg">{job.title}</h3>
+                  <h3 className="font-semibold text-lg text-gray-700">{job.title}</h3>
                   <p className="text-gray-600">{job.company_name || job.offer_type}</p>
                 </div>
               </div>
@@ -148,6 +274,10 @@ const FeaturedJobs = () => {
                 <span className="px-3 py-1 bg-yellow-100 text-yellow-600 rounded-full text-sm">
                   {job.experience_level}
                 </span>
+
+                <div className="text-gray-500">
+                    <p>Application Deadline: {new Date(job.deadline).toLocaleDateString()}</p>
+                  </div>
               </div>
               
               <button 
@@ -185,11 +315,6 @@ const FeaturedJobs = () => {
             {/* Job Details Content */}
             <div className="p-6">
               <div className="flex items-start gap-4 pb-4">
-                {/* <img
-                  src="/api/placeholder/80/80"
-                  alt={`${selectedJob.company_name || 'Company'} logo`}
-                  className="w-16 h-16 rounded"
-                /> */}
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900">{selectedJob.title}</h2>
                   <p className="text-xl text-gray-600">{selectedJob.company_name || selectedJob.offer_type}</p>
@@ -262,11 +387,19 @@ const FeaturedJobs = () => {
                     <p>Application Deadline: {new Date(selectedJob.deadline).toLocaleDateString()}</p>
                   </div>
                   <button
+                    onClick={() => handleApply(selectedJob.id)}
                     className="px-6 py-3 bg-green-600 text-white font-medium rounded hover:bg-green-700 transition-colors w-full sm:w-auto"
+                    disabled={applying}
                   >
-                    Apply Now
+                    {applying ? "Processing..." : "Apply Now"}
                   </button>
                 </div>
+                
+                {applicationStatus && (
+                  <div className={`mt-4 p-3 rounded ${applicationStatus.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                    {applicationStatus.message}
+                  </div>
+                )}
               </div>
             </div>
           </div>

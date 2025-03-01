@@ -156,6 +156,8 @@ const JobModal = ({ job, onClose }) => {
           {job.benefits && job.benefits.length > 0 && (
             <ListSection title={t("Benefits")} items={convertToList(job.benefits)} />
           )}
+
+<InfoItem label={t("Number of Employees")} value={job.employees_needed || t("Not specified")} />
           
           <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
             <div>

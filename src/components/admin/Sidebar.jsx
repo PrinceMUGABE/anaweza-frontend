@@ -47,10 +47,11 @@ function Sidebar() {
     { id: 3, name: "Job Categories", path: "/admin/job_categories", icon: <MdWork /> },
     { id: 4, name: "Job Offers", path: "/admin/job_offers", icon: <GiSuitcase /> },
     { id: 5, name: "Job Seekers", path: "/admin/job_seekers", icon: <FaUsers /> },
-    { id: 6, name: "Advertisements", path: "/admin/advertisements", icon: <AiFillNotification /> },
-    { id: 7, name: "Testimonials", path: "/admin/testimonials", icon: <MdRateReview /> },
-    { id: 8, name: "Subscribers", path: "/admin/subscribers", icon: <MdSubscriptions /> },
-    { id: 9, name: "Profile", path: `/admin/profile/${userId}`, icon: <AiFillProfile /> },
+    { id: 6, name: "Job Aplications", path: "/admin/job_applications", icon: <FaUsers /> },
+    { id: 7, name: "Advertisements", path: "/admin/advertisements", icon: <AiFillNotification /> },
+    { id: 8, name: "Testimonials", path: "/admin/testimonials", icon: <MdRateReview /> },
+    { id: 9, name: "Subscribers", path: "/admin/subscribers", icon: <MdSubscriptions /> },
+    { id: 10, name: "Profile", path: `/admin/profile/${userId}`, icon: <AiFillProfile /> },
   ];
 
   return (

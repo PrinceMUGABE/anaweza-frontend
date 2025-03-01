@@ -46,7 +46,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <div className="py-16 bg-white">
+    <div className="py-16 bg-white" id='service'>
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4 text-blue-800">How Anaweza Works</h2>

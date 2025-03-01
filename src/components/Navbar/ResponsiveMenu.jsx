@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { MenuLinks } from "./Navbar";
 import { Link, useNavigate } from "react-router-dom";
 
-const ResponsiveMenu = ({ showMenu, setShowMenu }) => {
+const ResponsiveMenu = ({ showMenu, setShowMenu, handleLinkClick }) => {
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
 
@@ -14,8 +14,14 @@ const ResponsiveMenu = ({ showMenu, setShowMenu }) => {
     setShowMenu(false); // Close menu after clicking login
   };
 
-  const handleLinkClick = () => {
-    setShowMenu(false); // Close menu when a link is clicked
+  const handleMenuItemClick = (name, link) => {
+    // Close the mobile menu
+    setShowMenu(false);
+    
+    // Handle the link click using the parent component's function
+    if (handleLinkClick) {
+      handleLinkClick(name, link);
+    }
   };
 
   return (
@@ -32,7 +38,10 @@ const ResponsiveMenu = ({ showMenu, setShowMenu }) => {
               <a 
                 href={link} 
                 className="block py-2"
-                onClick={handleLinkClick}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleMenuItemClick(name, link);
+                }}
               >
                 {t(name)}
               </a>

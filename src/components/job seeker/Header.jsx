@@ -42,7 +42,7 @@ const Header = () => {
     { id: 4, name: "Jobs", path: "/job_seeker/jobs", icon: <FaBriefcase className="text-xl" /> },
     { id: 5, name: "Job Seekers", path: "/job_seeker/job_seekers", icon: <FaUsersCog className="text-xl" /> },
     { id: 6, name: "Testimonials", path: "/job_seeker/testimonials", icon: <FaStar className="text-xl" /> },
-    { id: 7, name: "Publicity", path: "/job_seeker/publicity", icon: <FaBullhorn className="text-xl" /> },
+    { id: 7, name: "Advertisements", path: "/job_seeker/advertisements", icon: <FaBullhorn className="text-xl" /> },
     { id: 8, name: "Profile", path: `/job_seeker/profile/${userId}`, icon: <FaUserCircle className="text-xl" /> },
   ], [userId]);
 

@@ -40,6 +40,12 @@ import Job_seeker_Profile from "./components/job seeker/pages/job_seeker_Profile
 import Job_Seeker_ContactUs from "./components/job seeker/ContactUs.jsx";
 import Job_Seeker_About from "./components/job seeker/pages/AboutUs.jsx";
 import Job_Seeker_FeaturedJobs from "./components/job seeker/All_Jobs.jsx";
+import List_of_Jobs from "./components/jobs/All_Jobs.jsx";
+import Admin_Job_Applications from "./components/pages/admin/Job_Applications.jsx";
+import Job_Seeker_Job_Seekers from "./components/job seeker/Job_Seeker_Job_Seekers.jsx";
+import Job_Seeker_Advertisements from "./components/job seeker/advertisements.jsx";
+import All_Job_Seekers from "./components/jobSeekers/all_job_seeker.jsx";
+import About from "./components/about/About.jsx";
 
 
 
@@ -74,6 +80,9 @@ const App = () => {
           <Route path="/passwordreset" element={<ResetPassword />} />
           <Route path="/changePassword" element={<ChangePassword />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/jobs" element={<List_of_Jobs />} />
+          <Route path="/job_seekers" element={<All_Job_Seekers />} />
+          <Route path="/about" element={<About />} />
 
           {/* End Home view */}
 
@@ -88,7 +97,7 @@ const App = () => {
             <Route path="/admin/job_offers" element={<Admin_Manage_Jobs />} />
             <Route path="/admin/job_seekers" element={<Admin_Manage_JobSeekers />} />
             <Route path="/admin/advertisements" element={<Admin_ManageAdvertisements />} />
-
+            <Route path="/admin/job_applications" element={<Admin_Job_Applications />} />
             <Route path="/admin/profile/:id" element={<AdminProfile />} />
 
           </Route>
@@ -103,6 +112,8 @@ const App = () => {
              <Route path="/job_seeker/contact" element={<Job_Seeker_ContactUs />} />
              <Route path="/job_seeker/about" element={<Job_Seeker_About />} />
              <Route path="/job_seeker/jobs" element={<Job_Seeker_FeaturedJobs />} />
+             <Route path="/job_seeker/job_seekers" element={<Job_Seeker_Job_Seekers />} />
+             <Route path="/job_seeker/advertisements" element={<Job_Seeker_Advertisements />} />
 
 
           </Route>

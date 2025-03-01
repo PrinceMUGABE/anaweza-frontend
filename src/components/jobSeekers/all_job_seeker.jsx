@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Navbar from '../Navbar/Navbar';
 
-const FeaturedSeekers = () => {
+const All_Job_Seekers = () => {
   // State for job seekers data
   const [featuredSeekers, setFeaturedSeekers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,6 +15,11 @@ const FeaturedSeekers = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(9);
+  const [totalPages, setTotalPages] = useState(1);
+  
   // Fetch job seekers from API
   useEffect(() => {
     const fetchJobSeekers = async () => {
@@ -22,6 +28,7 @@ const FeaturedSeekers = () => {
         // Filter only active job seekers
         const activeJobSeekers = response.data.filter(seeker => seeker.status === true);
         setFeaturedSeekers(activeJobSeekers);
+        setTotalPages(Math.ceil(activeJobSeekers.length / itemsPerPage));
         setLoading(false);
       } catch (err) {
         setError('Failed to fetch job seekers');
@@ -31,7 +38,13 @@ const FeaturedSeekers = () => {
     };
     
     fetchJobSeekers();
-  }, []);
+  }, [itemsPerPage]);
+  
+  // Update total pages when itemsPerPage changes
+  useEffect(() => {
+    setTotalPages(Math.ceil(featuredSeekers.length / itemsPerPage));
+    setCurrentPage(1); // Reset to first page when items per page changes
+  }, [featuredSeekers.length, itemsPerPage]);
   
   // Open modal with selected job seeker details
   const openModal = (seeker) => {
@@ -67,110 +80,225 @@ const FeaturedSeekers = () => {
   const getInitials = (seeker) => {
     return `${seeker.first_name.charAt(0)}${seeker.last_name.charAt(0)}`;
   };
-
-  if (loading) {
-    return (
-      <div className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 text-center">
-          <p className='text-gray-700'>Loading job seekers...</p>
-        </div>
-      </div>
+  
+  // Pagination handlers
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+  };
+  
+  // Get current page items
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = featuredSeekers.slice(indexOfFirstItem, indexOfLastItem);
+  
+  // Generate pagination buttons
+  const renderPaginationButtons = () => {
+    const pages = [];
+    
+    // Add previous button
+    pages.push(
+      <button
+        key="prev"
+        onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className={`px-3 py-1 mx-1 rounded ${currentPage === 1 ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}`}
+      >
+        &laquo;
+      </button>
     );
-  }
-
-  if (error) {
-    return (
-      <div className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-red-500">{error}</p>
-        </div>
-      </div>
+    
+    // Logic for displaying page numbers
+    const maxPagesToShow = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+    let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+    
+    if (endPage - startPage + 1 < maxPagesToShow) {
+      startPage = Math.max(1, endPage - maxPagesToShow + 1);
+    }
+    
+    // First page
+    if (startPage > 1) {
+      pages.push(
+        <button
+          key={1}
+          onClick={() => handlePageChange(1)}
+          className="px-3 py-1 mx-1 rounded bg-gray-200 hover:bg-gray-300 text-gray-700"
+        >
+          1
+        </button>
+      );
+      
+      if (startPage > 2) {
+        pages.push(<span key="ellipsis1" className="px-2">...</span>);
+      }
+    }
+    
+    // Page numbers
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(
+        <button
+          key={i}
+          onClick={() => handlePageChange(i)}
+          className={`px-3 py-1 mx-1 rounded ${i === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}`}
+        >
+          {i}
+        </button>
+      );
+    }
+    
+    // Last page
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        pages.push(<span key="ellipsis2" className="px-2">...</span>);
+      }
+      
+      pages.push(
+        <button
+          key={totalPages}
+          onClick={() => handlePageChange(totalPages)}
+          className="px-3 py-1 mx-1 rounded bg-gray-200 hover:bg-gray-300 text-gray-700"
+        >
+          {totalPages}
+        </button>
+      );
+    }
+    
+    // Add next button
+    pages.push(
+      <button
+        key="next"
+        onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className={`px-3 py-1 mx-1 rounded ${currentPage === totalPages ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}`}
+      >
+        &raquo;
+      </button>
     );
-  }
+    
+    return pages;
+  };
 
   return (
-    <div id='jobs' className=" py-16 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold text-blue-800">Featured Job Seekers</h2>
-          {/* Add onClick handler to navigate */}
-          <button 
-            className="text-blue-600 hover:text-blue-700"
-            onClick={() => navigate('/job_seekers')} // Navigate to /job_seekers
-          >
-            View All Candidates →
-          </button>
+    <div className="py-16 bg-gray-50">
+      <Navbar/>
+      <div className="container mx-auto px-4 py-8">
+        <h2 className="text-3xl text-center font-bold text-blue-800">Job Seekers</h2>
+
+        {/* Display filters and counts */}
+        <div className="flex flex-col md:flex-row justify-between items-center my-6">
+          <div className="mb-4 md:mb-0">
+            <p className="text-gray-600">
+              Showing {featuredSeekers.length > 0 ? indexOfFirstItem + 1 : 0} - {Math.min(indexOfLastItem, featuredSeekers.length)} of {featuredSeekers.length} job seekers
+            </p>
+          </div>
+          
+          <div className="flex items-center">
+            <label htmlFor="itemsPerPage" className="mr-2 text-gray-600">Show:</label>
+            <select
+              id="itemsPerPage"
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
+              className="border rounded text-gray-500 px-3 py-1 bg-white"
+            >
+              <option value={9}>9</option>
+              <option value={15}>15</option>
+              <option value={30}>30</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+            </select>
+          </div>
         </div>
         
-        {featuredSeekers.length === 0 ? (
+        {loading ? (
+          <div className="text-center">
+            <p className='text-gray-700'>Loading job seekers...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center">
+            <p className="text-red-500">{error}</p>
+          </div>
+        ) : featuredSeekers.length === 0 ? (
           <p className="text-center text-gray-600">No active job seekers found.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredSeekers.map((seeker) => {
-              const skills = parseSkills(seeker.skills);
-              return (
-                <div key={seeker.id} className="bg-white rounded-lg p-6 hover:shadow-lg transition-shadow">
-                  <div className="flex flex-col items-center text-center">
-                    {/* Profile picture or initials */}
-                    <div className="w-24 h-24 rounded-full mb-4 overflow-hidden">
-                      {seeker.user?.profile_picture ? (
-                        <img 
-                          src={seeker.user.profile_picture} 
-                          alt={formatFullName(seeker)}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                          <span className="text-gray-500 text-3xl">{getInitials(seeker)}</span>
-                        </div>
-                      )}
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {currentItems.map((seeker) => {
+                const skills = parseSkills(seeker.skills);
+                return (
+                  <div key={seeker.id} className="bg-white rounded-lg p-6 hover:shadow-lg transition-shadow">
+                    <div className="flex flex-col items-center text-center">
+                      {/* Profile picture or initials */}
+                      <div className="w-24 h-24 rounded-full mb-4 overflow-hidden">
+                        {seeker.user?.profile_picture ? (
+                          <img 
+                            src={seeker.user.profile_picture} 
+                            alt={formatFullName(seeker)}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <span className="text-gray-500 text-3xl">{getInitials(seeker)}</span>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <h3 className="font-semibold text-lg text-gray-950">{formatFullName(seeker)}</h3>
+                      <p className="text-blue-600">{seeker.education_sector || seeker.education_level}</p>
+                      <p className="text-gray-600 mt-2">{seeker.experience} years experience</p>
                     </div>
                     
-                    <h3 className="font-semibold text-lg text-gray-950">{formatFullName(seeker)}</h3>
-                    <p className="text-blue-600">{seeker.education_sector || seeker.education_level}</p>
-                    <p className="text-gray-600 mt-2">{seeker.experience} years experience</p>
-                  </div>
-                  
-                  <div className="mt-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      <span className="text-gray-600">{seeker.user?.location || "Location not specified"}</span>
+                    <div className="mt-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span className="text-gray-600">{seeker.user?.location || "Location not specified"}</span>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {skills.slice(0, 3).map((skill, index) => (
+                          <span key={index} className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
+                            {skill}
+                          </span>
+                        ))}
+                        {skills.length > 3 && (
+                          <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
+                            +{skills.length - 3} more
+                          </span>
+                        )}
+                      </div>
                     </div>
                     
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {skills.slice(0, 3).map((skill, index) => (
-                        <span key={index} className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
-                          {skill}
+                    <div className="mt-4 pt-4 border-t">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-600">
+                          Salary: {seeker.salary_range}
                         </span>
-                      ))}
-                      {skills.length > 3 && (
-                        <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
-                          +{skills.length - 3} more
-                        </span>
-                      )}
+                        <button 
+                          className="text-blue-600 hover:text-blue-700"
+                          onClick={() => openModal(seeker)}
+                        >
+                          View Profile
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  
-                  <div className="mt-4 pt-4 border-t">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">
-                        Salary: {seeker.salary_range}
-                      </span>
-                      <button 
-                        className="text-blue-600 hover:text-blue-700"
-                        onClick={() => openModal(seeker)}
-                      >
-                        View Profile
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+            
+            {/* Pagination controls */}
+            {totalPages > 1 && (
+              <div className="mt-8 flex justify-center">
+                <div className="flex flex-wrap">{renderPaginationButtons()}</div>
+              </div>
+            )}
+          </>
         )}
       </div>
       
@@ -299,4 +427,4 @@ const FeaturedSeekers = () => {
   );
 };
 
-export default FeaturedSeekers;
+export default All_Job_Seekers;

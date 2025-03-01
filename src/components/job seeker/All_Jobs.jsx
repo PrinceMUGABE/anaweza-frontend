@@ -13,7 +13,7 @@ const Job_Seeker_FeaturedJobs = () => {
   const [applying, setApplying] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(null);
   const token = localStorage.getItem("token");
-  
+
   const jobsPerPage = 9;
 
   // Navigate to next page automatically
@@ -56,10 +56,11 @@ const Job_Seeker_FeaturedJobs = () => {
       setLoading(true);
       // Fetch active job offers from the API
       const response = await axios.get('https://anaweza-backend.up.railway.app/job_offer/offers/');
-      
+
       // Filter for active jobs
       const activeJobs = response.data.filter(job => job.status === 'active');
-        
+      console.log("Retrieved jobs: ", response.data);
+
       setAllJobs(activeJobs);
       setError(null);
     } catch (err) {
@@ -119,102 +120,102 @@ const Job_Seeker_FeaturedJobs = () => {
 
   // Handle job application
   // Handle job application
-const handleApply = async (jobId) => {
-  if (!token) {
-    setApplicationStatus({
-      type: 'error',
-      message: 'You must be logged in to apply for jobs.'
-    });
-    return;
-  }
-
-  try {
-    setApplying(true);
-    // Get user ID from token
-    const userId = JSON.parse(atob(token.split('.')[1])).user_id;
-    
-    // Check if user is registered as job seeker
-    const isRegistered = await checkJobSeekerRegistration(userId);
-    
-    if (!isRegistered) {
+  const handleApply = async (jobId) => {
+    if (!token) {
       setApplicationStatus({
         type: 'error',
-        message: 'You must complete your job seeker profile before applying.'
+        message: 'You must be logged in to apply for jobs.'
       });
-      setApplying(false);
       return;
     }
 
-    // Submit application with the correct field name
-    console.log(`Submitting application for job ID: ${jobId}`);
-    const response = await axios.post(
-      'https://anaweza-backend.up.railway.app/application/create/',
-      { job_offer: jobId },  // Use 'job_offer' instead of 'job_offer_id'
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
+    try {
+      setApplying(true);
+      // Get user ID from token
+      const userId = JSON.parse(atob(token.split('.')[1])).user_id;
 
-    console.log("Application response:", response.data);
-    setApplicationStatus({
-      type: 'success',
-      message: 'Your application has been submitted successfully!'
-    });
-  } catch (error) {
-    // Error handling code remains the same
-    console.error('Error applying for job:', error);
-    
-    let errorMessage = 'Failed to submit application. Please try again.';
-    
-    if (error.response) {
-      console.error('Error status:', error.response.status);
-      console.error('Error data:', error.response.data);
-      
-      if (error.response.data) {
-        if (error.response.data.error) {
-          errorMessage = error.response.data.error;
-        } else if (typeof error.response.data === 'string') {
-          errorMessage = error.response.data;
-        } else if (typeof error.response.data === 'object') {
-          const errorFields = Object.keys(error.response.data);
-          if (errorFields.length > 0) {
-            const firstErrorField = errorFields[0];
-            const fieldError = error.response.data[firstErrorField];
-            
-            if (Array.isArray(fieldError) && fieldError.length > 0) {
-              errorMessage = `${firstErrorField}: ${fieldError[0]}`;
-            } else if (typeof fieldError === 'string') {
-              errorMessage = `${firstErrorField}: ${fieldError}`;
+      // Check if user is registered as job seeker
+      const isRegistered = await checkJobSeekerRegistration(userId);
+
+      if (!isRegistered) {
+        setApplicationStatus({
+          type: 'error',
+          message: 'You must complete your job seeker profile before applying.'
+        });
+        setApplying(false);
+        return;
+      }
+
+      // Submit application with the correct field name
+      console.log(`Submitting application for job ID: ${jobId}`);
+      const response = await axios.post(
+        'https://anaweza-backend.up.railway.app/application/create/',
+        { job_offer: jobId },  // Use 'job_offer' instead of 'job_offer_id'
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      console.log("Application response:", response.data);
+      setApplicationStatus({
+        type: 'success',
+        message: 'Your application has been submitted successfully!'
+      });
+    } catch (error) {
+      // Error handling code remains the same
+      console.error('Error applying for job:', error);
+
+      let errorMessage = 'Failed to submit application. Please try again.';
+
+      if (error.response) {
+        console.error('Error status:', error.response.status);
+        console.error('Error data:', error.response.data);
+
+        if (error.response.data) {
+          if (error.response.data.error) {
+            errorMessage = error.response.data.error;
+          } else if (typeof error.response.data === 'string') {
+            errorMessage = error.response.data;
+          } else if (typeof error.response.data === 'object') {
+            const errorFields = Object.keys(error.response.data);
+            if (errorFields.length > 0) {
+              const firstErrorField = errorFields[0];
+              const fieldError = error.response.data[firstErrorField];
+
+              if (Array.isArray(fieldError) && fieldError.length > 0) {
+                errorMessage = `${firstErrorField}: ${fieldError[0]}`;
+              } else if (typeof fieldError === 'string') {
+                errorMessage = `${firstErrorField}: ${fieldError}`;
+              }
             }
           }
         }
+
+        console.error(`HTTP Error ${error.response.status}: ${errorMessage}`);
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+        errorMessage = 'No response received from server. Please check your connection.';
+      } else {
+        console.error('Request setup error:', error.message);
+        errorMessage = `Error setting up request: ${error.message}`;
       }
 
-      console.error(`HTTP Error ${error.response.status}: ${errorMessage}`);
-    } else if (error.request) {
-      console.error('No response received:', error.request);
-      errorMessage = 'No response received from server. Please check your connection.';
-    } else {
-      console.error('Request setup error:', error.message);
-      errorMessage = `Error setting up request: ${error.message}`;
+      setApplicationStatus({
+        type: 'error',
+        message: errorMessage
+      });
+    } finally {
+      setApplying(false);
     }
-    
-    setApplicationStatus({
-      type: 'error',
-      message: errorMessage
-    });
-  } finally {
-    setApplying(false);
-  }
-};
+  };
 
   // Render pagination controls
   const renderPagination = () => {
     const totalPages = Math.ceil(allJobs.length / jobsPerPage);
-    
+
     return (
       <div className="flex justify-center mt-8">
         <div className="flex space-x-2">
@@ -226,26 +227,25 @@ const handleApply = async (jobId) => {
           >
             &laquo;
           </button>
-          
+
           {/* Page numbers */}
           {[...Array(totalPages)].map((_, i) => (
             <button
               key={i}
               onClick={() => handlePageChange(i)}
-              className={`px-3 py-1 rounded ${
-                currentPage === i
+              className={`px-3 py-1 rounded ${currentPage === i
                   ? 'bg-blue-600 text-white'
                   : 'border border-gray-300 hover:bg-blue-50'
-              }`}
+                }`}
             >
               {i + 1}
             </button>
           ))}
-          
+
           {/* Next button */}
           <button
             onClick={() => handlePageChange((currentPage + 1) % totalPages)}
-            className="px-3 py-1 rounded border border-gray-300 hover:bg-blue-50"
+            className="px-3 py-1 rounded border border-gray-700 hover:bg-blue-700"
             aria-label="Next page"
           >
             &raquo;
@@ -293,7 +293,7 @@ const handleApply = async (jobId) => {
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold text-blue-800">Featured Jobs</h2>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {featuredJobs.map((job) => (
             <div key={job.id} className="border rounded-lg p-6 hover:shadow-lg transition-shadow">
@@ -303,7 +303,7 @@ const handleApply = async (jobId) => {
                   <p className="text-gray-600">{job.company_name || job.offer_type}</p>
                 </div>
               </div>
-              
+
               <div className="mt-4 space-y-2">
                 <div className="flex items-center gap-2">
                   <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -312,7 +312,7 @@ const handleApply = async (jobId) => {
                   </svg>
                   <span className="text-gray-600">{job.location}</span>
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                   <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -320,7 +320,7 @@ const handleApply = async (jobId) => {
                   <span className="text-gray-600">{formatSalary(job.salary_range)}</span>
                 </div>
               </div>
-              
+
               <div className="mt-4 flex flex-wrap gap-2">
                 {job.job_type && (
                   <span className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">
@@ -336,8 +336,8 @@ const handleApply = async (jobId) => {
                   {job.experience_level}
                 </span>
               </div>
-              
-              <button 
+
+              <button
                 onClick={() => openJobDetails(job)}
                 className="mt-4 block w-full bg-blue-600 text-white py-2 rounded text-center hover:bg-blue-700 transition-colors"
               >
@@ -346,14 +346,14 @@ const handleApply = async (jobId) => {
             </div>
           ))}
         </div>
-        
+
         {/* Pagination */}
         {renderPagination()}
       </div>
 
       {/* Job Details Modal */}
       {showModal && selectedJob && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 modal-overlay p-4"
           onClick={handleOutsideClick}
         >
@@ -361,7 +361,7 @@ const handleApply = async (jobId) => {
             {/* Close Button */}
             <div className="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
               <h2 className="text-xl font-bold text-gray-900">Job Details</h2>
-              <button 
+              <button
                 onClick={closeModal}
                 className="text-gray-500 hover:text-gray-700"
                 aria-label="Close modal"
@@ -379,7 +379,7 @@ const handleApply = async (jobId) => {
                   <h2 className="text-2xl font-bold text-gray-900">{selectedJob.title}</h2>
                   <p className="text-xl text-gray-600">{selectedJob.company_name || selectedJob.offer_type}</p>
                   <div className="flex items-center gap-2 mt-2">
-                    <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
@@ -390,15 +390,15 @@ const handleApply = async (jobId) => {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-4 border-b border-t">
                 <div>
-                  <h3 className="font-medium text-gray-500">Salary</h3>
+                  <h3 className="font-medium text-gray-900">Salary</h3>
                   <p className="text-gray-900 font-semibold">{formatSalary(selectedJob.salary_range)}</p>
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-500">Job Type</h3>
+                  <h3 className="font-medium text-gray-900">Job Type</h3>
                   <p className="text-gray-900 font-semibold">{selectedJob.job_type?.name || 'Not specified'}</p>
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-500">Experience</h3>
+                  <h3 className="font-medium text-gray-900">Experience</h3>
                   <p className="text-gray-900 font-semibold">{selectedJob.experience_level}</p>
                 </div>
               </div>
@@ -441,13 +441,18 @@ const handleApply = async (jobId) => {
                 </div>
               )}
 
+
+              <div className="mt-4">
+                <h3 className="font-semibold text-xl text-gray-900 mb-2">Number of Position</h3>
+                <p className="text-gray-700 whitespace-pre-line">{selectedJob.employees_needed}</p>
+              </div>
+
               {/* Enhanced application status message with better styling and details */}
               {applicationStatus && (
-                <div className={`mt-6 p-4 rounded border ${
-                  applicationStatus.type === 'success' 
+                <div className={`mt-6 p-4 rounded border ${applicationStatus.type === 'success'
                     ? 'bg-green-50 border-green-500 text-green-800'
                     : 'bg-red-50 border-red-500 text-red-800'
-                }`}>
+                  }`}>
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
                       {applicationStatus.type === 'success' ? (
@@ -487,13 +492,12 @@ const handleApply = async (jobId) => {
                   <button
                     onClick={() => handleApply(selectedJob.id)}
                     disabled={applying || (applicationStatus && applicationStatus.type === 'success')}
-                    className={`px-6 py-3 font-medium rounded w-full sm:w-auto ${
-                      applying 
+                    className={`px-6 py-3 font-medium rounded w-full sm:w-auto ${applying
                         ? 'bg-gray-400 text-white cursor-not-allowed'
                         : (applicationStatus && applicationStatus.type === 'success')
                           ? 'bg-green-600 text-white'
                           : 'bg-blue-600 text-white hover:bg-blue-700 transition-colors'
-                    }`}
+                      }`}
                   >
                     {applying ? (
                       <span className="flex items-center justify-center">

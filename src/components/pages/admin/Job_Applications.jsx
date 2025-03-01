@@ -7,7 +7,7 @@ import axios from "axios";
 
 const BASE_URL = "https://anaweza-backend.up.railway.app/application";
 
-function JobSeekerHome() {
+function Admin_Job_Applications() {
   const navigate = useNavigate();
 
   // State Management
@@ -34,7 +34,7 @@ function JobSeekerHome() {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`${BASE_URL}/my-applications/`, {
+      const response = await axios.get(`${BASE_URL}/applications/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -176,7 +176,7 @@ function JobSeekerHome() {
           <div className="spinner-border text-primary" role="status">
             <span className="sr-only">Loading...</span>
           </div>
-          <p className="mt-2 text-gray-500">Loading your applications...</p>
+          <p className="mt-2 text-gray-500">Loading job applications...</p>
         </div>
       </div>
     );
@@ -616,4 +616,4 @@ function JobSeekerHome() {
   );
 }
 
-export default JobSeekerHome;
+export default Admin_Job_Applications;

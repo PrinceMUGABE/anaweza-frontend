@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Plus, Edit, Trash2, AlertCircle, CheckCircle2, Search, Eye } from 'lucide-react';
 
 // Job management component that combines listing, filtering, and CRUD operations
-const Admin_JobManagement = () => {
+const Job_Seeker_Manage_Jobs = () => {
   const { t } = useTranslation();
   const [jobs, setJobs] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -29,7 +29,7 @@ const Admin_JobManagement = () => {
       try {
         setLoading(true);
         const [jobsRes, categoriesRes, typesRes] = await Promise.all([
-          axios.get('https://anaweza-backend.up.railway.app/job_offer/offers/'),
+          axios.get('https://anaweza-backend.up.railway.app/job_offer/my-offers/'),
           axios.get('https://anaweza-backend.up.railway.app/category/categories/'),
           axios.get('https://anaweza-backend.up.railway.app/category/types/')
         ]);
@@ -871,4 +871,4 @@ const JobViewModal = ({ isOpen, onClose, job, loading }) => {
       </div>
     );
   };
-export default Admin_JobManagement;
+export default Job_Seeker_Manage_Jobs;
