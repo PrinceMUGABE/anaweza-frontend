@@ -83,7 +83,7 @@ const FeaturedJobs = () => {
       if (!isRegistered) {
         setApplicationStatus({
           type: 'error',
-          message: 'You must complete your job seeker profile before applying.'
+          message: 'You must complete your profile before applying.'
         });
         setApplying(false);
         return;
@@ -93,7 +93,7 @@ const FeaturedJobs = () => {
       console.log(`Submitting application for job ID: ${jobId}`);
       const response = await axios.post(
         'https://anaweza-backend.up.railway.app/application/create/',
-        { job_offer: jobId },  // Use 'job_offer' instead of 'job_offer_id'
+        { job_offer_id: jobId },  // Use 'job_offer' instead of 'job_offer_id'
         {
           headers: {
             'Authorization': `Bearer ${token}`,
