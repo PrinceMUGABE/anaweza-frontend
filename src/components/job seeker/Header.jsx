@@ -32,7 +32,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("userData");
     localStorage.removeItem("token");
-    navigate("/login");
+    navigate("/");
   };
 
   const Navbar_Links = useMemo(() => [
