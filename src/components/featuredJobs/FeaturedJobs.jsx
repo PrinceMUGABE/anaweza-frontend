@@ -22,7 +22,7 @@ const FeaturedJobs = () => {
         setLoading(true);
         // Fetch active job offers from the API
         const response = await axios.get('https://anaweza-backend.up.railway.app/job_offer/offers/', {
-          timeout: 10000 // Add timeout to prevent hanging requests
+          timeout: 50000 // Add timeout to prevent hanging requests
         });
         
         // Filter for active jobs and limit to 4 recent jobs
