@@ -260,7 +260,7 @@ const RegisterAsJobSeeker = () => {
       console.log("Sending data to server:", Object.fromEntries(formDataToSend));
 
       const response = await axios.post(
-        "http://127.0.0.1:8000/job_seeker/create/",
+        "https://anaweza-backend.up.railway.app/job_seeker/create/",
         formDataToSend,
         {
           headers: {
@@ -409,8 +409,8 @@ const RegisterAsJobSeeker = () => {
             </p>
 
             <ul className="list-disc pl-6 space-y-2">
-              <li>Mobile Money: 0788457408</li>
-              <li>MOMO: 1492396</li>
+              <li>Mobile Money: 0783251199</li>
+              {/* <li>MOMO: 1492396</li> */}
             </ul>
 
             <p>
