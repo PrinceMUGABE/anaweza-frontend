@@ -85,7 +85,7 @@ function Job_Seeker_ManageTestimonials() {
     const fetchTestimonials = async () => {
         setIsLoading(true);
         try {
-            const response = await axios.get(`${BASE_URL}/user/`, {
+            const response = await axios.get(`${BASE_URL}/testimonials/user/`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setTestimonials(response.data);
