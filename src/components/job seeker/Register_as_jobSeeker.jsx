@@ -71,6 +71,20 @@ const RegisterAsJobSeeker = () => {
     }
   ];
 
+
+  // Add a new function to handle logout
+  const handleLogout = () => {
+    // Clear user data from localStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("userData");
+    
+    // Show a logout message
+    setMessage('Logging out...');
+    
+    // Redirect to login page after a short delay
+    setTimeout(() => navigate('/login'), 1000);
+  };
+
   useEffect(() => {
     console.log("User Token: ", token);
     const storedUserData = localStorage.getItem("userData");
@@ -692,7 +706,7 @@ const RegisterAsJobSeeker = () => {
                 </div>
               </div>
             </div>
-
+            <div className='flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4'>
             <button
               type="submit"
               disabled={loading}
@@ -710,6 +724,18 @@ const RegisterAsJobSeeker = () => {
                 "Create Profile"
               )}
             </button>
+
+            <button
+                type="button"
+                onClick={handleLogout}
+                className="sm:w-1/2 py-3 px-4 border border-gray-300 rounded-md shadow-sm text-lg font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300"
+              >
+                Exit
+              </button>
+
+            </div>
+
+            
           </form>
         </div>
       </div>
