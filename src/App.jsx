@@ -49,6 +49,7 @@ import All_Job_Seekers from "./components/jobSeekers/all_job_seeker.jsx";
 import About from "./components/about/About.jsx";
 import Policy from "./components/policy/policy.jsx";
 import TermsAndConditions from "./components/policy/terms_and_condition.jsx";
+import Admin_ManageTestimonials from "./components/pages/admin/manage_testimonies.jsx";
 
 
 
@@ -104,6 +105,7 @@ const App = () => {
             <Route path="/admin/job_seekers" element={<Admin_Manage_JobSeekers />} />
             <Route path="/admin/advertisements" element={<Admin_ManageAdvertisements />} />
             <Route path="/admin/job_applications" element={<Admin_Job_Applications />} />
+            <Route path="/admin/testimonials" element={<Admin_ManageTestimonials />} />
             <Route path="/admin/profile/:id" element={<AdminProfile />} />
 
           </Route>

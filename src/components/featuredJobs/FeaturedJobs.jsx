@@ -44,7 +44,7 @@ const FeaturedJobs = () => {
           setError('Could not connect to the server. Please check your internet connection.');
         } else {
           // Something happened in setting up the request
-          setError('An error occurred while fetching jobs. Please try again later.');
+          setError('Could not find jobs. Please try again later.');
         }
       } finally {
         setLoading(false);
