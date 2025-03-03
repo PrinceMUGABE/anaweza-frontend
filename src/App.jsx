@@ -14,6 +14,7 @@ import VerifyPassword from "./components/auth/VerifyPassword.jsx";
 import ResetPassword from "./components/auth/ResetPassword.jsx";
 import ChangePassword from "./components/auth/ChangePassword.jsx";
 import Blog from "./components/blog/Blog.jsx";
+import CookieConsent from "./components/policy/cookies.jsx"
 
 
 // Admin imports
@@ -134,7 +135,9 @@ const App = () => {
           </Route>
 
         </Routes>
+        <CookieConsent/>
       </BrowserRouter>
+      
     </div>
   );
 };

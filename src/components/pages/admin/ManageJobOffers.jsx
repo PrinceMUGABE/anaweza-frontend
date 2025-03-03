@@ -633,7 +633,7 @@ const JobModal = ({ isOpen, onClose, job, onSave, categories, types }) => {
                 value={formData.employees_needed || ''}
                 onChange={(e) => setFormData({...formData, employees_needed: e.target.value})}
                 className="mt-1 block w-full text-gray-500 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                placeholder="e.g., $50,000 - $70,000"
+
               />
             </div>
           </div>
