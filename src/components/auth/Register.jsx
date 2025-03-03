@@ -240,7 +240,7 @@ const Register = () => {
 
               <div>
                 <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
-                  Email <span className="text-gray-400 text-xs font-normal">(Optional)</span>
+                  Email <span className="text-gray-400 text-xs font-normal">(Optional but recommended)</span>
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm">
                   <input

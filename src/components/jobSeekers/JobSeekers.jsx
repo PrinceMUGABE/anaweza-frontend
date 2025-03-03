@@ -262,7 +262,7 @@ const FeaturedSeekers = () => {
                     </div>
                   </div>
                   
-                  {selectedSeeker.resume && (
+                  {/* {selectedSeeker.resume && (
                     <div className="mt-4">
                       <h3 className="font-semibold text-lg mb-2">Resume</h3>
                       <a 
@@ -277,7 +277,7 @@ const FeaturedSeekers = () => {
                         Download Resume
                       </a>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>
