@@ -89,7 +89,7 @@ const Cards = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">{t("I'm a Job Seeker")}</h2>
+            <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">{t("ob Seeker")}</h2>
             <p className="text-gray-600 text-center mb-6">
               {t("Create your professional profile, upload your resume, and connect with employers looking for your skills and experience.")}
             </p>
@@ -128,7 +128,7 @@ const Cards = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">{t("I'm an Employer")}</h2>
+            <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">{t("Employer")}</h2>
             <p className="text-gray-600 text-center mb-6">
               {t("Post job opportunities, search for qualified candidates, and build your dream team with our powerful hiring tools.")}
             </p>

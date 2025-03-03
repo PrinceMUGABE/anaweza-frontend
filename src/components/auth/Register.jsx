@@ -138,7 +138,7 @@ const Register = () => {
 
       <div className="relative sm:max-w-md max-w-md w-full space-y-8 bg-white bg-opacity-90 rounded-lg shadow-lg p-8 z-10">
         <h2 className="text-center text-2xl font-bold text-gray-900">Create Account</h2>
-        <p className="text-center text-sm text-gray-600">Create New Account for Free</p>
+        {/* <p className="text-center text-sm text-gray-600">Create New Account for Free</p> */}
 
         {errors.form && <p className="text-red-500 text-sm">{errors.form}</p>}
         {message && <p className="text-green-500 text-sm">{message}</p>}
@@ -218,7 +218,7 @@ const Register = () => {
           <div>
             <button
               type="submit"
-              className="w-full bg-green-700 text-white py-2 px-4 rounded-md shadow-sm hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full bg-blue-700 text-white py-2 px-4 rounded-md shadow-sm hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               disabled={loading}
             >
               {loading ? <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mx-auto" /> : 'Sign Up'}
@@ -227,10 +227,10 @@ const Register = () => {
         </form>
 
         <div className="mt-3 text-sm text-gray-600">
-          Already have an account? <Link to="/login" className="text-green-700 hover:text-black">Log in here</Link>
+          Already have an account? <Link to="/login" className="text-blue-700 hover:text-black">Log in here</Link>
         </div>
         <div className="mt-3 text-sm text-gray-600">
-           <Link to="/" className="text-green-700 hover:text-black">Back Home</Link>
+           <Link to="/" className="text-blue-700 hover:text-black">Back Home</Link>
         </div>
       </div>
     </div>
