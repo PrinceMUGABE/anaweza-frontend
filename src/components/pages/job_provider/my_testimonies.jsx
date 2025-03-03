@@ -33,7 +33,7 @@ import {
     AreaChart,
 } from "recharts";
 
-function Admin_ManageTestimonials() {
+function Job_Offer_ManageTestimonials() {
     // State management
     const [testimonials, setTestimonials] = useState([]);
     const [selectedTestimonial, setSelectedTestimonial] = useState(null);
@@ -685,4 +685,4 @@ function Admin_ManageTestimonials() {
     );
 }
 
-export default Admin_ManageTestimonials;
+export default Job_Offer_ManageTestimonials;

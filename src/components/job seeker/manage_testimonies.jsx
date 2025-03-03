@@ -33,7 +33,7 @@ import {
     AreaChart,
 } from "recharts";
 
-function Admin_ManageTestimonials() {
+function Job_Seeker_ManageTestimonials() {
     // State management
     const [testimonials, setTestimonials] = useState([]);
     const [selectedTestimonial, setSelectedTestimonial] = useState(null);
@@ -85,7 +85,7 @@ function Admin_ManageTestimonials() {
     const fetchTestimonials = async () => {
         setIsLoading(true);
         try {
-            const response = await axios.get(`${BASE_URL}/testimonials/`, {
+            const response = await axios.get(`${BASE_URL}/user/`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setTestimonials(response.data);
@@ -433,7 +433,8 @@ function Admin_ManageTestimonials() {
                 ) : (
                     <>
                         {/* Stats Cards */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
+
+                        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
                             <StatsCard
                                 title="Total Testimonials"
                                 value={testimonials.length}
@@ -454,11 +455,12 @@ function Admin_ManageTestimonials() {
                                 icon={faBriefcase}
                                 color={COLORS.secondary}
                             />
-                        </div>
+                        </div> */}
 
                         {/* Charts */}
+
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                            <div className="bg-white rounded-xl shadow-lg p-6">
+                            {/* <div className="bg-white rounded-xl shadow-lg p-6">
                                 <div className="flex justify-between items-center mb-6">
                                     <h3 className="text-lg font-semibold text-gray-800">Testimonial Distribution</h3>
                                     <div className="flex space-x-2">
@@ -529,10 +531,10 @@ function Admin_ManageTestimonials() {
                                         )}
                                     </ResponsiveContainer>
                                 </div>
-                            </div>
+                            </div> */}
 
                             {/* Recent Activity */}
-                            <div className="bg-white rounded-xl shadow-lg p-6">
+                            {/* <div className="bg-white rounded-xl shadow-lg p-6">
                                 <h3 className="text-lg font-semibold text-gray-800 mb-6">Recent Testimonials</h3>
                                 <div className="space-y-4">
                                     {testimonials
@@ -562,8 +564,9 @@ function Admin_ManageTestimonials() {
                                             </div>
                                         ))}
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
+
 
                         {/* Add Testimonial Button */}
                         <div className="mb-6">
@@ -685,4 +688,4 @@ function Admin_ManageTestimonials() {
     );
 }
 
-export default Admin_ManageTestimonials;
+export default Job_Seeker_ManageTestimonials;

@@ -50,6 +50,7 @@ import About from "./components/about/About.jsx";
 import Policy from "./components/policy/policy.jsx";
 import TermsAndConditions from "./components/policy/terms_and_condition.jsx";
 import Admin_ManageTestimonials from "./components/pages/admin/manage_testimonies.jsx";
+import Job_Seeker_ManageTestimonials from "./components/job seeker/manage_testimonies.jsx";
 
 
 
@@ -122,6 +123,7 @@ const App = () => {
              <Route path="/job_seeker/jobs" element={<Job_Seeker_FeaturedJobs />} />
              <Route path="/job_seeker/job_seekers" element={<Job_Seeker_Job_Seekers />} />
              <Route path="/job_seeker/advertisements" element={<Job_Seeker_Advertisements />} />
+             <Route path="/job_seeker/testimonials" element={<Job_Seeker_ManageTestimonials />} />
 
 
           </Route>
