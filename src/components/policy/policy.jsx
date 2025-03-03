@@ -216,7 +216,7 @@ const Policy = () => {
               <li>Refunds will be processed using the original payment method within 7-14 business days.</li>
             </ul> */}
             <p className="text-gray-700">
-              For any questions regarding our pricing or refund policy, please contact our support team at support@anaweza.com.
+              For any questions regarding our pricing or refund policy, please contact our support team at princemugabe567@gmail.com.
             </p>
           </div>
         </div>

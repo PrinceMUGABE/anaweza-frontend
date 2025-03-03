@@ -21,7 +21,9 @@ const FeaturedJobs = () => {
       try {
         setLoading(true);
         // Fetch active job offers from the API
-        const response = await axios.get('https://anaweza-backend.up.railway.app/job_offer/offers/');
+        const response = await axios.get('https://anaweza-backend.up.railway.app/job_offer/offers/', {
+          timeout: 10000 // Add timeout to prevent hanging requests
+        });
         
         // Filter for active jobs and limit to 4 recent jobs
         const activeJobs = response.data
@@ -32,12 +34,23 @@ const FeaturedJobs = () => {
         setError(null);
       } catch (err) {
         console.error('Error fetching featured jobs:', err);
-        setError('Failed to load job listings. Please try again later.');
+        
+        // More detailed error message based on the type of error
+        if (err.response) {
+          // The server responded with a status code outside the 2xx range
+          setError(`Server error: ${err.response.status} - ${err.response.data.error || 'No jobs available at the moment'}`);
+        } else if (err.request) {
+          // The request was made but no response was received
+          setError('Could not connect to the server. Please check your internet connection.');
+        } else {
+          // Something happened in setting up the request
+          setError('An error occurred while fetching jobs. Please try again later.');
+        }
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchFeaturedJobs();
   }, []);
 

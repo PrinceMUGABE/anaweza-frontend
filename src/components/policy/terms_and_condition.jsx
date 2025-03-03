@@ -190,7 +190,7 @@ const TermsAndConditions = () => {
                 If you have any questions about these Terms, please contact us at:
               </p>
               <p>
-                Email: legal@anaweza.com<br />
+                Email: princemugabe567@gmail.com<br />
                 Phone: +250 788 457 408<br />
                 Address: Kigali, Rwanda
               </p>
