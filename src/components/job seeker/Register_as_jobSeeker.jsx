@@ -56,7 +56,7 @@ const RegisterAsJobSeeker = () => {
       renewalFee: "2,500 RWF/year",
     },
     {
-      range: "199,000 - 499,000 RWF",
+      range: "200,000 - 499,000 RWF",
       min: 199000,
       max: 499000,
       registrationFee: "10,000 RWF",
