@@ -27,7 +27,7 @@ const FeaturedJobs = () => {
 
         // Filter for active jobs and limit to 4 recent jobs
         const activeJobs = response.data
-          .filter(job => job.status === 'active')
+          .filter(job => job.status === 'active' || job.status === 'closed')
           .slice(0, 4);
 
         setFeaturedJobs(activeJobs);
@@ -251,6 +251,12 @@ const FeaturedJobs = () => {
             <div key={job.id} className="border rounded-lg p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start gap-4">
                 <div>
+                  <h3 className="font-semibold text-lg text-gray-700">Status</h3>
+                  <p className="text-gray-600">{job.status}</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <div>
                   <h3 className="font-semibold text-lg text-gray-700">{job.title}</h3>
                   <p className="text-gray-600">{job.company_name || job.offer_type}</p>
                 </div>
@@ -287,6 +293,8 @@ const FeaturedJobs = () => {
                 <span className="px-3 py-1 bg-yellow-100 text-yellow-600 rounded-full text-sm">
                   {job.experience_level}
                 </span>
+
+                
 
 
 

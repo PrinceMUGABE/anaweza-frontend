@@ -3,15 +3,15 @@ import React from 'react';
 
 const Contact = () => {
     const phoneNumbers = [
-        { number: '+250788457408', display: '+250 788 457 408' },
-        { number: '+250789990408', display: '+250 789 990 408' },
-        { number: '+250786779262', display: '+250 786 779 262' }
+        { number: '+250795570541', display: '+250 725 169 154' },
+        { number: '+250725169154', display: '+250 789 990 408' }
+
     ];
 
     const emails = [
-        'princemugabe568@gmail.com',
-        'princemugabe567@gmail.com',
-        'eddy123@gmail.com'
+        'ltdanaweza@gmail.com',
+        'princemugabe567@gmail.com'
+
     ];
 
     const getEmailLink = (email) => {

@@ -194,8 +194,8 @@ const Policy = () => {
               We accept various payment methods to ensure convenience for all our users:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-gray-700">
-              <li>Mobile Money: 0783251199</li>
-              {/* <li>MOMO: 1492396</li> */}
+              <li>Mobile Money: 0795570541</li>
+              <li>MOMO: 15492374</li>
               {/* <li>Credit/Debit Cards</li>
               <li>PayPal (for international users)</li> */}
             </ul>
@@ -208,7 +208,7 @@ const Policy = () => {
           <div className="bg-white rounded-lg shadow-lg p-6">
 
             <p className="text-gray-700">
-              For any questions regarding our pricing or refund policy, please contact our support team at princemugabe567@gmail.com.
+              For any questions regarding our pricing or refund policy, please contact our support team at ltdanaweza@gmail.com or call us on: 0795570541, 0725169154.
             </p>
           </div>
         </div>

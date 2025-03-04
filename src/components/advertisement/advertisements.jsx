@@ -76,7 +76,7 @@ function Advertisements() {
                                     <div className="flex justify-center">
                                         {ad.media?.type === "video" ? (
                                             <video 
-                                                className="h-24 w-full object-cover" 
+                                                className="h-72 w-full object-cover " 
                                                 controls={videoControls[ad.id] || false} 
                                                 onClick={(e) => {
                                                     e.stopPropagation();
@@ -110,7 +110,7 @@ function Advertisements() {
                             <h3 className="text-2xl font-bold text-gray-800 mb-4">{selectedAd.title}</h3>
                             <div className="mb-4">
                                 {selectedAd.media?.type === "video" ? (
-                                    <video controls className="w-full h-48 object-cover">
+                                    <video controls className="w-full h-72 object-cover">
                                         <source src={`data:video/mp4;base64,${selectedAd.media.content}`} type="video/mp4" />
                                     </video>
                                 ) : selectedAd.media?.type === "image" ? (

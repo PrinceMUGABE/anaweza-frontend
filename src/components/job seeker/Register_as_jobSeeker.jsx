@@ -56,7 +56,7 @@ const RegisterAsJobSeeker = () => {
       renewalFee: "2,500 RWF/year",
     },
     {
-      range: "200,000 - 499,000 RWF",
+      range: "2000,000 - 499,000 RWF",
       min: 199000,
       max: 499000,
       registrationFee: "10,000 RWF",
@@ -77,10 +77,10 @@ const RegisterAsJobSeeker = () => {
     // Clear user data from localStorage
     localStorage.removeItem("token");
     localStorage.removeItem("userData");
-    
+
     // Show a logout message
     setMessage('Logging out...');
-    
+
     // Redirect to login page after a short delay
     setTimeout(() => navigate('/login'), 1000);
   };
@@ -96,14 +96,13 @@ const RegisterAsJobSeeker = () => {
     }
   }, [navigate, token]);
 
-  // Calculate registration fee based on salary range
+  // Modify calculateRegistrationFee to handle the new format
   const calculateRegistrationFee = (salaryRange) => {
     if (!salaryRange) return null;
 
     try {
-      // Parse the salary range string
-      // We'll try to handle different formats like "1000-2000", "1000 - 2000", "1000"
-      const cleanRange = salaryRange.replace(/[^0-9\-]/g, '');
+      // Parse the salary range string with more robust parsing
+      const cleanRange = salaryRange.replace(/[^\d-]/g, '');
       const parts = cleanRange.split('-');
 
       let lowerValue;
@@ -203,6 +202,25 @@ const RegisterAsJobSeeker = () => {
       }
     }
 
+    // Specific validation for salary range
+    if (name === 'salary_range') {
+      // Validate format: either a single number or two numbers separated by a hyphen
+      const salaryRangeRegex = /^\d+(\s*-\s*\d+)?$/;
+
+      if (value && !salaryRangeRegex.test(value)) {
+        setErrors(prev => ({
+          ...prev,
+          salary_range: 'Salary range must be in format "1000" or "1000 - 2000"'
+        }));
+      } else {
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors.salary_range;
+          return newErrors;
+        });
+      }
+    }
+
     setFormData({ ...formData, [name]: value });
 
     // Clear error for this field if it exists
@@ -215,6 +233,7 @@ const RegisterAsJobSeeker = () => {
     }
   };
 
+
   const validateForm = () => {
     const newErrors = {};
 
@@ -222,7 +241,17 @@ const RegisterAsJobSeeker = () => {
     if (!formData.first_name.trim()) newErrors.first_name = 'First name is required';
     if (!formData.last_name.trim()) newErrors.last_name = 'Last name is required';
     if (!formData.gender) newErrors.gender = 'Gender is required';
-    if (!formData.salary_range.trim()) newErrors.salary_range = 'Salary range is required';
+
+    // Salary range validation
+    if (!formData.salary_range.trim()) {
+      newErrors.salary_range = 'Salary range is required';
+    } else {
+      // Additional validation for salary range format
+      const salaryRangeRegex = /^\d+(\s*-\s*\d+)?$/;
+      if (!salaryRangeRegex.test(formData.salary_range)) {
+        newErrors.salary_range = 'Salary range must be in format "1000" or "1000 - 2000"';
+      }
+    }
 
     // Validate experience is a number
     if (isNaN(Number(formData.experience))) {
@@ -239,6 +268,7 @@ const RegisterAsJobSeeker = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0 && acceptTerms;
   };
+
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
@@ -611,14 +641,14 @@ const RegisterAsJobSeeker = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Salary Range (e.g., 100000 - 200000) *
+                Salary Range (e.g., 1000 - 100000) *
               </label>
               <input
                 type="text"
                 name="salary_range"
                 value={formData.salary_range}
                 onChange={handleChange}
-                placeholder="Enter your expected salary range in RWF"
+                placeholder="Enter your expected salary range in RWF (e.g., 1000 or 1000 - 2000)"
                 className={`w-full px-3 text-gray-500 py-2 border ${errors.salary_range ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 required
               />
@@ -633,7 +663,7 @@ const RegisterAsJobSeeker = () => {
                       <p className="font-medium text-blue-700">Registration Fee: {registrationFee.registrationFee}</p>
                       <p className="text-sm text-blue-600">Annual Renewal: {registrationFee.renewalFee}</p>
                       <p className="text-sm text-gray-600 mt-1">
-                        Your account will be activated after payment confirmation. Please pay using Mobile Money: 0788457408 or MOMO: 1492396
+                        Your account will be activated after payment confirmation. Please pay using Mobile Money: 0795570541 or MOMO: 1592374
                       </p>
                     </div>
                   </div>
@@ -707,25 +737,25 @@ const RegisterAsJobSeeker = () => {
               </div>
             </div>
             <div className='flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4'>
-            <button
-              type="submit"
-              disabled={loading}
-              className={`w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-            >
-              {loading ? (
-                <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Creating Profile...
-                </span>
-              ) : (
-                "Create Profile"
-              )}
-            </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className={`w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                {loading ? (
+                  <span className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Creating Profile...
+                  </span>
+                ) : (
+                  "Create Profile"
+                )}
+              </button>
 
-            <button
+              <button
                 type="button"
                 onClick={handleLogout}
                 className="sm:w-1/2 py-3 px-4 border border-gray-300 rounded-md shadow-sm text-lg font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300"
@@ -735,7 +765,7 @@ const RegisterAsJobSeeker = () => {
 
             </div>
 
-            
+
           </form>
         </div>
       </div>

@@ -190,8 +190,12 @@ const TermsAndConditions = () => {
                 If you have any questions about these Terms, please contact us at:
               </p>
               <p>
-                Email: princemugabe567@gmail.com<br />
-                Phone: +250 788 457 408<br />
+                Email: ltdanaweza@gmail.com<br />
+                Phone: <ul>
+                  <li>+250 795 570 541</li>
+                  <li>+250 725 169 154</li>
+                  
+                  </ul><br />
                 Address: Kigali, Rwanda
               </p>
               <p className="mt-6 text-sm text-gray-500">

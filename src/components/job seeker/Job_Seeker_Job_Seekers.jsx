@@ -532,7 +532,7 @@ const Job_Seeker_Job_Seekers = () => {
                     </div>
                   </div>
                   
-                  {selectedSeeker.resume && (
+                  {/* {selectedSeeker.resume && (
                     <div className="mt-4">
                       <h3 className="font-semibold text-lg mb-2">Resume</h3>
                       <a 
@@ -547,7 +547,7 @@ const Job_Seeker_Job_Seekers = () => {
                         Download Resume
                       </a>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>
