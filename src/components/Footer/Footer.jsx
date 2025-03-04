@@ -154,17 +154,17 @@ const Footer = () => {
               © {currentYear} Anaweza. All rights reserved.
             </p>
             <div className="flex gap-4 mt-4 md:mt-0">
-              <button className="text-sm text-gray-400 hover:text-white">
+              <a href="/policy" className="text-sm text-gray-400 hover:text-white">
                 Privacy Policy
-              </button>
+              </a>
               <span className="text-gray-600">|</span>
-              <button className="text-sm text-gray-400 hover:text-white">
+              <a href="/terms_and_conditions" className="text-sm text-gray-400 hover:text-white">
                 Terms of Service
-              </button>
+              </a>
               <span className="text-gray-600">|</span>
-              <button className="text-sm text-gray-400 hover:text-white">
+              <a href="/cookies" className="text-sm text-gray-400 hover:text-white">
                 Cookie Policy
-              </button>
+              </a>
             </div>
           </div>
         </div>

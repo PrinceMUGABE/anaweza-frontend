@@ -9,8 +9,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export const MenuLinks = [
-  { id: 1, name: "home", link: "/#home" },
-  { id: 2, name: "jobs", link: "/#jobs" },
+  { id: 1, name: "home", link: "/" },
+  { id: 2, name: "jobs", link: "/jobs" },
   { id: 3, name: "about", link: "/about" },
   { id: 4, name: "services", link: "/#service" },
   { id: 5, name: "contact", link: "#" },
@@ -32,6 +32,10 @@ const Navbar = () => {
       setShowContact(true);
     } else if (link.startsWith('/#')) {
       window.location.href = link;
+    } else if (name==="jobs"){
+      navigate("/jobs")
+    } else if (name==="home"){
+      navigate("/")
     }
   };
 

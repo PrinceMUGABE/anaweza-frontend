@@ -204,17 +204,9 @@ const Policy = () => {
             </p>
           </div>
           
-          {/* Refund Policy */}
+     
           <div className="bg-white rounded-lg shadow-lg p-6">
-            {/* <h2 className="text-2xl font-semibold mb-4 text-gray-800">Refund Policy</h2> */}
-            {/* <p className="text-gray-700 mb-4">
-              We want you to be completely satisfied with our services. If you are not satisfied for any reason:
-            </p> */}
-            {/* <ul className="list-disc pl-6 space-y-2 text-gray-700 mb-4">
-              <li>Registration fees can be refunded within 7 days of payment if you have not yet created your profile.</li>
-              <li>Job posting fees are refundable within 48 hours of posting if the job listing has not received any applications.</li>
-              <li>Refunds will be processed using the original payment method within 7-14 business days.</li>
-            </ul> */}
+
             <p className="text-gray-700">
               For any questions regarding our pricing or refund policy, please contact our support team at princemugabe567@gmail.com.
             </p>

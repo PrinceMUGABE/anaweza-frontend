@@ -51,6 +51,8 @@ import Policy from "./components/policy/policy.jsx";
 import TermsAndConditions from "./components/policy/terms_and_condition.jsx";
 import Admin_ManageTestimonials from "./components/pages/admin/manage_testimonies.jsx";
 import Job_Seeker_ManageTestimonials from "./components/job seeker/manage_testimonies.jsx";
+import Cookies from "./components/policy/Main_Cookies.jsx";
+
 
 
 
@@ -90,6 +92,7 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/policy" element={<Policy />} />
           <Route path="/terms_and_conditions" element={<TermsAndConditions />} />
+          <Route path="/cookies" element={<Cookies />} />
      
 
           {/* End Home view */}
