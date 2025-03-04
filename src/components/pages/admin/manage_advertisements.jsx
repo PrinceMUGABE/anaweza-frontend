@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
@@ -80,7 +81,7 @@ function Admin_ManageAdvertisements() {
             const response = await axios.get("https://anaweza-backend.up.railway.app/advertisement/advertisements/", {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            
+
             // Ensure we're setting an array to advertisements state
             // If response.data is the array directly, use it
             // If response.data contains the array in a property, extract it
@@ -89,12 +90,12 @@ function Admin_ManageAdvertisements() {
             } else if (response.data && typeof response.data === 'object') {
                 // Look for an array property in the response data
                 // Common patterns include response.data.data, response.data.advertisements, etc.
-                const dataArray = response.data.data || 
-                                  response.data.advertisements || 
-                                  response.data.results || 
-                                  [];
+                const dataArray = response.data.data ||
+                    response.data.advertisements ||
+                    response.data.results ||
+                    [];
                 setAdvertisements(dataArray);
-                
+
                 // If we couldn't find an array, log the response structure for debugging
                 if (dataArray.length === 0 && Object.keys(response.data).length > 0) {
                     console.log("API Response structure:", response.data);
@@ -161,6 +162,7 @@ function Admin_ManageAdvertisements() {
 
     // Enhanced Form Component for Advertisements
     const AdvertisementForm = ({ item, onSubmit }) => {
+        // Update the formData state to include media_type
         const [formData, setFormData] = useState({
             title: item?.title || "",
             description: item?.description || "",
@@ -168,8 +170,9 @@ function Admin_ManageAdvertisements() {
             price: item?.price || "",
             start_date: item?.start_date || new Date().toISOString().split('T')[0],
             end_date: item?.end_date || new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0],
-            status: item?.status || "running",
+            status: item?.status || "waiting", // Fix the typo from "waititng" to "waiting"
             image: null,
+            media_type: item?.media_type || "image", // Add media_type field
         });
 
         const [imagePreview, setImagePreview] = useState(item?.image ? `data:image/jpeg;base64,${item.image}` : "");
@@ -179,12 +182,22 @@ function Admin_ManageAdvertisements() {
             setFormData({ ...formData, [name]: value });
         };
 
-        const handleImageChange = (e) => {
+        // Update the handleImageChange function to handle both image and video
+        const handleMediaChange = (e) => {
             const file = e.target.files[0];
             if (file) {
+                // Validate file size based on media type
+                const maxSizeMB = formData.media_type === 'image' ? 5 : 30;
+                const fileSizeMB = file.size / (1024 * 1024);
+
+                if (fileSizeMB > maxSizeMB) {
+                    alert(`File size exceeds maximum allowed (${maxSizeMB}MB) for ${formData.media_type}`);
+                    return;
+                }
+
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    // Get the base64 data without the prefix (data:image/jpeg;base64,)
+                    // Get the base64 data without the prefix
                     const base64String = reader.result.split(',')[1];
                     setFormData({ ...formData, image: base64String });
                     setImagePreview(reader.result);
@@ -195,6 +208,15 @@ function Admin_ManageAdvertisements() {
 
         const handleSubmit = (e) => {
             e.preventDefault();
+            const errors = validateForm(formData);
+            
+            if (Object.keys(errors).length > 0) {
+                // Display errors
+                console.error("Validation errors:", errors);
+                // Show errors to the user
+                return;
+            }
+            
             onSubmit(formData);
         };
 
@@ -211,6 +233,22 @@ function Admin_ManageAdvertisements() {
                         required
                     />
                 </div>
+
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Media Type</label>
+                    <select
+                        name="media_type"
+                        value={formData.media_type}
+                        onChange={handleChange}
+                        className="w-full px-4 text-gray-500 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                    >
+                        <option value="image">Image</option>
+                        <option value="video">Video</option>
+                    </select>
+                </div>
+
+
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
                     <textarea
@@ -280,30 +318,42 @@ function Admin_ManageAdvertisements() {
                         <option value="closed">Closed</option>
                     </select>
                 </div>
+
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Image</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                        {formData.media_type === 'image' ? 'Image' : 'Video'}
+                    </label>
                     <input
                         type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
+                        accept={formData.media_type === 'image' ? "image/*" : "video/*"}
+                        onChange={handleMediaChange}
                         className="block w-full text-sm text-gray-500 
-                        file:mr-4 file:py-2 file:px-4
-                        file:rounded-lg file:border-0
-                        file:text-sm file:font-semibold
-                        file:bg-indigo-50 file:text-indigo-700
-                        hover:file:bg-indigo-100"
+        file:mr-4 file:py-2 file:px-4
+        file:rounded-lg file:border-0
+        file:text-sm file:font-semibold
+        file:bg-indigo-50 file:text-indigo-700
+        hover:file:bg-indigo-100"
                     />
                     {imagePreview && (
                         <div className="mt-4">
                             <p className="text-sm text-gray-500 mb-2">Preview:</p>
-                            <img 
-                                src={imagePreview} 
-                                alt="Preview" 
-                                className="max-h-48 rounded-lg object-contain" 
-                            />
+                            {formData.media_type === 'image' ? (
+                                <img
+                                    src={imagePreview}
+                                    alt="Preview"
+                                    className="max-h-48 rounded-lg object-contain"
+                                />
+                            ) : (
+                                <video
+                                    src={imagePreview}
+                                    controls
+                                    className="max-h-48 rounded-lg object-contain"
+                                />
+                            )}
                         </div>
                     )}
                 </div>
+
                 <div className="flex justify-end space-x-3">
                     <button
                         type="button"
@@ -323,18 +373,25 @@ function Admin_ManageAdvertisements() {
         );
     };
 
+
     // CRUD operations
+    // Update the handleAdvertisementSubmit function
     const handleAdvertisementSubmit = async (formData) => {
         try {
+            setIsLoading(true);
+            const processedData = {
+                ...formData,
+                start_date: new Date(formData.start_date).toISOString().split('T')[0],
+                end_date: new Date(formData.end_date).toISOString().split('T')[0]
+            };
+
             if (selectedAd) {
-                // Updated URL for updating advertisement
                 await axios.put(
                     `https://anaweza-backend.up.railway.app/advertisement/update/${selectedAd.id}/`,
-                    formData,
+                    processedData,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
             } else {
-                // Updated URL for creating advertisement
                 await axios.post(
                     "https://anaweza-backend.up.railway.app/advertisement/create/",
                     formData,
@@ -348,9 +405,39 @@ function Admin_ManageAdvertisements() {
                 "success"
             );
         } catch (error) {
-            showMessage(error.response?.data?.error || "An error occurred", "error");
+            // Improved error handling
+            let errorMessage = "An error occurred";
+
+            if (error.response) {
+                if (error.response.data) {
+                    // Handle structured error responses
+                    if (typeof error.response.data === 'object') {
+                        // Extract error message from the first field with error
+                        const firstErrorField = Object.keys(error.response.data)[0];
+                        const firstError = error.response.data[firstErrorField];
+                        errorMessage = Array.isArray(firstError)
+                            ? firstError[0]
+                            : typeof firstError === 'string'
+                                ? firstError
+                                : JSON.stringify(firstError);
+                    } else if (typeof error.response.data === 'string') {
+                        errorMessage = error.response.data;
+                    }
+                } else {
+                    errorMessage = `Server error: ${error.response.status}`;
+                }
+            } else if (error.request) {
+                errorMessage = "No response from server. Please check your internet connection.";
+            } else {
+                errorMessage = error.message;
+            }
+
+            showMessage(errorMessage, "error");
+        } finally {
+            setIsLoading(false);
         }
     };
+
 
     const handleDelete = async (id) => {
         if (!window.confirm(`Are you sure you want to delete this advertisement?`)) return;
@@ -368,9 +455,10 @@ function Admin_ManageAdvertisements() {
     };
 
     // Chart data preparation
+    // Update preparePieChartData function
     const preparePieChartData = () => {
         const statusCount = {
-            waititng: 0,
+            waiting: 0,
             running: 0,
             closed: 0,
         };
@@ -384,7 +472,6 @@ function Admin_ManageAdvertisements() {
             value: count
         }));
     };
-
     const prepareTimelineData = () => {
         const monthlyData = {};
         advertisements.forEach(ad => {
@@ -405,6 +492,83 @@ function Admin_ManageAdvertisements() {
             }));
     };
 
+
+    // Add this inside the AdvertisementForm component
+    const validateForm = (formData) => {
+        const errors = {};
+
+        // Title validation
+        if (formData.title.length < 5) {
+            errors.title = "Title must be at least 5 characters long.";
+        }
+        if (formData.title.length > 200) {
+            errors.title = "Title cannot exceed 200 characters.";
+        }
+
+        // Description validation
+        if (formData.description.length < 20) {
+            errors.description = "Description must be at least 20 characters long.";
+        }
+
+        // Contact info validation
+        if (formData.contact_info.length < 5) {
+            errors.contact_info = "Contact information must be at least 5 characters long.";
+        }
+
+        // Date validation
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const startDate = new Date(formData.start_date);
+        const endDate = new Date(formData.end_date);
+
+        if (startDate < today) {
+            errors.start_date = "Start date cannot be in the past.";
+        }
+
+        if (endDate < today) {
+            errors.end_date = "End date cannot be in the past.";
+        }
+
+        if (startDate > endDate) {
+            errors.date_range = "End date must be after start date.";
+        }
+
+        const dateDiff = (endDate - startDate) / (1000 * 60 * 60 * 24);
+        if (dateDiff > 365) {
+            errors.date_range = "Advertisement duration cannot exceed 1 year.";
+        }
+
+        // Date format validation
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        if (!dateRegex.test(formData.start_date)) {
+            errors.start_date = "Start date must be in YYYY-MM-DD format.";
+        }
+        if (!dateRegex.test(formData.end_date)) {
+            errors.end_date = "End date must be in YYYY-MM-DD format.";
+        }
+
+        return errors;
+    };
+
+
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     const errors = validateForm(formData);
+        
+    //     if (Object.keys(errors).length > 0) {
+    //         // Display errors
+    //         console.error("Validation errors:", errors);
+    //         // Show errors to the user
+    //         return;
+    //     }
+        
+    //     onSubmit(formData);
+    // };
+
+
+
+
     return (
         <div className="min-h-screen bg-gray-50 p-8">
             <div className="max-w-7xl mx-auto">
@@ -415,8 +579,8 @@ function Admin_ManageAdvertisements() {
                 {/* Alert Messages */}
                 {message && (
                     <div className={`mb-8 p-4 rounded-lg flex items-center ${messageType === "success"
-                            ? "bg-green-50 text-green-700"
-                            : "bg-red-50 text-red-700"
+                        ? "bg-green-50 text-green-700"
+                        : "bg-red-50 text-red-700"
                         }`}>
                         <FontAwesomeIcon
                             icon={messageType === "success" ? faCheckCircle : faExclamationTriangle}
@@ -442,7 +606,7 @@ function Admin_ManageAdvertisements() {
                     />
                     <StatsCard
                         title="Waiting Approval"
-                        value={advertisements.filter(ad => ad.status === 'waititng').length}
+                        value={advertisements.filter(ad => ad.status === 'waiting').length}
                         icon={faCalendarAlt}
                         color={COLORS.accent1}
                     />
@@ -463,8 +627,8 @@ function Admin_ManageAdvertisements() {
                                 <button
                                     onClick={() => setChartView('pie')}
                                     className={`px-3 py-1 rounded-lg transition-colors duration-200 ${chartView === 'pie'
-                                            ? 'bg-indigo-100 text-indigo-700'
-                                            : 'text-gray-500 hover:bg-gray-100'
+                                        ? 'bg-indigo-100 text-indigo-700'
+                                        : 'text-gray-500 hover:bg-gray-100'
                                         }`}
                                 >
                                     Pie
@@ -472,8 +636,8 @@ function Admin_ManageAdvertisements() {
                                 <button
                                     onClick={() => setChartView('area')}
                                     className={`px-3 py-1 rounded-lg transition-colors duration-200 ${chartView === 'area'
-                                            ? 'bg-indigo-100 text-indigo-700'
-                                            : 'text-gray-500 hover:bg-gray-100'
+                                        ? 'bg-indigo-100 text-indigo-700'
+                                        : 'text-gray-500 hover:bg-gray-100'
                                         }`}
                                 >
                                     Timeline
@@ -548,11 +712,10 @@ function Admin_ManageAdvertisements() {
                                                 {ad.description.substring(0, 100)}...
                                             </p>
                                         </div>
-                                        <div className={`px-2 py-1 rounded text-xs font-medium ${
-                                            ad.status === 'running' ? 'bg-green-100 text-green-800' :
+                                        <div className={`px-2 py-1 rounded text-xs font-medium ${ad.status === 'running' ? 'bg-green-100 text-green-800' :
                                             ad.status === 'closed' ? 'bg-gray-100 text-gray-800' :
-                                            'bg-yellow-100 text-yellow-800'
-                                        }`}>
+                                                'bg-yellow-100 text-yellow-800'
+                                            }`}>
                                             {ad.status}
                                         </div>
                                     </div>
@@ -586,7 +749,7 @@ function Admin_ManageAdvertisements() {
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Creator</th>
-                                    
+
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dates</th>
@@ -597,17 +760,29 @@ function Admin_ManageAdvertisements() {
                             <tbody className="divide-y divide-gray-200">
                                 {advertisements.map((ad) => (
                                     <tr key={ad.id} className="hover:bg-gray-50">
+
                                         <td className="px-6 py-4">
                                             {ad.image ? (
-                                                <img 
-                                                    src={`data:image/jpeg;base64,${ad.image}`} 
-                                                    alt={ad.title} 
-                                                    className="h-12 w-12 object-cover rounded-lg cursor-pointer"
-                                                    onClick={() => {
-                                                        setPreviewImage(`data:image/jpeg;base64,${ad.image}`);
-                                                        window.open(`data:image/jpeg;base64,${ad.image}`, '_blank');
-                                                    }}
-                                                />
+                                                ad.media_type === 'video' ? (
+                                                    <video
+                                                        src={`data:video/mp4;base64,${ad.image}`}
+                                                        className="h-12 w-12 object-cover rounded-lg cursor-pointer"
+                                                        onClick={() => {
+                                                            setPreviewImage(`data:video/mp4;base64,${ad.image}`);
+                                                            window.open(`data:video/mp4;base64,${ad.image}`, '_blank');
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <img
+                                                        src={`data:image/jpeg;base64,${ad.image}`}
+                                                        alt={ad.title}
+                                                        className="h-12 w-12 object-cover rounded-lg cursor-pointer"
+                                                        onClick={() => {
+                                                            setPreviewImage(`data:image/jpeg;base64,${ad.image}`);
+                                                            window.open(`data:image/jpeg;base64,${ad.image}`, '_blank');
+                                                        }}
+                                                    />
+                                                )
                                             ) : (
                                                 <div className="h-12 w-12 bg-gray-100 rounded-lg flex items-center justify-center">
                                                     <FontAwesomeIcon icon={faImage} className="text-gray-400" />
@@ -633,7 +808,7 @@ function Admin_ManageAdvertisements() {
                                                 <span className="text-gray-500 text-sm">{ad.created_by?.email || "Unknown"}</span>
                                             </div>
                                         </td>
-                                        
+
                                         <td className="px-6 py-4">
                                             <div className="flex items-center">
                                                 <div className="p-1 rounded-full bg-green-100 text-green-600 mr-2">
@@ -655,11 +830,10 @@ function Admin_ManageAdvertisements() {
                                             <div>End: {new Date(ad.end_date).toLocaleDateString()}</div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <span className={`px-2 py-1 rounded text-xs font-medium ${
-                                                ad.status === 'running' ? 'bg-green-100 text-green-800' :
+                                            <span className={`px-2 py-1 rounded text-xs font-medium ${ad.status === 'running' ? 'bg-green-100 text-green-800' :
                                                 ad.status === 'closed' ? 'bg-gray-100 text-gray-800' :
-                                                'bg-yellow-100 text-yellow-800'
-                                            }`}>
+                                                    'bg-yellow-100 text-yellow-800'
+                                                }`}>
                                                 {ad.status}
                                             </span>
                                         </td>

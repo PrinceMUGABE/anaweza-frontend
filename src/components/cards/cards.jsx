@@ -36,7 +36,7 @@ const Cards = () => {
                     key={index}
                     src={img}
                     alt={`Career View ${index + 1}`}
-                    className="w-1/6 h-96 object-cover flex-shrink-0"
+                    className="w-1/2 h-96 object-cover flex-shrink-0"
                   />
                 ))}
               </div>
@@ -89,7 +89,7 @@ const Cards = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">{t("ob Seeker")}</h2>
+            <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">{t("Job Seeker")}</h2>
             <p className="text-gray-600 text-center mb-6">
               {t("Create your professional profile, upload your resume, and connect with employers looking for your skills and experience.")}
             </p>

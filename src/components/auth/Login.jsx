@@ -74,7 +74,7 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        "https://anaweza-backend.up.railway.app/login/",
+        "http://127.0.0.1:8000/login/",
         { identifier, password },
         { headers: { "Content-Type": "application/json" } }
       );
