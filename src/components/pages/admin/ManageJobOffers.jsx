@@ -236,10 +236,10 @@ const Admin_JobManagement = () => {
       )}
 
       {/* Jobs Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="bg-gray-50">
+      <div className="w-full overflow-x-auto shadow-md rounded-lg">
+        <table className="w-full text-sm text-left">
+          <thead className='text-xs text-white uppercase bg-sky-900'>
+            <tr className="">
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Title')}</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Company')}</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('Category')}</th>
