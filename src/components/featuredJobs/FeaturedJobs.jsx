@@ -24,17 +24,17 @@ const FeaturedJobs = () => {
         const response = await axios.get('https://anaweza-backend.up.railway.app/job_offer/offers/', {
           // timeout: 50000 // Add timeout to prevent hanging requests
         });
-        
+
         // Filter for active jobs and limit to 4 recent jobs
         const activeJobs = response.data
           .filter(job => job.status === 'active')
           .slice(0, 4);
-          
+
         setFeaturedJobs(activeJobs);
         setError(null);
       } catch (err) {
         console.error('Error fetching featured jobs:', err);
-        
+
         // More detailed error message based on the type of error
         if (err.response) {
           // The server responded with a status code outside the 2xx range
@@ -50,7 +50,7 @@ const FeaturedJobs = () => {
         setLoading(false);
       }
     };
-  
+
     fetchFeaturedJobs();
   }, []);
 
@@ -238,14 +238,14 @@ const FeaturedJobs = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold text-blue-800">Featured Jobs</h2>
-          <button 
-            onClick={handleViewAllJobs} 
+          <button
+            onClick={handleViewAllJobs}
             className="text-blue-600 hover:text-blue-700"
           >
             View All Jobs →
           </button>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {featuredJobs.map((job) => (
             <div key={job.id} className="border rounded-lg p-6 hover:shadow-lg transition-shadow">
@@ -255,7 +255,7 @@ const FeaturedJobs = () => {
                   <p className="text-gray-600">{job.company_name || job.offer_type}</p>
                 </div>
               </div>
-              
+
               <div className="mt-4 space-y-2">
                 <div className="flex items-center gap-2">
                   <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -264,7 +264,7 @@ const FeaturedJobs = () => {
                   </svg>
                   <span className="text-gray-600">{job.location}</span>
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                   <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -272,7 +272,7 @@ const FeaturedJobs = () => {
                   <span className="text-gray-600">{formatSalary(job.salary_range)}</span>
                 </div>
               </div>
-              
+
               <div className="mt-4 flex flex-wrap gap-2">
                 {job.job_type && (
                   <span className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">
@@ -288,12 +288,14 @@ const FeaturedJobs = () => {
                   {job.experience_level}
                 </span>
 
+
+
                 <div className="text-gray-500">
-                    <p>Application Deadline: {new Date(job.deadline).toLocaleDateString()}</p>
-                  </div>
+                  <p>Application Deadline: {new Date(job.deadline).toLocaleDateString()}</p>
+                </div>
               </div>
-              
-              <button 
+
+              <button
                 onClick={() => openJobDetails(job)}
                 className="mt-4 block w-full bg-blue-600 text-white py-2 rounded text-center hover:bg-blue-700 transition-colors"
               >
@@ -306,7 +308,7 @@ const FeaturedJobs = () => {
 
       {/* Job Details Modal */}
       {showModal && selectedJob && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 modal-overlay p-4"
           onClick={handleOutsideClick}
         >
@@ -314,7 +316,7 @@ const FeaturedJobs = () => {
             {/* Close Button */}
             <div className="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
               <h2 className="text-xl font-bold text-gray-900">Job Details</h2>
-              <button 
+              <button
                 onClick={closeModal}
                 className="text-gray-500 hover:text-gray-700"
                 aria-label="Close modal"
@@ -394,20 +396,24 @@ const FeaturedJobs = () => {
                 </div>
               )}
 
+              <div className="text-gray-500">
+                <p>Number of Employees: <span className='text-blue-700'>{(selectedJob.employees_needed)}</span></p>
+              </div>
+
               <div className="mt-6 pt-4 border-t">
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                   <div className="text-gray-500">
-                    <p>Application Deadline: {new Date(selectedJob.deadline).toLocaleDateString()}</p>
+                    <p>Application Deadline: <span className='text-red-700'>{new Date(selectedJob.deadline).toLocaleDateString()}</span> </p>
                   </div>
                   <button
                     onClick={() => handleApply(selectedJob.id)}
-                    className="px-6 py-3 bg-green-600 text-white font-medium rounded hover:bg-green-700 transition-colors w-full sm:w-auto"
+                    className="px-6 py-3 bg-blue-700 text-white font-medium rounded hover:bg-gray-900 transition-colors w-full sm:w-auto"
                     disabled={applying}
                   >
                     {applying ? "Processing..." : "Apply Now"}
                   </button>
                 </div>
-                
+
                 {applicationStatus && (
                   <div className={`mt-4 p-3 rounded ${applicationStatus.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                     {applicationStatus.message}
