@@ -91,7 +91,7 @@ const Navbar = () => {
               </button>
 
               {/* Language Selector */}
-              <select
+              {/* <select
                 onChange={(e) => i18n.changeLanguage(e.target.value)}
                 className="border rounded px-2 py-1 text-sm"
                 value={i18n.language}
@@ -99,7 +99,7 @@ const Navbar = () => {
                 <option value="en">ENG</option>
                 <option value="fr">FR</option>
                 <option value="rw">RW</option>
-              </select>
+              </select> */}
             </nav>
 
             {/* Mobile Menu */}
