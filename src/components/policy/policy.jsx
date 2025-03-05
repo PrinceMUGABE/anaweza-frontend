@@ -159,6 +159,9 @@ const Policy = () => {
               As an Anaweza user, you have the flexibility to post job opportunities even while you're searching for positions yourself.
               This is ideal for freelancers, entrepreneurs, or professionals managing teams who need to hire while also exploring their own career growth.
             </p>
+
+
+            kjbdhvsdgjvshdvsjv
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
               {jobPostingPricing.map((tier, index) => (
