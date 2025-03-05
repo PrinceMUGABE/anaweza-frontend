@@ -232,7 +232,7 @@ const JobSeekerDetailsModal = ({ jobSeeker, onClose }) => {
           <p className="text-sm text-gray-500">Resume</p>
           {jobSeeker.resume ? (
             <a
-              href={`http://127.0.0.1:8000${jobSeeker.resume}`}
+              href={`https://anaweza-backend.up.railway.app${jobSeeker.resume}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block mt-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
