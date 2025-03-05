@@ -52,6 +52,12 @@ import TermsAndConditions from "./components/policy/terms_and_condition.jsx";
 import Admin_ManageTestimonials from "./components/pages/admin/manage_testimonies.jsx";
 import Job_Seeker_ManageTestimonials from "./components/job seeker/manage_testimonies.jsx";
 import Cookies from "./components/policy/Main_Cookies.jsx";
+import Employer_ContactUs from "./components/pages/job_provider/pages/contact_us.jsx";
+import Employer_Job_Seekers from "./components/pages/job_provider/pages/job_seekers.jsx";
+import Employer_Profile from "./components/pages/job_provider/account/profile.jsx";
+import Employer_Advertisements from "./components/pages/job_provider/pages/advertisements.jsx";
+import Job_Offer_ManageTestimonials from "./components/pages/job_provider/my_testimonies.jsx";
+import Employer_Manage_Jobs from "./components/pages/job_provider/pages/my_jobs.jsx";
 
 
 
@@ -136,6 +142,14 @@ const App = () => {
           <Route path="/employer" element={<Employer_Layout />}>
              <Route index element={<Employer_Home />} />
              <Route path="/employer/about" element={<Employer_About_Us />} />
+             <Route path="/employer/contact" element={<Employer_ContactUs />} />
+             <Route path="/employer/job_seekers" element={<Employer_Job_Seekers />} />
+             <Route path="/employer/profile/:id" element={<Employer_Profile />} />
+
+             <Route path="/employer/job_seekers" element={<Employer_Job_Seekers />} />
+             <Route path="/employer/advertisements" element={<Employer_Advertisements />} />
+             <Route path="/employer/testimonials" element={<Job_Offer_ManageTestimonials />} />
+             <Route path="/employer/jobs" element={<Employer_Manage_Jobs />} />
              
 
 
