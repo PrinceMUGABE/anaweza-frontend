@@ -7,6 +7,7 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { UserIcon, ArrowLeftIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import loginImage from "../../assets/pictures/system/anaweza.jpg";
+import PasswordInput from './passwordValidation';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Login = () => {
     return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar && password.length >= 8;
   };
 
-  
+
   const checkJobSeekerRegistration = async (userId) => {
     try {
       console.log("Making request to:", `https://anaweza-backend.up.railway.app/job_seeker/by-user/${userId}/`);
@@ -229,40 +230,20 @@ const Login = () => {
                 <p className="mt-1 text-xs text-gray-500">We only accept emails ending with @gmail.com</p>
               </div>
 
-              <div>
-                <div className="flex items-center justify-between">
-                  <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
-                    Password
-                  </label>
-                  <Link to="/passwordreset" className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
-                    Forgot password?
-                  </Link>
-                </div>
-                <div className="mt-1 relative rounded-md shadow-sm">
-                  <input
-                    id="password"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm sm:text-sm text-gray-700"
-                    placeholder="Enter your password"
-                    required
-                  />
-                  <span
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeSlashIcon className="h-5 w-5 text-gray-400" />
-                    ) : (
-                      <EyeIcon className="h-5 w-5 text-gray-400" />
-                    )}
-                  </span>
-                </div>
-                <p className="mt-1 text-xs text-gray-500">
-                  Password must be at least 8 characters with uppercase, lowercase, number, and special character
-                </p>
+              {/* Replace the old password input with the PasswordInput component */}
+              <PasswordInput 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                id="password"
+                name="password"
+                label="Password"
+                placeholder="Enter your password"
+                required={true}
+              />
+              <div className="flex justify-end">
+                <Link to="/passwordreset" className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                  Forgot password?
+                </Link>
               </div>
             </div>
 

@@ -6,6 +6,7 @@ import axios from 'axios';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { UserPlusIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
 import loginImage from '../../assets/pictures/system/anaweza.jpg';
+import PasswordInput from './passwordValidation';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -19,7 +20,6 @@ const Register = () => {
   });
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -40,10 +40,6 @@ const Register = () => {
     // Email validation only if provided
     if (formData.email && !/^\S+@gmail\.com$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address ending with @gmail.com.';
-    }
-
-    if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[A-Za-z\d\W_]{8,}$/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special character.';
     }
 
     if (formData.password !== formData.confirmPassword) {
@@ -125,6 +121,26 @@ const Register = () => {
           confirmPassword: 'Passwords do not match.',
         }));
       }
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    const { value } = e.target;
+    setFormData({ ...formData, password: value });
+    setErrors((prev) => ({ ...prev, password: '' }));
+    
+    // Check if confirmPassword needs to be updated
+    if (formData.confirmPassword && formData.confirmPassword !== value) {
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword: 'Passwords do not match.',
+      }));
+    } else if (formData.confirmPassword) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors.confirmPassword;
+        return newErrors;
+      });
     }
   };
 
@@ -257,37 +273,16 @@ const Register = () => {
                 <p className="mt-1 text-xs text-gray-500">We only accept emails ending with @gmail.com</p>
               </div>
 
-              <div>
-                <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
-                  Password
-                </label>
-                <div className="mt-1 relative rounded-md shadow-sm">
-                  <input
-                    id="password"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm sm:text-sm text-gray-700"
-                    placeholder="Enter your password"
-                    required
-                  />
-                  <span
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeSlashIcon className="h-5 w-5 text-gray-400" />
-                    ) : (
-                      <EyeIcon className="h-5 w-5 text-gray-400" />
-                    )}
-                  </span>
-                </div>
-                {errors.password && <p className="mt-1 text-xs text-red-500 font-medium">{errors.password}</p>}
-                <p className="mt-1 text-xs text-gray-500">
-                  Password must be at least 8 characters with uppercase, lowercase, number, and special character
-                </p>
-              </div>
+              {/* Using the PasswordInput component here */}
+              <PasswordInput 
+                value={formData.password} 
+                onChange={handlePasswordChange}
+                name="password"
+                id="password"
+                label="Password"
+                placeholder="Enter your password"
+                required={true}
+              />
 
               <div>
                 <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700">
