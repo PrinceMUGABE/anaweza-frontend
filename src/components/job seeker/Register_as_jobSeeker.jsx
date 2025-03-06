@@ -453,8 +453,8 @@ const RegisterAsJobSeeker = () => {
             </p>
 
             <ul className="list-disc pl-6 space-y-2">
-              <li>Mobile Money: 0783251199</li>
-              {/* <li>MOMO: 1492396</li> */}
+              <li>Mobile Money: 0795570541</li>
+              <li>MOMO: 1592374</li>
             </ul>
 
             <p>
