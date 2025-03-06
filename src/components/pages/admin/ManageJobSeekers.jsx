@@ -400,6 +400,8 @@ function Admin_Manage_JobSeekers() {
         "Experience (Years)": seeker.experience,
         "Education": seeker.education_level,
         "Status": seeker.status ? "Active" : "Inactive",
+        "Registration Fee": seeker.registration_fee,
+        "Renewal Fee": seeker.renewal_fee,
         "Created At": new Date(seeker.created_at).toLocaleDateString()
       }));
 
@@ -422,6 +424,8 @@ function Admin_Manage_JobSeekers() {
         "Experience (Years)": seeker.experience,
         "Education": seeker.education_level,
         "Status": seeker.status ? "Active" : "Inactive",
+        "Registration Fee": seeker.registration_fee,
+        "Renewal Fee": seeker.renewal_fee,
         "Created At": new Date(seeker.created_at).toLocaleDateString()
       }));
 
@@ -749,6 +753,8 @@ function Admin_Manage_JobSeekers() {
                       <th className="px-4 py-3">Education</th>
                       <th className="px-4 py-3">Salary Range</th>
                       <th className="px-4 py-3">Status</th>
+                      <th className="px-4 py-3">Registration Fee</th>
+                      <th className="px-4 py-3">Reanual Fee</th>
                       <th className="px-4 py-3">Actions</th>
                     </tr>
                   </thead>
@@ -800,6 +806,16 @@ function Admin_Manage_JobSeekers() {
                               {seeker.status ? "Active" : "Inactive"}
                             </span>
                           </td>
+
+                          <td className="px-4 py-3">
+                            <div className="text-gray-500">{seeker.registration_fee || "N/A"}</div>
+                          </td>
+
+                          <td className="px-4 py-3">
+                            <div className="text-gray-500">{seeker.renewal_fee || "N/A"}</div>
+                          </td>
+
+                          
                           <td className="px-4 py-3">
                             <div className="flex space-x-2">
                               <button
@@ -947,6 +963,8 @@ function Admin_Manage_JobSeekers() {
                             "Skills": seeker.skills || "N/A",
                             "salary_range": seeker.salary_range || "N/A",
                             "Status": seeker.status ? "Active" : "Inactive",
+                            "Registration fee": seeker.registration_fee || "N/A",
+                            "Renewal fee": seeker.renewal_fee || "N/A",
                           }))
                         );
                         const workbook = XLSX.utils.book_new();

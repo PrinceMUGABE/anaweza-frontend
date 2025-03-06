@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../../../Navbar/Navbar';
+
 
 function Employer_About_Us() {
   const navigate = useNavigate();

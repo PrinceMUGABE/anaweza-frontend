@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -19,7 +19,9 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
     skills: "",
     status: true,
     resume: null,
-    salary_range: ""
+    salary_range: "",
+    registration_fee: "",
+    renewal_fee: "",
   });
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -29,6 +31,27 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
 
   const isEditMode = !!jobSeeker;
 
+  // Calculate fees based on salary range
+  const calculateFees = (salaryRangeStr) => {
+    // Extract the first number from the salary range string
+    const salaryMatch = salaryRangeStr.match(/\d+/);
+    if (!salaryMatch) return { registration: "", renewal: "" };
+    
+    const salary = parseInt(salaryMatch[0], 10);
+    
+    if (salary < 100000) {
+      return { registration: "2000", renewal: "1000" };
+    } else if (salary >= 100000 && salary < 200000) {
+      return { registration: "5000", renewal: "2500" };
+    } else if (salary >= 200000 && salary < 500000) {
+      return { registration: "10000", renewal: "5000" };
+    } else if (salary >= 500000) {
+      return { registration: "20000", renewal: "10000" };
+    }
+    
+    return { registration: "", renewal: "" };
+  };
+
   useEffect(() => {
     if (isOpen) {
       // Fetch available users for dropdown
@@ -36,7 +59,7 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
       
       // If editing, populate form with existing data
       if (jobSeeker) {
-        setFormData({
+        const initialData = {
           user_id: jobSeeker.user?.id || "",
           first_name: jobSeeker.first_name || "",
           middle_name: jobSeeker.middle_name || "",
@@ -48,7 +71,22 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
           skills: jobSeeker.skills || "",
           salary_range: jobSeeker.salary_range || "",
           status: jobSeeker.status !== undefined ? jobSeeker.status : true,
-        });
+          registration_fee: jobSeeker.registration_fee || "",
+          renewal_fee: jobSeeker.renewal_fee || "",
+        };
+
+        // Calculate fees based on the job seeker's salary range if fees are not set
+        if ((!initialData.registration_fee || !initialData.renewal_fee) && initialData.salary_range) {
+          const calculatedFees = calculateFees(initialData.salary_range);
+          if (!initialData.registration_fee) {
+            initialData.registration_fee = calculatedFees.registration;
+          }
+          if (!initialData.renewal_fee) {
+            initialData.renewal_fee = calculatedFees.renewal;
+          }
+        }
+
+        setFormData(initialData);
       } else {
         // Reset form for create mode
         setFormData({
@@ -63,7 +101,9 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
           skills: "",
           status: true,
           resume: null,
-          salary_range: ""
+          salary_range: "",
+          registration_fee: "",
+          renewal_fee: "",
         });
         setResumeFile(null);
       }
@@ -77,11 +117,20 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
         ? `https://anaweza-backend.up.railway.app/user/${jobSeeker.user.id}/` 
         : 'https://anaweza-backend.up.railway.app/users/';  // Endpoint to get all users
       
+      console.log("Fetching users from:", url);
       const response = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
-      setUsers(Array.isArray(response.data) ? response.data : [response.data].filter(Boolean));
+      console.log("Users API response:", response.data);
+      
+      // Fixed: Properly extract users array from response
+      const userData = response.data.users ? response.data.users : 
+                      Array.isArray(response.data) ? response.data : 
+                      [response.data].filter(Boolean);
+      
+      console.log("Processed user data:", userData);
+      setUsers(userData);
     } catch (err) {
       console.error("Error fetching users:", err);
       setError("Failed to load users");
@@ -90,10 +139,23 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
+    
+    if (name === "salary_range") {
+      // When salary range changes, auto-calculate fees
+      const fees = calculateFees(value);
+      
+      setFormData({
+        ...formData,
+        [name]: value,
+        registration_fee: fees.registration,
+        renewal_fee: fees.renewal
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: type === "checkbox" ? checked : value,
+      });
+    }
   };
 
   const handleFileChange = (e) => {
@@ -104,6 +166,9 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
     e.preventDefault();
     setLoading(true);
     setError("");
+
+    console.log("Submitting form data:", formData);
+    console.log("Resume file:", resumeFile);
 
     try {
       const formDataToSend = new FormData();
@@ -120,11 +185,22 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
         formDataToSend.append("resume", resumeFile);
       }
 
+      console.log("FormData entries:");
+      for (let pair of formDataToSend.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
       let response;
+      const apiUrl = isEditMode 
+        ? `https://anaweza-backend.up.railway.app/job_seeker/update/${jobSeeker.id}/`
+        : "https://anaweza-backend.up.railway.app/job_seeker/create/";
+      
+      console.log("Sending request to:", apiUrl);
+      
       if (isEditMode) {
         // Update existing job seeker
         response = await axios.put(
-          `https://anaweza-backend.up.railway.app/job_seeker/update/${jobSeeker.id}/`,
+          apiUrl,
           formDataToSend,
           {
             headers: { 
@@ -136,7 +212,7 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
       } else {
         // Create new job seeker
         response = await axios.post(
-          "https://anaweza-backend.up.railway.app/job_seeker/create/",
+          apiUrl,
           formDataToSend,
           {
             headers: { 
@@ -147,11 +223,13 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
         );
       }
 
+      console.log("API Response:", response.data);
       setLoading(false);
       onSuccess(response.data);
       onClose();
     } catch (err) {
       setLoading(false);
+      console.error("Error response:", err.response?.data);
       setError(err.response?.data?.error || "An error occurred. Please try again.");
       console.error("Error submitting form:", err);
     }
@@ -198,12 +276,21 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
                 disabled={isEditMode}
               >
                 <option value="">Select a user</option>
-                {users.map((user) => (
-                  <option key={user.id} value={user.id}>
-                    {user.email} ({user.phone_number})
-                  </option>
-                ))}
+                {users.length > 0 ? (
+                  users.map((user) => (
+                    <option key={user.id} value={user.id}>
+                      {user.email || "No email"} ({user.phone_number || 'No phone'})
+                    </option>
+                  ))
+                ) : (
+                  <option value="" disabled>Loading users or no users available</option>
+                )}
               </select>
+              {users.length === 0 && (
+                <p className="mt-1 text-sm text-red-500">
+                  No users found. Make sure users exist in the database.
+                </p>
+              )}
             </div>
 
             {/* First Name */}
@@ -322,6 +409,54 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
               />
             </div>
 
+            {/* Salary Range */}
+            <div>
+              <label className="block text-gray-700 text-sm font-medium mb-2">
+                Salary Range
+              </label>
+              <input
+                type="text"
+                name="salary_range"
+                value={formData.salary_range}
+                onChange={handleInputChange}
+                placeholder="e.g. 100000 or 10000 - 100000"
+                className="w-full px-3 py-2 text-gray-500 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                Fees are auto-calculated based on the first number in salary range
+              </p>
+            </div>
+
+            {/* Registration Fee */}
+            <div>
+              <label className="block text-gray-700 text-sm font-medium mb-2">
+                Registration Fee
+              </label>
+              <input
+                type="text"
+                name="registration_fee"
+                value={formData.registration_fee}
+                onChange={handleInputChange}
+                placeholder="Auto-calculated from salary"
+                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Renewal Fee */}
+            <div>
+              <label className="block text-gray-700 text-sm font-medium mb-2">
+                Renewal Fee
+              </label>
+              <input
+                type="text"
+                name="renewal_fee"
+                value={formData.renewal_fee}
+                onChange={handleInputChange}
+                placeholder="Auto-calculated from salary"
+                className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
             {/* Skills */}
             <div className="md:col-span-2">
               <label className="block text-gray-700 text-sm font-medium mb-2">
@@ -335,19 +470,6 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
                 placeholder="e.g. JavaScript, React, UI Design"
                 className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               ></textarea>
-            </div>
-
-            <div>
-              <label className="block text-gray-700 text-sm font-medium mb-2">
-                Salary Range (eg: 1000 - 2000)
-              </label>
-              <input
-                type="text"
-                name="salary_range"
-                value={formData.salary_range}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 text-gray-500 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
             </div>
 
             {/* Resume Upload */}
@@ -389,6 +511,16 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
                 <span className="text-gray-700 text-sm font-medium">Active</span>
               </label>
             </div>
+          </div>
+
+          <div className="mb-4 p-3 bg-blue-50 text-blue-800 rounded">
+            <p className="text-sm">
+              <strong>Fee Schedule:</strong>
+              <br/>• Salary &lt; 100,000: Registration fee 2,000, Renewal fee 1,000
+              <br/>• Salary 100,000 - 199,999: Registration fee 5,000, Renewal fee 2,500
+              <br/>• Salary 200,000 - 499,999: Registration fee 10,000, Renewal fee 5,000
+              <br/>• Salary 500,000+: Registration fee 20,000, Renewal fee 10,000
+            </p>
           </div>
 
           <div className="flex justify-end gap-3 pt-4">
