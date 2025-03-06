@@ -36,13 +36,13 @@ const Header = () => {
   };
 
   const Navbar_Links = useMemo(() => [
-    { id: 1, name: "My Jobs", path: "/employeer", icon: <MdDashboard className="text-xl" /> },
+    { id: 1, name: "My Jobs", path: "/employer", icon: <MdDashboard className="text-xl" /> },
     { id: 2, name: "About Us", path: "/employer/about", icon: <FaInfoCircle className="text-xl" /> },
     { id: 3, name: "Contact Us", path: "/employer/contact", icon: <FaPhone className="text-xl" /> },
     { id: 4, name: "Jobs", path: "/employer/jobs", icon: <FaBriefcase className="text-xl" /> },
     { id: 5, name: "Job Seekers", path: "/employer/job_seekers", icon: <FaUsersCog className="text-xl" /> },
     { id: 6, name: "Testimonials", path: "/employer/testimonials", icon: <FaStar className="text-xl" /> },
-    { id: 7, name: "Publicity", path: "/employer/publicity", icon: <FaBullhorn className="text-xl" /> },
+    { id: 7, name: "Publicity", path: "/employer/advertisements", icon: <FaBullhorn className="text-xl" /> },
     { id: 8, name: "Profile", path: `/employer/profile/${userId}`, icon: <FaUserCircle className="text-xl" /> },
   ], [userId]);
 

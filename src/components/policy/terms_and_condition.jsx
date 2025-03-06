@@ -192,8 +192,8 @@ const TermsAndConditions = () => {
               <p>
                 Email: ltdanaweza@gmail.com<br />
                 Phone: <ul>
-                  <li>+250 795 570 541</li>
-                  <li>+250 725 169 154</li>
+                  <li>+250 788 457 54081</li>
+                  <li>+250 783 251 199</li>
                   
                   </ul><br />
                 Address: Kigali, Rwanda

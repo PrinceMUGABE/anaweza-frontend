@@ -8,7 +8,7 @@ function Employer_About_Us() {
 
   return (
     <section id="about" className="py-10 bg-slate-100 dark:text-white">
-      <Navbar/>
+
       <div className="bg-gray-300 mt-2 py-8">
         <h2
           data-aos="fade-up"

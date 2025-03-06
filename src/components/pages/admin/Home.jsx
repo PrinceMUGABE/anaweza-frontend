@@ -99,7 +99,7 @@ function AdminHome() {
   const fetchAllocations = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${BASE_URL}/resource_allocation/allocations/`, {
+      const response = await fetch(`${BASE_URL}/users/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -118,88 +118,6 @@ function AdminHome() {
     }
   };
 
-  const fetchFacilities = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/facility/facilities/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setFacilities(data);
-      }
-    } catch (error) {
-      console.error("Error fetching facilities:", error);
-    }
-  };
-
-  const fetchPopulations = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${BASE_URL}/population/populations/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setPopulations(data);
-      } else {
-        setError("Failed to fetch population data");
-      }
-    } catch (err) {
-      setError("Error fetching population data");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchIncidents = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${BASE_URL}/incident/incidents/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setIncidents(data);
-      } else {
-        setError("Failed to fetch incidents");
-      }
-    } catch (err) {
-      setError("Error fetching incidents");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchAccessibilities = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${BASE_URL}/accessibility/accessibilities/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setAccessibilities(data);
-      } else {
-        setError("Failed to fetch accessibility data");
-      }
-    } catch (err) {
-      setError("Error fetching accessibility data");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Chart Configuration
   const chartOptions = {
@@ -470,10 +388,7 @@ function AdminHome() {
     // Fetch other data
     await Promise.all([
       fetchAllocations(),
-      fetchFacilities(),
-      fetchPopulations(),
-      fetchIncidents(),
-      fetchAccessibilities()
+
     ]);
   };
 

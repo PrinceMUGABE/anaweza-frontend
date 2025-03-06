@@ -27,15 +27,18 @@ function Advertisements() {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get("https://anaweza-backend.up.railway.app/advertisement/advertisements/");
-            if (response.data && Array.isArray(response.data.data)) {
+            const response = await axios.get("http://127.0.0.1:8000/advertisement/advertisements/");
+            if (response.data && response.data.data && Array.isArray(response.data.data)) {
                 setAdvertisements(response.data.data);
+            } else if (Array.isArray(response.data)) {
+                setAdvertisements(response.data);
             } else {
                 console.error("Unexpected data format:", response.data);
                 setAdvertisements([]);
             }
         } catch (error) {
             console.error("Error fetching advertisements:", error);
+            setAdvertisements([]);
         }
     };
 

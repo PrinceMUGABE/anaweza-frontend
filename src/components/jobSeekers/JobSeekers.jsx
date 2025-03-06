@@ -204,7 +204,7 @@ const FeaturedSeekers = () => {
                       </div>
                     )}
                   </div>
-                  <h2 className="text-xl font-bold text-center">{formatFullName(selectedSeeker)}</h2>
+                  <h2 className="text-xl text-gray-900 font-bold text-center">{formatFullName(selectedSeeker)}</h2>
                   <p className="text-blue-600 text-center">{selectedSeeker.education_sector || selectedSeeker.education_level}</p>
                   
                   <div className="mt-4 w-full">
@@ -286,7 +286,7 @@ const FeaturedSeekers = () => {
               <div className="flex justify-end">
                 <button 
                   onClick={closeModal}
-                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+                  className="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-gray-300"
                 >
                   Close
                 </button>
