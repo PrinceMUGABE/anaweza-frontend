@@ -24,10 +24,11 @@ const Login = () => {
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
     const hasDigit = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?\":{}|<>]/.test(password);
+    const hasSpecialChar = /[^A-Za-z0-9]/.test(password);
     return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar && password.length >= 8;
   };
 
+  
   const checkJobSeekerRegistration = async (userId) => {
     try {
       console.log("Making request to:", `https://anaweza-backend.up.railway.app/job_seeker/by-user/${userId}/`);
