@@ -6,6 +6,7 @@ import axios from 'axios';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { KeyIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
 import loginImage from '../../assets/pictures/system/anaweza.jpg';
+import PasswordInput from './passwordValidation'; // Make sure the path is correct
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -16,7 +17,6 @@ const ResetPassword = () => {
   });
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -245,37 +245,15 @@ const ResetPassword = () => {
                 <p className="mt-1 text-xs text-gray-500">We only accept emails ending with @gmail.com</p>
               </div>
 
-              <div>
-                <label htmlFor="new_password" className="block text-sm font-semibold text-gray-700">
-                  New Password
-                </label>
-                <div className="mt-1 relative rounded-md shadow-sm">
-                  <input
-                    id="new_password"
-                    name="new_password"
-                    type={showPassword ? "text" : "password"}
-                    value={formData.new_password}
-                    onChange={handleChange}
-                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm sm:text-sm text-gray-700"
-                    placeholder="Enter your new password"
-                    required
-                  />
-                  <span
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeSlashIcon className="h-5 w-5 text-gray-400" />
-                    ) : (
-                      <EyeIcon className="h-5 w-5 text-gray-400" />
-                    )}
-                  </span>
-                </div>
-                {errors.new_password && <p className="mt-1 text-xs text-red-500 font-medium">{errors.new_password}</p>}
-                <p className="mt-1 text-xs text-gray-500">
-                  Password must be at least 8 characters with uppercase, lowercase, number, and special character
-                </p>
-              </div>
+              {/* Using the PasswordInput component for new password */}
+              <PasswordInput
+                id="new_password"
+                name="new_password"
+                label="New Password"
+                value={formData.new_password}
+                onChange={handleChange}
+                placeholder="Enter your new password"
+              />
 
               <div>
                 <label htmlFor="confirm_password" className="block text-sm font-semibold text-gray-700">
@@ -288,7 +266,11 @@ const ResetPassword = () => {
                     type={showConfirmPassword ? "text" : "password"}
                     value={formData.confirm_password}
                     onChange={handleChange}
-                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm sm:text-sm text-gray-700"
+                    className={`block w-full px-4 py-3 rounded-lg border ${
+                      errors.confirm_password ? "border-red-300" : 
+                      formData.confirm_password && formData.confirm_password === formData.new_password ? "border-green-300" : 
+                      "border-gray-300"
+                    } focus:ring-blue-500 focus:border-blue-500 shadow-sm sm:text-sm text-gray-700`}
                     placeholder="Confirm your new password"
                     required
                   />
@@ -304,6 +286,14 @@ const ResetPassword = () => {
                   </span>
                 </div>
                 {errors.confirm_password && <p className="mt-1 text-xs text-red-500 font-medium">{errors.confirm_password}</p>}
+                {formData.confirm_password && formData.confirm_password === formData.new_password && (
+                  <p className="mt-1 text-xs text-green-500 font-medium flex items-center">
+                    <svg className="h-4 w-4 text-green-500 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    Passwords match
+                  </p>
+                )}
               </div>
             </div>
 
