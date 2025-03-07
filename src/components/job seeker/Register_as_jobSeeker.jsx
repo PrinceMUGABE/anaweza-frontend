@@ -639,7 +639,7 @@ const handleSubmit = async (e) => {
                   <option value="ordinary_level">Ordinary Level</option>
                   
                   <option value="secondary">Secondary Level</option>
-                  <option value="advance_dimploma">Advanced Diploma</option>
+                  <option value="advanced_dimploma">Advanced Diploma</option>
                   <option value="vocational">Vocational Training</option>
                   <option value="bachelor">Bachelor's Degree</option>
                   <option value="master">Master's Degree</option>
