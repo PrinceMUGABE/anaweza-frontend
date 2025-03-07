@@ -270,71 +270,81 @@ const RegisterAsJobSeeker = () => {
   };
 
 
-  const handleSubmit = async (e) => {
-    if (e) e.preventDefault();
+  // Modified handleSubmit function to properly format fees
+const handleSubmit = async (e) => {
+  if (e) e.preventDefault();
 
-    // Form validation
-    if (!validateForm()) {
-      console.error("Form validation failed:", errors);
-      return;
+  // Form validation
+  if (!validateForm()) {
+    console.error("Form validation failed:", errors);
+    return;
+  }
+
+  setLoading(true);
+  const formDataToSend = new FormData();
+
+  // Append all form fields except resume (handled separately)
+  Object.entries(formData).forEach(([key, value]) => {
+    if (key !== 'resume' && value !== null && value !== '') {
+      formDataToSend.append(key, value);
     }
+  });
 
-    setLoading(true);
-    const formDataToSend = new FormData();
+  // Append resume if it exists
+  if (formData.resume) {
+    formDataToSend.append('resume', formData.resume);
+  }
 
-    // Append all form fields except resume (handled separately)
-    Object.entries(formData).forEach(([key, value]) => {
-      if (key !== 'resume' && value !== null && value !== '') {
-        formDataToSend.append(key, value);
-      }
-    });
+  // Add registration fee and renewal fee to form data with proper formatting
+  if (registrationFee) {
+    // Extract the numeric value from strings like "2,000 RWF" or "10,000 RWF/year"
+    const extractNumericValue = (feeString) => {
+      // Remove all non-numeric characters except decimals
+      return feeString.replace(/[^\d.]/g, '');
+    };
+    
+    const registrationFeeValue = extractNumericValue(registrationFee.registrationFee);
+    const renewalFeeValue = extractNumericValue(registrationFee.renewalFee);
+    
+    formDataToSend.append('registration_fee', registrationFeeValue);
+    formDataToSend.append('renewal_fee', renewalFeeValue);
+  }
 
-    // Append resume if it exists
-    if (formData.resume) {
-      formDataToSend.append('resume', formData.resume);
-    }
+  try {
+    console.log("Sending data to server:", Object.fromEntries(formDataToSend));
 
-    // Add registration fee to form data
-    // Add registration fee and renewal fee to form data
-    if (registrationFee) {
-      formDataToSend.append('registration_fee', registrationFee.registrationFee);
-      formDataToSend.append('renewal_fee', registrationFee.renewalFee);
-    }
-    try {
-      console.log("Sending data to server:", Object.fromEntries(formDataToSend));
-
-      const response = await axios.post(
-        "https://anaweza-backend.up.railway.app/job_seeker/create/",
-        formDataToSend,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
-          }
+    const response = await axios.post(
+      "https://anaweza-backend.up.railway.app/job_seeker/create/",
+      formDataToSend,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
         }
-      );
-
-      if (response.status === 201) {
-        setMessage('Registration successful! Your account will be activated after payment confirmation.');
-        setTimeout(() => navigate('/job_seeker'), 2000);
       }
-    } catch (error) {
-      console.error("API Error:", error.response?.data || error.message);
+    );
 
-      if (error.response?.data) {
-        // Handle API error response
-        if (typeof error.response.data === 'object') {
-          setErrors(error.response.data);
-        } else {
-          setErrors({ form: error.response.data || 'An unexpected error occurred.' });
-        }
+    if (response.status === 201) {
+      setMessage('Registration successful! Your account will be activated after payment confirmation.');
+      setTimeout(() => navigate('/job_seeker'), 2000);
+    }
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+
+    if (error.response?.data) {
+      // Handle API error response
+      if (typeof error.response.data === 'object') {
+        setErrors(error.response.data);
       } else {
-        setErrors({ form: 'Network error. Please check your connection.' });
+        setErrors({ form: error.response.data || 'An unexpected error occurred.' });
       }
-    } finally {
-      setLoading(false);
+    } else {
+      setErrors({ form: 'Network error. Please check your connection.' });
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   // Function to render field error message
   const renderError = (fieldName) => {
