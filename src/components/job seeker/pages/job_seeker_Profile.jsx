@@ -921,7 +921,9 @@ function Job_seeker_Profile() {
                       <option value="primary">Primary Education</option>
                       <option value="ordinary_level">Ordinary Level</option>
                       <option value="secondary">Secondary Education</option>
+                        <option value="advance_dimploma">Advanced Diploma</option>
                       <option value="vocational">Vocational Training</option>
+                      <option value="advance_dimploma">Advanced Diploma</option>
                       <option value="bachelor">Bachelor's Degree</option>
                       <option value="master">Master's Degree</option>
                       <option value="phd">PhD</option>

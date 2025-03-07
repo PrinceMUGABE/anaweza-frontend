@@ -52,8 +52,10 @@ const StatCards = ({ jobSeekerData }) => {
     educationLevels: {
       none: jobSeekerData.filter(seeker => seeker.education_level === 'none').length,
       primary: jobSeekerData.filter(seeker => seeker.education_level === 'primary').length,
+      ordinary_level: jobSeekerData.filter(seeker => seeker.education_level === 'ordinary_level').length,
       secondary: jobSeekerData.filter(seeker => seeker.education_level === 'secondary').length,
       vocational: jobSeekerData.filter(seeker => seeker.education_level === 'vocational').length,
+      advanced_diploma: jobSeekerData.filter(seeker => seeker.education_level === 'advanced_diploma').length,
       bachelor: jobSeekerData.filter(seeker => seeker.education_level === 'bachelor').length,
       master: jobSeekerData.filter(seeker => seeker.education_level === 'master').length,
       phd: jobSeekerData.filter(seeker => seeker.education_level === 'phd').length
@@ -476,6 +478,7 @@ function Admin_Manage_JobSeekers() {
       'Ordinary Level': jobSeekerData.filter(seeker => seeker.education_level === 'ordinary_level').length,
       'Secondary': jobSeekerData.filter(seeker => seeker.education_level === 'secondary').length,
       'Vocational': jobSeekerData.filter(seeker => seeker.education_level === 'vocational').length,
+      'Avanced Diploma': jobSeekerData.filter(seeker => seeker.education_level === 'advanced_diploma').length,
       'Bachelor\'s': jobSeekerData.filter(seeker => seeker.education_level === 'bachelor').length,
       'Master\'s': jobSeekerData.filter(seeker => seeker.education_level === 'master').length,
       'PhD': jobSeekerData.filter(seeker => seeker.education_level === 'phd').length
@@ -731,6 +734,7 @@ function Admin_Manage_JobSeekers() {
                     <option value="ordinary_level">Ordinary Level</option>
                     <option value="secondary">Secondary Education</option>
                     <option value="vocational">Vocational Training</option>
+                    <option value="advanced_diploma">Advanced Diploma</option>
                     <option value="bachelor">Bachelor's Degree</option>
                     <option value="master">Master's Degree</option>
                     <option value="phd">PhD</option>

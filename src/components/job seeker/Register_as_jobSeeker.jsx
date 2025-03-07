@@ -634,9 +634,12 @@ const handleSubmit = async (e) => {
                   className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="none">No Formal Education</option>
-                  <option value="ordinary_level">Ordinary Level</option>
+                  
                   <option value="primary">Primary Education</option>
-                  <option value="secondary">Secondary Education</option>
+                  <option value="ordinary_level">Ordinary Level</option>
+                  
+                  <option value="secondary">Secondary Level</option>
+                  <option value="advance_dimploma">Advanced Diploma</option>
                   <option value="vocational">Vocational Training</option>
                   <option value="bachelor">Bachelor's Degree</option>
                   <option value="master">Master's Degree</option>
