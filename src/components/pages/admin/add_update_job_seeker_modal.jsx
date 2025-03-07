@@ -386,6 +386,7 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
               >
                 <option value="none">No Formal Education</option>
                 <option value="primary">Primary Education</option>
+                <option value="ordinary_level">Ordinary Level</option>
                 <option value="secondary">Secondary Education</option>
                 <option value="vocational">Vocational Training</option>
                 <option value="bachelor">Bachelor's Degree</option>

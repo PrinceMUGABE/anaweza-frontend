@@ -471,7 +471,9 @@ function Admin_Manage_JobSeekers() {
     // Education level distribution
     const educationData = Object.entries({
       'No Formal': jobSeekerData.filter(seeker => seeker.education_level === 'none').length,
+      
       'Primary': jobSeekerData.filter(seeker => seeker.education_level === 'primary').length,
+      'Ordinary Level': jobSeekerData.filter(seeker => seeker.education_level === 'ordinary_level').length,
       'Secondary': jobSeekerData.filter(seeker => seeker.education_level === 'secondary').length,
       'Vocational': jobSeekerData.filter(seeker => seeker.education_level === 'vocational').length,
       'Bachelor\'s': jobSeekerData.filter(seeker => seeker.education_level === 'bachelor').length,
@@ -726,6 +728,7 @@ function Admin_Manage_JobSeekers() {
                     <option value="all">All Education Levels</option>
                     <option value="none">No Formal Education</option>
                     <option value="primary">Primary Education</option>
+                    <option value="ordinary_level">Ordinary Level</option>
                     <option value="secondary">Secondary Education</option>
                     <option value="vocational">Vocational Training</option>
                     <option value="bachelor">Bachelor's Degree</option>
