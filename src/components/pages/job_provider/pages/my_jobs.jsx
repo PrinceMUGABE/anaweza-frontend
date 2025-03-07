@@ -586,7 +586,7 @@ const Employer_Manage_Jobs = () => {
                   <div className="text-gray-500">
                     <p>Application Deadline: <span className='text-red-700'>{new Date(selectedJob.deadline).toLocaleDateString()}</span> </p>
                   </div>
-                  <button
+                  {/* <button
                     onClick={() => handleApply(selectedJob.id, selectedJob.status)}
                     className={`px-6 py-3 font-medium rounded transition-colors w-full sm:w-auto ${
                       selectedJob.status === 'closed'
@@ -596,7 +596,7 @@ const Employer_Manage_Jobs = () => {
                     disabled={applying || selectedJob.status === 'closed'}
                   >
                     {applying ? "Processing..." : selectedJob.status === 'closed' ? "Applications Closed" : "Apply Now"}
-                  </button>
+                  </button> */}
                 </div>
 
                 {applicationStatus && (
