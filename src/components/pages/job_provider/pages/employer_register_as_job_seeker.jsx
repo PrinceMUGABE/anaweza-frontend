@@ -270,71 +270,113 @@ const Employer_RegisterAsJobSeeker = () => {
   };
 
 
-  const handleSubmit = async (e) => {
-    if (e) e.preventDefault();
+ // Update the extractNumericValue function in handleSubmit
+const handleSubmit = async (e) => {
+  if (e) e.preventDefault();
 
-    // Form validation
-    if (!validateForm()) {
-      console.error("Form validation failed:", errors);
-      return;
+  // Form validation
+  if (!validateForm()) {
+    console.error("Form validation failed:", errors);
+    return;
+  }
+
+  setLoading(true);
+  const formDataToSend = new FormData();
+
+  // Append all form fields except resume (handled separately)
+  Object.entries(formData).forEach(([key, value]) => {
+    if (key !== 'resume' && value !== null && value !== '') {
+      formDataToSend.append(key, value);
+      console.log(`Added form field: ${key} = ${value}`);
     }
+  });
 
-    setLoading(true);
-    const formDataToSend = new FormData();
+  // Append resume if it exists
+  if (formData.resume) {
+    formDataToSend.append('resume', formData.resume);
+    console.log(`Added resume: ${formData.resume.name} (${formData.resume.size} bytes)`);
+  }
 
-    // Append all form fields except resume (handled separately)
-    Object.entries(formData).forEach(([key, value]) => {
-      if (key !== 'resume' && value !== null && value !== '') {
-        formDataToSend.append(key, value);
-      }
-    });
+  // Add registration fee and renewal fee to form data with proper numeric formatting
+  if (registrationFee) {
+    // Extract the numeric value from strings like "2,000 RWF" or "10,000 RWF/year"
+    const extractNumericValue = (feeString) => {
+      // Remove all non-numeric characters except digits, convert to string first
+      const feeStr = String(feeString);
+      // Extract all digits, remove commas, and return as a number
+      const numericValue = feeStr.replace(/[^\d]/g, '');
+      return numericValue;
+    };
+    
+    const registrationFeeValue = extractNumericValue(registrationFee.registrationFee);
+    const renewalFeeValue = extractNumericValue(registrationFee.renewalFee);
+    
+    console.log(`Original registration fee: ${registrationFee.registrationFee}`);
+    console.log(`Extracted registration fee value: ${registrationFeeValue}`);
+    
+    console.log(`Original renewal fee: ${registrationFee.renewalFee}`);
+    console.log(`Extracted renewal fee value: ${renewalFeeValue}`);
+    
+    formDataToSend.append('registration_fee', registrationFeeValue);
+    formDataToSend.append('renewal_fee', renewalFeeValue);
+  } else {
+    console.warn("No registration fee information available");
+    // Add default values to avoid validation errors
+    formDataToSend.append('registration_fee', '0');
+    formDataToSend.append('renewal_fee', '0');
+  }
 
-    // Append resume if it exists
-    if (formData.resume) {
-      formDataToSend.append('resume', formData.resume);
-    }
+  // Display complete form data object being sent
+  console.log("========== FORM DATA BEING SUBMITTED ==========");
+  for (let [key, value] of formDataToSend.entries()) {
+    console.log(`${key}: ${value instanceof File ? `File (${value.name}, ${value.size} bytes)` : value}`);
+  }
+  console.log("==============================================");
 
-    // Add registration fee to form data
-    // Add registration fee and renewal fee to form data
-    if (registrationFee) {
-      formDataToSend.append('registration_fee', registrationFee.registrationFee);
-      formDataToSend.append('renewal_fee', registrationFee.renewalFee);
-    }
-    try {
-      console.log("Sending data to server:", Object.fromEntries(formDataToSend));
+  try {
+    console.log("Sending data to server...");
 
-      const response = await axios.post(
-        "https://anaweza-backend.up.railway.app/job_seeker/create/",
-        formDataToSend,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
-          }
+    const response = await axios.post(
+      "https://anaweza-backend.up.railway.app/job_seeker/create/",
+      formDataToSend,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
         }
-      );
-
-      if (response.status === 201) {
-        setMessage('Registration successful! Your account will be activated after payment confirmation.');
-        setTimeout(() => navigate('/employer'), 2000);
       }
-    } catch (error) {
-      console.error("API Error:", error.response?.data || error.message);
+    );
 
-      if (error.response?.data) {
-        // Handle API error response
-        if (typeof error.response.data === 'object') {
-          setErrors(error.response.data);
-        } else {
-          setErrors({ form: error.response.data || 'An unexpected error occurred.' });
-        }
+    console.log("Response received:", response);
+    
+    if (response.status === 201) {
+      console.log("Registration successful");
+      setMessage('Registration successful! Your account will be activated after payment confirmation.');
+      setTimeout(() => navigate('/job_seeker'), 2000);
+    }
+  } catch (error) {
+    console.error("API Error:", error);
+    console.error("Error details:", error.response?.data || error.message);
+
+    if (error.response?.data) {
+      // Handle API error response
+      if (typeof error.response.data === 'object') {
+        console.error("Error object:", error.response.data);
+        setErrors(error.response.data);
       } else {
-        setErrors({ form: 'Network error. Please check your connection.' });
+        console.error("Error string:", error.response.data);
+        setErrors({ form: error.response.data || 'An unexpected error occurred.' });
       }
-    } finally {
-      setLoading(false);
+    } else {
+      console.error("Network error");
+      setErrors({ form: 'Network error. Please check your connection.' });
     }
-  };
+  } finally {
+    setLoading(false);
+    console.log("Form submission process completed");
+  }
+};
+
 
   // Function to render field error message
   const renderError = (fieldName) => {
