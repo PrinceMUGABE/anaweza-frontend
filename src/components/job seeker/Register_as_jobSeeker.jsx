@@ -270,7 +270,7 @@ const RegisterAsJobSeeker = () => {
   };
 
 
-  // Modified handleSubmit function to properly format fees
+// Modified handleSubmit function with enhanced console logging
 const handleSubmit = async (e) => {
   if (e) e.preventDefault();
 
@@ -287,31 +287,48 @@ const handleSubmit = async (e) => {
   Object.entries(formData).forEach(([key, value]) => {
     if (key !== 'resume' && value !== null && value !== '') {
       formDataToSend.append(key, value);
+      console.log(`Added form field: ${key} = ${value}`);
     }
   });
 
   // Append resume if it exists
   if (formData.resume) {
     formDataToSend.append('resume', formData.resume);
+    console.log(`Added resume: ${formData.resume.name} (${formData.resume.size} bytes)`);
   }
 
   // Add registration fee and renewal fee to form data with proper formatting
   if (registrationFee) {
     // Extract the numeric value from strings like "2,000 RWF" or "10,000 RWF/year"
     const extractNumericValue = (feeString) => {
-      // Remove all non-numeric characters except decimals
-      return feeString.replace(/[^\d.]/g, '');
+      // Remove all non-numeric characters except decimals, then remove commas
+      return feeString.replace(/[^\d,.]/g, '').replace(/,/g, '');
     };
     
     const registrationFeeValue = extractNumericValue(registrationFee.registrationFee);
     const renewalFeeValue = extractNumericValue(registrationFee.renewalFee);
     
+    console.log(`Original registration fee: ${registrationFee.registrationFee}`);
+    console.log(`Extracted registration fee value: ${registrationFeeValue}`);
+    
+    console.log(`Original renewal fee: ${registrationFee.renewalFee}`);
+    console.log(`Extracted renewal fee value: ${renewalFeeValue}`);
+    
     formDataToSend.append('registration_fee', registrationFeeValue);
     formDataToSend.append('renewal_fee', renewalFeeValue);
+  } else {
+    console.warn("No registration fee information available");
   }
 
+  // Display complete form data object being sent
+  console.log("========== FORM DATA BEING SUBMITTED ==========");
+  for (let [key, value] of formDataToSend.entries()) {
+    console.log(`${key}: ${value instanceof File ? `File (${value.name}, ${value.size} bytes)` : value}`);
+  }
+  console.log("==============================================");
+
   try {
-    console.log("Sending data to server:", Object.fromEntries(formDataToSend));
+    console.log("Sending data to server...");
 
     const response = await axios.post(
       "https://anaweza-backend.up.railway.app/job_seeker/create/",
@@ -324,25 +341,33 @@ const handleSubmit = async (e) => {
       }
     );
 
+    console.log("Response received:", response);
+    
     if (response.status === 201) {
+      console.log("Registration successful");
       setMessage('Registration successful! Your account will be activated after payment confirmation.');
       setTimeout(() => navigate('/job_seeker'), 2000);
     }
   } catch (error) {
-    console.error("API Error:", error.response?.data || error.message);
+    console.error("API Error:", error);
+    console.error("Error details:", error.response?.data || error.message);
 
     if (error.response?.data) {
       // Handle API error response
       if (typeof error.response.data === 'object') {
+        console.error("Error object:", error.response.data);
         setErrors(error.response.data);
       } else {
+        console.error("Error string:", error.response.data);
         setErrors({ form: error.response.data || 'An unexpected error occurred.' });
       }
     } else {
+      console.error("Network error");
       setErrors({ form: 'Network error. Please check your connection.' });
     }
   } finally {
     setLoading(false);
+    console.log("Form submission process completed");
   }
 };
 
