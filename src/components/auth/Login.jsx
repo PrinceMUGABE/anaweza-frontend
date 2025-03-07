@@ -18,7 +18,11 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const validateEmail = (input) => /^[a-zA-Z0-9._-]+@gmail\.com$/i.test(input);
+  const validateEmail = (input) => {
+    const result = /^[a-zA-Z0-9._-]+@gmail\.com$/i.test(input);
+    console.log("Email validation for:", input, "Result:", result);
+    return result;
+  }
   const validatePhone = (input) => /^[0-9]{10}$/.test(input);
 
   const validatePassword = (password) => {
