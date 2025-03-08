@@ -237,7 +237,7 @@ const All_Job_Seekers = () => {
                           <img 
                             src={seeker.custom_user.profile_picture} 
                             alt={formatFullName(seeker)}
-                            className="w-full h-full object-cover"
+                            className="w-full text-gray-900 h-full object-cover"
                           />
                         ) : (
                           <div className="w-full h-full bg-gray-200 flex items-center justify-center">
@@ -320,9 +320,9 @@ const All_Job_Seekers = () => {
                 <div className="md:w-1/3 flex flex-col items-center">
                   {/* Profile picture or initials in modal */}
                   <div className="w-32 h-32 rounded-full mb-4 overflow-hidden">
-                    {selectedSeeker.user?.profile_picture ? (
+                    {selectedSeeker.custom_user?.profile_picture ? (
                       <img 
-                        src={selectedSeeker.user.profile_picture} 
+                        src={selectedSeeker.custom_user.profile_picture} 
                         alt={formatFullName(selectedSeeker)}
                         className="w-full h-full object-cover border-2 border-gray-200"
                       />
@@ -333,7 +333,7 @@ const All_Job_Seekers = () => {
                     )}
                   </div>
                   <h2 className="text-xl font-bold text-center">{formatFullName(selectedSeeker)}</h2>
-                  <p className="text-blue-600 text-center">{selectedSeeker.education_sector || selectedSeeker.education_level}</p>
+                  <p className="text-gray-900 text-center">Education: <span className='text-blue-700'>{selectedSeeker.education_sector || selectedSeeker.education_level}</span></p>
                   
                   <div className="mt-4 w-full">
                     <div className="bg-gray-100 p-4 rounded-lg">
@@ -351,6 +351,11 @@ const All_Job_Seekers = () => {
                           </svg>
                           <span className='text-gray-700'>{selectedSeeker.custom_user?.email || "Email not provided"}</span>
                         </div>
+
+                        <div className="bg-gray-50 p-4 rounded-lg">
+                      <h3 className="font-semibold text-gray-700">Location</h3>
+                      <p className="text-gray-800">{selectedSeeker.district || "N/A"} - {selectedSeeker.sector || "N/A"}</p>
+                    </div>
                       </div>
                     </div>
                   </div>
@@ -377,6 +382,7 @@ const All_Job_Seekers = () => {
                       <h3 className="font-semibold text-gray-700">Salary Expectation</h3>
                       <p className="text-gray-800">{selectedSeeker.salary_range}</p>
                     </div>
+                    
                   </div>
                   
                   <div className="mb-6">
@@ -390,7 +396,7 @@ const All_Job_Seekers = () => {
                     </div>
                   </div>
                   
-                  {selectedSeeker.resume && (
+                  {/* {selectedSeeker.resume && (
                     <div className="mt-4">
                       <h3 className="font-semibold text-lg mb-2">Resume</h3>
                       <a 
@@ -405,7 +411,7 @@ const All_Job_Seekers = () => {
                         Download Resume
                       </a>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>

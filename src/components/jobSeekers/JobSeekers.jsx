@@ -93,7 +93,7 @@ const FeaturedSeekers = () => {
           <div className="flex justify-center">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-700"></div>
           </div>
-          <p className="text-gray-700 mt-4">Discovering talented candidates...</p>
+          <p className="text-gray-700 mt-4">Discovering talented job seekers...</p>
         </div>
       </div>
     );
@@ -149,7 +149,7 @@ const FeaturedSeekers = () => {
                     <div className="flex flex-col items-center text-center">
                       {/* Profile picture or initials */}
                       <div className="w-24 h-24 rounded-full mb-4 overflow-hidden border-2 border-gray-100 shadow-sm">
-                        {seeker.user?.profile_picture ? (
+                        {seeker.custom_user?.profile_picture ? (
                           <img 
                             src={seeker.custom_user.profile_picture} 
                             alt={formatFullName(seeker)}
@@ -248,7 +248,7 @@ const FeaturedSeekers = () => {
                   </div>
                   
                   <h2 className="text-xl text-gray-900 font-bold text-center">{formatFullName(selectedSeeker)}</h2>
-                  <p className="text-blue-700 font-medium text-center">{selectedSeeker.education_sector || selectedSeeker.education_level}</p>
+                  <p className="text-gray-900 font-medium text-center"><span className='text-blue-700'>{selectedSeeker.education_sector || selectedSeeker.education_level}</span></p>
                   
                   <div className="mt-6 w-full">
                     <div className="bg-blue-50 p-4 rounded-lg">
@@ -277,7 +277,7 @@ const FeaturedSeekers = () => {
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                           </div>
-                          <span className="text-gray-700">{selectedSeeker.user?.location || "Location not specified"}</span>
+                          <span className="text-gray-700">{selectedSeeker.district} - {selectedSeeker.sector || "Location not specified"}</span>
                         </div>
                       </div>
                     </div>

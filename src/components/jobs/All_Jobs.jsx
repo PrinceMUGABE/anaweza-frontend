@@ -290,7 +290,7 @@ const List_of_Jobs = () => {
         }
 
         return (
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto pt-8 px-4">
                 <div className="flex justify-between items-center mb-8">
                     <h2 className="text-3xl font-bold text-blue-800">Featured Jobs</h2>
                 </div>
@@ -300,7 +300,7 @@ const List_of_Jobs = () => {
                         <div key={job.id} className="border rounded-lg p-6 hover:shadow-lg transition-shadow">
                             <div className="flex items-start gap-4">
                                 <div>
-                                    <h3 className="font-semibold text-lg">{job.title}</h3>
+                                    <h3 className="font-semibold text-gray-900 text-lg">{job.title}</h3>
                                     <p className="text-gray-600">{job.company_name || job.offer_type}</p>
                                 </div>
                             </div>
