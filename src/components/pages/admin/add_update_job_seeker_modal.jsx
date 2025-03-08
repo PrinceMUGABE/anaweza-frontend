@@ -60,7 +60,7 @@ const JobSeekerFormModal = ({ isOpen, onClose, jobSeeker = null, onSuccess, toke
       // If editing, populate form with existing data
       if (jobSeeker) {
         const initialData = {
-          user_id: jobSeeker.user?.id || "",
+          user_id: jobSeeker.custom_user?.id || "",
           first_name: jobSeeker.first_name || "",
           middle_name: jobSeeker.middle_name || "",
           last_name: jobSeeker.last_name || "",

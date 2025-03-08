@@ -332,9 +332,9 @@ const Job_Seeker_Job_Seekers = () => {
                       <div className="flex flex-col items-center text-center mb-4">
                         {/* Profile picture or initials */}
                         <div className="w-20 h-20 rounded-full mb-3 overflow-hidden">
-                          {seeker.user?.profile_picture ? (
+                          {seeker.custom_user?.profile_picture ? (
                             <img 
-                              src={seeker.user.profile_picture} 
+                              src={seeker.custom_user.profile_picture} 
                               alt={formatFullName(seeker)}
                               className="w-full h-full object-cover"
                             />
@@ -464,7 +464,7 @@ const Job_Seeker_Job_Seekers = () => {
                   <div className="w-32 h-32 rounded-full mb-4 overflow-hidden">
                     {selectedSeeker.user?.profile_picture ? (
                       <img 
-                        src={selectedSeeker.user.profile_picture} 
+                        src={selectedSeeker.custom_user.profile_picture} 
                         alt={formatFullName(selectedSeeker)}
                         className="w-full h-full object-cover border-2 border-gray-200"
                       />
@@ -485,13 +485,13 @@ const Job_Seeker_Job_Seekers = () => {
                           <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                           </svg>
-                          <span className='text-gray-700'>{selectedSeeker.user?.phone_number || "Phone not provided"}</span>
+                          <span className='text-gray-700'>{selectedSeeker.custom_user?.phone_number || "Phone not provided"}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                           </svg>
-                          <span className='text-gray-700'>{selectedSeeker.user?.email || "Email not provided"}</span>
+                          <span className='text-gray-700'>{selectedSeeker.custom_user?.email || "Email not provided"}</span>
                         </div>
                       </div>
                     </div>

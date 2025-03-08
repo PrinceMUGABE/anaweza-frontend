@@ -186,11 +186,11 @@ const JobSeekerDetailsModal = ({ jobSeeker, onClose }) => {
           </div>
           <div>
             <p className="text-sm text-gray-500">Phone Number</p>
-            <p className="font-semibold text-gray-500">{jobSeeker.user?.phone_number || 'N/A'}</p>
+            <p className="font-semibold text-gray-500">{jobSeeker.custom_user?.phone_number || 'N/A'}</p>
           </div>
           <div>
             <p className="text-sm text-gray-500">Email</p>
-            <p className="font-semibold text-gray-500">{jobSeeker.user?.email || 'N/A'}</p>
+            <p className="font-semibold text-gray-500">{jobSeeker.custom_user?.email || 'N/A'}</p>
           </div>
           <div>
             <p className="text-sm text-gray-500">Gender</p>
@@ -396,8 +396,8 @@ function Admin_Manage_JobSeekers() {
         ID: seeker.id,
         "First Name": seeker.first_name,
         "Last Name": seeker.last_name,
-        "Phone": seeker.user?.phone_number || 'N/A',
-        "Email": seeker.user?.email || 'N/A',
+        "Phone": seeker.custom_user?.phone_number || 'N/A',
+        "Email": seeker.custom_user?.email || 'N/A',
         "Gender": seeker.gender,
         "Experience (Years)": seeker.experience,
         "Education": seeker.education_level,
@@ -785,9 +785,9 @@ function Admin_Manage_JobSeekers() {
                             </div>
                           </td>
                           <td className="px-4 py-3">
-                            <div className="text-gray-500">{seeker.user?.email || "N/A"}</div>
+                            <div className="text-gray-500">{seeker.custom_user?.email || "N/A"}</div>
                             <div className="text-xs text-gray-500">
-                              {seeker.user?.phone_number || "N/A"}
+                              {seeker.custom_user?.phone_number || "N/A"}
                             </div>
                           </td>
                           <td className="px-4 py-3 text-gray-500">
@@ -942,7 +942,7 @@ function Admin_Manage_JobSeekers() {
                           body: filteredData.map((seeker) => [
                             `${seeker.first_name} ${seeker.last_name}`,
                             seeker.gender,
-                            `${seeker.user?.email || "N/A"}\n${seeker.user?.phone_number || "N/A"}`,
+                            `${seeker.custom_user?.email || "N/A"}\n${seeker.custom_user?.phone_number || "N/A"}`,
                             `${seeker.experience} ${seeker.experience === 1 ? "year" : "years"}`,
                             getEducationLevelDisplay(seeker.education_level),
                             seeker.salary_range || "N/A",
@@ -963,8 +963,8 @@ function Admin_Manage_JobSeekers() {
                             "First Name": seeker.first_name,
                             "Last Name": seeker.last_name,
                             "Gender": seeker.gender,
-                            "Email": seeker.user?.email || "N/A",
-                            "Phone": seeker.user?.phone_number || "N/A",
+                            "Email": seeker.custom_user?.email || "N/A",
+                            "Phone": seeker.custom_user?.phone_number || "N/A",
                             "Experience (Years)": seeker.experience,
                             "Education Level": getEducationLevelDisplay(seeker.education_level),
                             "Skills": seeker.skills || "N/A",
