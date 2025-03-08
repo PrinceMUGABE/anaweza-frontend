@@ -8,6 +8,7 @@ import axios from 'axios';
 import { AiOutlineCloudUpload, AiOutlineInfoCircle } from 'react-icons/ai';
 import { FiCheck } from 'react-icons/fi';
 import { pdfjs } from 'react-pdf';
+import districtsData from './rwanda_districts.json';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -26,6 +27,8 @@ const RegisterAsJobSeeker = () => {
     skills: '',
     resume: null,
     salary_range: '',
+    district: '',
+    sector: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -38,6 +41,7 @@ const RegisterAsJobSeeker = () => {
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [showPolicyModal, setShowPolicyModal] = useState(false);
   const token = localStorage.getItem("token");
+  const [sectors, setSectors] = useState([]);
 
   // Pricing tiers from the Policy component
   const pricingTiers = [
@@ -270,106 +274,115 @@ const RegisterAsJobSeeker = () => {
   };
 
 
-// Modified handleSubmit function with enhanced console logging
-const handleSubmit = async (e) => {
-  if (e) e.preventDefault();
-
-  // Form validation
-  if (!validateForm()) {
-    console.error("Form validation failed:", errors);
-    return;
-  }
-
-  setLoading(true);
-  const formDataToSend = new FormData();
-
-  // Append all form fields except resume (handled separately)
-  Object.entries(formData).forEach(([key, value]) => {
-    if (key !== 'resume' && value !== null && value !== '') {
-      formDataToSend.append(key, value);
-      console.log(`Added form field: ${key} = ${value}`);
-    }
-  });
-
-  // Append resume if it exists
-  if (formData.resume) {
-    formDataToSend.append('resume', formData.resume);
-    console.log(`Added resume: ${formData.resume.name} (${formData.resume.size} bytes)`);
-  }
-
-  // Add registration fee and renewal fee to form data with proper formatting
-  if (registrationFee) {
-    // Extract the numeric value from strings like "2,000 RWF" or "10,000 RWF/year"
-    const extractNumericValue = (feeString) => {
-      // Remove all non-numeric characters except decimals, then remove commas
-      return feeString.replace(/[^\d,.]/g, '').replace(/,/g, '');
-    };
-    
-    const registrationFeeValue = extractNumericValue(registrationFee.registrationFee);
-    const renewalFeeValue = extractNumericValue(registrationFee.renewalFee);
-    
-    console.log(`Original registration fee: ${registrationFee.registrationFee}`);
-    console.log(`Extracted registration fee value: ${registrationFeeValue}`);
-    
-    console.log(`Original renewal fee: ${registrationFee.renewalFee}`);
-    console.log(`Extracted renewal fee value: ${renewalFeeValue}`);
-    
-    formDataToSend.append('registration_fee', registrationFeeValue);
-    formDataToSend.append('renewal_fee', renewalFeeValue);
-  } else {
-    console.warn("No registration fee information available");
-  }
-
-  // Display complete form data object being sent
-  console.log("========== FORM DATA BEING SUBMITTED ==========");
-  for (let [key, value] of formDataToSend.entries()) {
-    console.log(`${key}: ${value instanceof File ? `File (${value.name}, ${value.size} bytes)` : value}`);
-  }
-  console.log("==============================================");
-
-  try {
-    console.log("Sending data to server...");
-
-    const response = await axios.post(
-      "https://anaweza-backend.up.railway.app/job_seeker/create/",
-      formDataToSend,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    );
-
-    console.log("Response received:", response);
-    
-    if (response.status === 201) {
-      console.log("Registration successful");
-      setMessage('Registration successful! Your account will be activated after payment confirmation.');
-      setTimeout(() => navigate('/job_seeker'), 2000);
-    }
-  } catch (error) {
-    console.error("API Error:", error);
-    console.error("Error details:", error.response?.data || error.message);
-
-    if (error.response?.data) {
-      // Handle API error response
-      if (typeof error.response.data === 'object') {
-        console.error("Error object:", error.response.data);
-        setErrors(error.response.data);
-      } else {
-        console.error("Error string:", error.response.data);
-        setErrors({ form: error.response.data || 'An unexpected error occurred.' });
-      }
+  useEffect(() => {
+    if (formData.district) {
+      setSectors(districtsData.districts[formData.district]?.sectors || []);
     } else {
-      console.error("Network error");
-      setErrors({ form: 'Network error. Please check your connection.' });
+      setSectors([]);
     }
-  } finally {
-    setLoading(false);
-    console.log("Form submission process completed");
-  }
-};
+  }, [formData.district]);
+
+
+  // Modified handleSubmit function with enhanced console logging
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+
+    // Form validation
+    if (!validateForm()) {
+      console.error("Form validation failed:", errors);
+      return;
+    }
+
+    setLoading(true);
+    const formDataToSend = new FormData();
+
+    // Append all form fields except resume (handled separately)
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key !== 'resume' && value !== null && value !== '') {
+        formDataToSend.append(key, value);
+        console.log(`Added form field: ${key} = ${value}`);
+      }
+    });
+
+    // Append resume if it exists
+    if (formData.resume) {
+      formDataToSend.append('resume', formData.resume);
+      console.log(`Added resume: ${formData.resume.name} (${formData.resume.size} bytes)`);
+    }
+
+    // Add registration fee and renewal fee to form data with proper formatting
+    if (registrationFee) {
+      // Extract the numeric value from strings like "2,000 RWF" or "10,000 RWF/year"
+      const extractNumericValue = (feeString) => {
+        // Remove all non-numeric characters except decimals, then remove commas
+        return feeString.replace(/[^\d,.]/g, '').replace(/,/g, '');
+      };
+
+      const registrationFeeValue = extractNumericValue(registrationFee.registrationFee);
+      const renewalFeeValue = extractNumericValue(registrationFee.renewalFee);
+
+      console.log(`Original registration fee: ${registrationFee.registrationFee}`);
+      console.log(`Extracted registration fee value: ${registrationFeeValue}`);
+
+      console.log(`Original renewal fee: ${registrationFee.renewalFee}`);
+      console.log(`Extracted renewal fee value: ${renewalFeeValue}`);
+
+      formDataToSend.append('registration_fee', registrationFeeValue);
+      formDataToSend.append('renewal_fee', renewalFeeValue);
+    } else {
+      console.warn("No registration fee information available");
+    }
+
+    // Display complete form data object being sent
+    console.log("========== FORM DATA BEING SUBMITTED ==========");
+    for (let [key, value] of formDataToSend.entries()) {
+      console.log(`${key}: ${value instanceof File ? `File (${value.name}, ${value.size} bytes)` : value}`);
+    }
+    console.log("==============================================");
+
+    try {
+      console.log("Sending data to server...");
+
+      const response = await axios.post(
+        "https://anaweza-backend.up.railway.app/job_seeker/create/",
+        formDataToSend,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
+
+      console.log("Response received:", response);
+
+      if (response.status === 201) {
+        console.log("Registration successful");
+        setMessage('Registration successful! Your account will be activated after payment confirmation.');
+        setTimeout(() => navigate('/job_seeker'), 2000);
+      }
+    } catch (error) {
+      console.error("API Error:", error);
+      console.error("Error details:", error.response?.data || error.message);
+
+      if (error.response?.data) {
+        // Handle API error response
+        if (typeof error.response.data === 'object') {
+          console.error("Error object:", error.response.data);
+          setErrors(error.response.data);
+        } else {
+          console.error("Error string:", error.response.data);
+          setErrors({ form: error.response.data || 'An unexpected error occurred.' });
+        }
+      } else {
+        console.error("Network error");
+        setErrors({ form: 'Network error. Please check your connection.' });
+      }
+    } finally {
+      setLoading(false);
+      console.log("Form submission process completed");
+    }
+  };
 
   // Function to render field error message
   const renderError = (fieldName) => {
@@ -590,6 +603,25 @@ const handleSubmit = async (e) => {
               </div>
 
               <div>
+                <label>District *</label>
+                <select className='text-gray-500 w-72' name="district" value={formData.district} onChange={handleChange} required>
+                  <option value="">Select District</option>
+                  {Object.keys(districtsData.districts).map((district) => (
+                    <option key={district} value={district}>{district}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label>Sector *</label>
+                <select className='text-gray-500 w-72' name="sector" value={formData.sector} onChange={handleChange} required>
+                  <option value="">Select Sector</option>
+                  {sectors.map(([name]) => (
+                    <option key={name} value={name}>{name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Gender *
                 </label>
@@ -634,10 +666,10 @@ const handleSubmit = async (e) => {
                   className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="none">No Formal Education</option>
-                  
+
                   <option value="primary">Primary Education</option>
                   <option value="ordinary_level">Ordinary Level</option>
-                  
+
                   <option value="secondary">Secondary Level</option>
                   <option value="advanced_diploma">Advanced Diploma</option>
                   <option value="vocational">Vocational Training</option>

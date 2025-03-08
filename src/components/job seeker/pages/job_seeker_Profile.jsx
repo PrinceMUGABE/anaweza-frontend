@@ -4,6 +4,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import districtsData from '../../job seeker/rwanda_districts.json';
 
 function Job_seeker_Profile() {
   const { id } = useParams();
@@ -15,7 +16,11 @@ function Job_seeker_Profile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [additionalFees, setAdditionalFees] = useState(null);
-  
+  const [sectors, setSectors] = useState([]);
+  const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState('');
+
+
   // Form data for CustomUser
   const [userFormData, setUserFormData] = useState({
     phone_number: '',
@@ -24,7 +29,7 @@ function Job_seeker_Profile() {
     profile_picture: null,
     status: true
   });
-  
+
   // Form data for JobSeeker
   const [jobSeekerFormData, setJobSeekerFormData] = useState({
     first_name: '',
@@ -36,16 +41,18 @@ function Job_seeker_Profile() {
     education_level: '',
     education_sector: '',
     salary_range: '',
-    status: true
+    status: true,
+    district: '',
+    sector: '',
   });
-  
+
   // For image preview
   const [previewImage, setPreviewImage] = useState(null);
   const [isCapturing, setIsCapturing] = useState(false);
   const [imageOption, setImageOption] = useState('upload'); // 'upload' or 'webcam'
   const videoRef = useRef(null);
   const streamRef = useRef(null);
-  
+
   // Original salary range to compare for fee calculation
   const [originalSalaryRange, setOriginalSalaryRange] = useState('');
 
@@ -56,42 +63,42 @@ function Job_seeker_Profile() {
   const fetchUserDetails = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const accessToken = JSON.parse(localStorage.getItem('userData'))?.access_token;
-      
+
       if (!accessToken) {
         throw new Error('Access token is missing!');
       }
-      
+
       const response = await fetch('https://anaweza-backend.up.railway.app/job_seeker/user/details/', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      
+
       if (!response.ok) {
         throw new Error(`Error fetching user details: ${response.status}`);
       }
-      
+
       const data = await response.json();
       console.log("Retrieved user data:", data);
-      
+
       // Set user data and job seeker data separately
       setUserData(data.custom_user);
       setJobSeekerData(data.job_seeker);
-      
+
       // Set form data for both entities
       setUserFormData({
         phone_number: data.custom_user.phone_number || '',
         email: data.custom_user.email || '',
         role: data.custom_user.role || '',
         profile_picture: null,
-        status: typeof data.custom_user.status === 'boolean' ? data.custom_user.status : 
-               data.custom_user.status === 'Active' || data.custom_user.status === 'true'
+        status: typeof data.custom_user.status === 'boolean' ? data.custom_user.status :
+          data.custom_user.status === 'Active' || data.custom_user.status === 'true'
       });
-      
+
       setJobSeekerFormData({
         first_name: data.job_seeker.first_name || '',
         middle_name: data.job_seeker.middle_name || '',
@@ -102,18 +109,18 @@ function Job_seeker_Profile() {
         education_level: data.job_seeker.education_level || '',
         education_sector: data.job_seeker.education_sector || '',
         salary_range: data.job_seeker.salary_range || '',
-        status: typeof data.job_seeker.status === 'boolean' ? data.job_seeker.status : 
-                data.job_seeker.status === 'Active' || data.job_seeker.status === 'true'
+        status: typeof data.job_seeker.status === 'boolean' ? data.job_seeker.status :
+          data.job_seeker.status === 'Active' || data.job_seeker.status === 'true'
       });
-      
+
       // Store original salary range for comparison
       setOriginalSalaryRange(data.job_seeker.salary_range || '');
-      
+
       // Set profile picture preview if available
       if (data.custom_user.profile_picture) {
         setPreviewImage(data.custom_user.profile_picture);
       }
-      
+
     } catch (error) {
       console.error('Error fetching user details:', error);
       setError(error.message);
@@ -125,7 +132,7 @@ function Job_seeker_Profile() {
   // Calculate registration and renewal fees based on salary range
   const calculateFees = (salaryRange) => {
     const salary = parseInt(salaryRange.replace(/,/g, '')) || 0;
-    
+
     if (salary < 100000) {
       return { registrationFee: 2000, renewalFee: 1000 };
     } else if (salary >= 100000 && salary < 200000) {
@@ -140,21 +147,78 @@ function Job_seeker_Profile() {
   // Calculate additional fees when salary range changes
   const calculateAdditionalFees = (newSalaryRange) => {
     if (!jobSeekerData || !originalSalaryRange) return null;
-    
+
     const originalFees = calculateFees(originalSalaryRange);
     const newFees = calculateFees(newSalaryRange);
-    
+
     // If new fees are higher than current fees, calculate the difference
     if (newFees.registrationFee > originalFees.registrationFee) {
       return {
         additionalRegistrationFee: newFees.registrationFee - originalFees.registrationFee,
         additionalRenewalFee: newFees.renewalFee - originalFees.renewalFee,
-        totalAdditional: (newFees.registrationFee - originalFees.registrationFee) + 
-                         (newFees.renewalFee - originalFees.renewalFee)
+        totalAdditional: (newFees.registrationFee - originalFees.registrationFee) +
+          (newFees.renewalFee - originalFees.renewalFee)
       };
     }
-    
+
     return null; // No additional fees if new salary range is lower
+  };
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    // Validation for experience - must be a positive number
+    if (name === 'experience') {
+      if (value < 0) {
+        setErrors(prev => ({ ...prev, experience: 'Experience cannot be negative' }));
+      } else {
+        setErrors(prev => ({ ...prev, experience: '' }));
+      }
+    }
+
+    // Specific validation for salary range
+    if (name === 'salary_range') {
+      // Validate format: either a single number or two numbers separated by a hyphen
+      const salaryRangeRegex = /^\d+(\s*-\s*\d+)?$/;
+
+      if (value && !salaryRangeRegex.test(value)) {
+        setErrors(prev => ({
+          ...prev,
+          salary_range: 'Salary range must be in format "1000" or "1000 - 2000"'
+        }));
+      } else {
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors.salary_range;
+          return newErrors;
+        });
+      }
+    }
+
+    if (name === "district") {
+      setJobSeekerFormData(prevState => ({
+        ...prevState,
+        district: value,
+        sector: "" // Reset sector when district changes
+      }));
+    } else {
+      setJobSeekerFormData(prevState => ({
+        ...prevState,
+        [name]: value
+      }));
+    }
+
+    setJobSeekerFormData({ ...jobSeekerFormData, [name]: value });
+
+    // Clear error for this field if it exists
+    if (errors[name]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
   // Clean up webcam stream when component unmounts or capture mode changes
@@ -177,14 +241,25 @@ function Job_seeker_Profile() {
     }
   }, [imageOption]);
 
+  useEffect(() => {
+    if (jobSeekerFormData.district) {
+      setSectors(districtsData.districts[jobSeekerFormData.district]?.sectors || []);
+    } else {
+      setSectors([]);
+    }
+  }, [jobSeekerFormData.district]);  // ✅ Trigger when district changes
+
+
+
+
   const handleEditClick = () => {
     setIsEditing(!isEditing);
-    
+
     if (!isEditing) {
       // Reset capture state when toggling edit mode
       stopCapture();
       setImageOption('upload');
-      
+
       // Reset form data when entering edit mode to ensure current values
       if (userData && jobSeekerData) {
         setUserFormData({
@@ -192,10 +267,10 @@ function Job_seeker_Profile() {
           email: userData.email || '',
           role: userData.role || '',
           profile_picture: null,
-          status: typeof userData.status === 'boolean' ? userData.status : 
-                 userData.status === 'Active' || userData.status === 'true'
+          status: typeof userData.status === 'boolean' ? userData.status :
+            userData.status === 'Active' || userData.status === 'true'
         });
-        
+
         setJobSeekerFormData({
           first_name: jobSeekerData.first_name || '',
           middle_name: jobSeekerData.middle_name || '',
@@ -206,11 +281,11 @@ function Job_seeker_Profile() {
           education_level: jobSeekerData.education_level || '',
           education_sector: jobSeekerData.education_sector || '',
           salary_range: jobSeekerData.salary_range || '',
-          status: typeof jobSeekerData.status === 'boolean' ? jobSeekerData.status : 
-                  jobSeekerData.status === 'Active' || jobSeekerData.status === 'true'
+          status: typeof jobSeekerData.status === 'boolean' ? jobSeekerData.status :
+            jobSeekerData.status === 'Active' || jobSeekerData.status === 'true'
         });
       }
-      
+
       // Reset additional fees
       setAdditionalFees(null);
     }
@@ -225,12 +300,12 @@ function Job_seeker_Profile() {
 
   const handleJobSeekerChange = (e) => {
     const { name, value } = e.target;
-    
+
     setJobSeekerFormData({
       ...jobSeekerFormData,
       [name]: value
     });
-    
+
     // Calculate additional fees if salary range changes
     if (name === 'salary_range') {
       const fees = calculateAdditionalFees(value);
@@ -256,7 +331,7 @@ function Job_seeker_Profile() {
       });
     };
     reader.readAsDataURL(file);
-    
+
     // Exit capture mode if it was active
     stopCapture();
     setImageOption('upload');
@@ -289,20 +364,20 @@ function Job_seeker_Profile() {
 
   const captureImage = () => {
     if (!videoRef.current) return;
-    
+
     const canvas = document.createElement('canvas');
     canvas.width = videoRef.current.videoWidth;
     canvas.height = videoRef.current.videoHeight;
     const ctx = canvas.getContext('2d');
     ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-    
+
     const imageData = canvas.toDataURL('image/jpeg');
     setPreviewImage(imageData);
     setUserFormData({
       ...userFormData,
       profile_picture: imageData
     });
-    
+
     // Reset to upload mode after capturing
     setImageOption('upload');
     stopCapture();
@@ -346,15 +421,17 @@ function Job_seeker_Profile() {
         education_level: jobSeekerFormData.education_level,
         education_sector: jobSeekerFormData.education_sector,
         salary_range: jobSeekerFormData.salary_range,
-        status: jobSeekerFormData.status
+        status: jobSeekerFormData.status,
+        district: jobSeekerFormData.district,
+        sector: jobSeekerFormData.sector
       }
     };
-    
+
     // Add registration and renewal fees based on salary range logic
     const newSalaryRange = jobSeekerFormData.salary_range;
     const originalFees = calculateFees(originalSalaryRange);
     const newFees = calculateFees(newSalaryRange);
-    
+
     // Only update fees if new salary range results in higher fees
     if (newFees.registrationFee > originalFees.registrationFee) {
       updatedData.job_seeker.registration_fee = newFees.registrationFee;
@@ -376,18 +453,18 @@ function Job_seeker_Profile() {
         },
         body: JSON.stringify(updatedData),
       });
-    
+
       if (response.ok) {
         const data = await response.json();
         console.log("Update response:", data);
-        
+
         // Update state with new data
         setUserData(data.custom_user);
         setJobSeekerData(data.job_seeker);
-        
+
         // Update original salary range for future comparisons
         setOriginalSalaryRange(data.job_seeker.salary_range);
-        
+
         setIsEditing(false);
         setAdditionalFees(null);
         alert('Profile updated successfully!');
@@ -440,9 +517,9 @@ function Job_seeker_Profile() {
             <div className="flex justify-center mb-6">
               {previewImage || userData.profile_picture ? (
                 <div className="relative">
-                  <img 
-                    src={previewImage || userData.profile_picture} 
-                    alt="Profile" 
+                  <img
+                    src={previewImage || userData.profile_picture}
+                    alt="Profile"
                     className="w-32 h-32 rounded-full object-cover border-2 border-gray-200"
                   />
                 </div>
@@ -458,23 +535,21 @@ function Job_seeker_Profile() {
             {/* User and Job Seeker Info tabs */}
             <div className="border-b border-gray-200 mb-6">
               <nav className="flex -mb-px">
-                <button 
+                <button
                   onClick={() => setIsUserInfoEditing(true)}
-                  className={`py-2 px-4 text-center border-b-2 font-medium text-sm ${
-                    isUserInfoEditing
+                  className={`py-2 px-4 text-center border-b-2 font-medium text-sm ${isUserInfoEditing
                       ? 'border-sky-900 text-sky-900'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   Account Information
                 </button>
                 <button
                   onClick={() => setIsUserInfoEditing(false)}
-                  className={`py-2 px-4 text-center border-b-2 font-medium text-sm ${
-                    !isUserInfoEditing
+                  className={`py-2 px-4 text-center border-b-2 font-medium text-sm ${!isUserInfoEditing
                       ? 'border-sky-900 text-sky-900'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   Job Seeker Information
                 </button>
@@ -520,6 +595,13 @@ function Job_seeker_Profile() {
                   <strong className="text-gray-700 block mb-1">Full Name</strong>
                   <span className="text-gray-800 text-lg">
                     {jobSeekerData.first_name} {jobSeekerData.middle_name} {jobSeekerData.last_name}
+                  </span>
+                </div>
+
+                <div className="p-4 bg-gray-50 rounded-lg">
+                  <strong className="text-gray-700 block mb-1">Location</strong>
+                  <span className="text-gray-800 text-lg">
+                    {jobSeekerData.district} {jobSeekerData.sector}
                   </span>
                 </div>
 
@@ -586,25 +668,23 @@ function Job_seeker_Profile() {
             {/* Edit mode tabs */}
             <div className="border-b border-gray-200 mb-6">
               <nav className="flex -mb-px">
-                <button 
+                <button
                   type="button"
                   onClick={() => setIsUserInfoEditing(true)}
-                  className={`py-2 px-4 text-center border-b-2 font-medium text-sm ${
-                    isUserInfoEditing
+                  className={`py-2 px-4 text-center border-b-2 font-medium text-sm ${isUserInfoEditing
                       ? 'border-sky-900 text-sky-900'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   Account Information
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsUserInfoEditing(false)}
-                  className={`py-2 px-4 text-center border-b-2 font-medium text-sm ${
-                    !isUserInfoEditing
+                  className={`py-2 px-4 text-center border-b-2 font-medium text-sm ${!isUserInfoEditing
                       ? 'border-sky-900 text-sky-900'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   Job Seeker Information
                 </button>
@@ -625,9 +705,9 @@ function Job_seeker_Profile() {
                     <div className="mb-4">
                       {previewImage ? (
                         <div className="relative">
-                          <img 
-                            src={previewImage} 
-                            alt="Profile Preview" 
+                          <img
+                            src={previewImage}
+                            alt="Profile Preview"
                             className="w-32 h-32 rounded-full object-cover border-2 border-gray-200"
                           />
                           <button
@@ -704,15 +784,15 @@ function Job_seeker_Profile() {
                         </label>
                       </div>
                     )}
-                    
+
                     <p className="text-xs text-gray-500 mt-2">Profile picture is optional</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label 
-                      className="block text-gray-700 text-sm font-medium mb-2" 
+                    <label
+                      className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="phone_number"
                     >
                       Phone
@@ -729,8 +809,8 @@ function Job_seeker_Profile() {
                   </div>
 
                   <div>
-                    <label 
-                      className="block text-gray-700 text-sm font-medium mb-2" 
+                    <label
+                      className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="email"
                     >
                       Email
@@ -747,8 +827,8 @@ function Job_seeker_Profile() {
                   </div>
 
                   <div>
-                    <label 
-                      className="block text-gray-700 text-sm font-medium mb-2" 
+                    <label
+                      className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="role"
                     >
                       Role
@@ -766,8 +846,8 @@ function Job_seeker_Profile() {
                   </div>
 
                   <div>
-                    <label 
-                      className="block text-gray-700 text-sm font-medium mb-2" 
+                    <label
+                      className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="status"
                     >
                       Status
@@ -793,8 +873,8 @@ function Job_seeker_Profile() {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label 
-                      className="block text-gray-700 text-sm font-medium mb-2" 
+                    <label
+                      className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="first_name"
                     >
                       First Name
@@ -811,8 +891,8 @@ function Job_seeker_Profile() {
                   </div>
 
                   <div>
-                    <label 
-                      className="block text-gray-700 text-sm font-medium mb-2" 
+                    <label
+                      className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="middle_name"
                     >
                       Middle Name
@@ -828,8 +908,8 @@ function Job_seeker_Profile() {
                   </div>
 
                   <div>
-                    <label 
-                      className="block text-gray-700 text-sm font-medium mb-2" 
+                    <label
+                      className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="last_name"
                     >
                       Last Name
@@ -845,9 +925,30 @@ function Job_seeker_Profile() {
                     />
                   </div>
 
+
                   <div>
-                    <label 
-                      className="block text-gray-700 text-sm font-medium mb-2" 
+                    <label>District *</label>
+                    <select className='text-gray-500 w-72' name="district" value={jobSeekerFormData.district} onChange={handleChange} required>
+                      <option value="">Select District</option>
+                      {Object.keys(districtsData.districts).map((district) => (
+                        <option key={district} value={district}>{district}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label>Sector *</label>
+                    <select className="text-gray-500 w-72" name="sector" value={jobSeekerFormData.sector} onChange={handleChange} required>
+                      <option value="">Select Sector</option>
+                      {sectors.map(([name]) => (
+                        <option key={name} value={name}>{name}</option>
+                      ))}
+                    </select>
+
+                  </div>
+
+                  <div>
+                    <label
+                      className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="gender"
                     >
                       Gender
@@ -868,8 +969,8 @@ function Job_seeker_Profile() {
                   </div>
 
                   <div>
-                    <label 
-                      className="block text-gray-700 text-sm font-medium mb-2" 
+                    <label
+                      className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="skills"
                     >
                       Skills (comma separated)
@@ -886,8 +987,8 @@ function Job_seeker_Profile() {
                   </div>
 
                   <div>
-                    <label 
-                      className="block text-gray-700 text-sm font-medium mb-2" 
+                    <label
+                      className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="experience"
                     >
                       Experience (years)
@@ -904,8 +1005,8 @@ function Job_seeker_Profile() {
                   </div>
 
                   <div>
-                    <label 
-                      className="block text-gray-700 text-sm font-medium mb-2" 
+                    <label
+                      className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="education_level"
                     >
                       Education Level
@@ -921,7 +1022,7 @@ function Job_seeker_Profile() {
                       <option value="primary">Primary Education</option>
                       <option value="ordinary_level">Ordinary Level</option>
                       <option value="secondary">Secondary Education</option>
-                        <option value="advance_dimploma">Advanced Diploma</option>
+                      <option value="advance_dimploma">Advanced Diploma</option>
                       <option value="vocational">Vocational Training</option>
                       <option value="advance_dimploma">Advanced Diploma</option>
                       <option value="bachelor">Bachelor's Degree</option>
@@ -931,8 +1032,8 @@ function Job_seeker_Profile() {
                   </div>
 
                   <div>
-                    <label 
-                      className="block text-gray-700 text-sm font-medium mb-2" 
+                    <label
+                      className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="education_sector"
                     >
                       Education Sector
@@ -949,8 +1050,8 @@ function Job_seeker_Profile() {
                   </div>
 
                   <div>
-                    <label 
-                      className="block text-gray-700 text-sm font-medium mb-2" 
+                    <label
+                      className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="salary_range"
                     >
                       Salary Range (Frw)

@@ -26,7 +26,7 @@ const MainLayout = () => {
       <Navbar />
       <Advertisements />
       <SearchBar />
-      {/* <Hero /> */}
+ 
       <Cards />
   
       <FeaturedJobs/>
@@ -34,7 +34,6 @@ const MainLayout = () => {
       <HowItWorks />
       <Testimonials />
       <CTASection />
-      {/* <Blog /> */}
       <NewsletterSignup />
       <Footer />
 
