@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 export const MenuLinks = [
   { id: 1, name: "home", link: "/" },
   { id: 2, name: "jobs", link: "/jobs" },
+  { id: 2, name: "Job Seekers", link: "/jobseekers" },
   { id: 3, name: "about", link: "/about" },
   { id: 4, name: "services", link: "/#service" },
   { id: 5, name: "contact", link: "#" },
@@ -24,7 +25,7 @@ const Navbar = () => {
 
   const toggleMenu = () => setShowMenu((prev) => !prev);
   const handleLoginClick = () => navigate("/login");
-  
+
   const handleLinkClick = (name, link) => {
     if (name === "about") {
       navigate("/about");
@@ -32,24 +33,30 @@ const Navbar = () => {
       setShowContact(true);
     } else if (link.startsWith('/#')) {
       window.location.href = link;
-    } else if (name==="jobs"){
+    } else if (name === "jobs") {
       navigate("/jobs")
-    } else if (name==="home"){
+    } else if (name === "home") {
       navigate("/")
+    } else if (name === "Job Seekers") {
+      navigate("/job_seekers")
     }
+
   };
 
   // Contact information
   const phoneNumbers = [
+
     { number: '+250788457408', display: '+250 788 457 408' },
-    { number: '+250789990408', display: '+250 789 990 408' },
-    { number: '+250786779262', display: '+250 786 779 262' }
+    { number: '+250795570541', display: '+250 795 570 541' },
+    { number: '+250783251199', display: '+250 783 251 199' },
+    { number: '+250725169154', display: '+250 725 196 154' }
+
   ];
 
   const emails = [
-    'princemugabe568@gmail.com',
-    'princemugabe567@gmail.com',
-    'eddy123@gmail.com'
+    'ltdanaweza@gmail.com',
+    'princemugabe567@gmail.com'
+
   ];
 
   const getEmailLink = (email) => {
@@ -71,8 +78,8 @@ const Navbar = () => {
               <ul className="flex items-center gap-6">
                 {MenuLinks.map(({ id, name, link }) => (
                   <li key={id} className="py-2">
-                    <a 
-                      href={link} 
+                    <a
+                      href={link}
                       className="text-lg font-medium hover:text-blue-700 py-2 hover:border-b-2 hover:border-black transition-colors duration-500"
                       onClick={(e) => {
                         e.preventDefault();
@@ -114,10 +121,10 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Sidebar */}
-        <ResponsiveMenu 
-          showMenu={showMenu} 
-          setShowMenu={setShowMenu} 
-          handleLinkClick={handleLinkClick} 
+        <ResponsiveMenu
+          showMenu={showMenu}
+          setShowMenu={setShowMenu}
+          handleLinkClick={handleLinkClick}
         />
       </div>
 
@@ -126,18 +133,18 @@ const Navbar = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-3xl mx-auto relative">
             {/* Close button */}
-            <button 
+            <button
               onClick={() => setShowContact(false)}
               className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
             >
               <IoMdClose size={24} />
             </button>
-            
+
             <div className="p-6">
               <h2 className='text-headingColor font-[700] text-[2rem] mb-6 text-black text-center'>
                 Contact Us
               </h2>
-              
+
               <div className='flex flex-col md:flex-row md:justify-between gap-6'>
                 <div className="md:w-1/2">
                   <h3 className="text-xl font-semibold text-gray-800 mb-3">Phone Numbers:</h3>
@@ -151,7 +158,7 @@ const Navbar = () => {
                     ))}
                   </ul>
                 </div>
-                
+
                 <div className="md:w-1/2">
                   <h3 className="text-xl font-semibold text-gray-800 mb-3">Email Addresses:</h3>
                   <ul className="space-y-2 text-lg text-gray-600">

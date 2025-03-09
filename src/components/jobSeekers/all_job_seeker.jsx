@@ -27,8 +27,8 @@ const All_Job_Seekers = () => {
         const response = await axios.get('https://anaweza-backend.up.railway.app/job_seeker/all/');
         // Filter only active job seekers
         const activeJobSeekers = response.data.filter(seeker => seeker.status === true);
-        setFeaturedSeekers(response.data);
-        setTotalPages(Math.ceil(response.data.length / itemsPerPage));
+        setFeaturedSeekers(activeJobSeekers);
+        setTotalPages(Math.ceil(activeJobSeekers.length / itemsPerPage));
         setLoading(false);
       } catch (err) {
         setError('Failed to fetch job seekers');

@@ -501,8 +501,8 @@ const RegisterAsJobSeeker = () => {
             </p>
 
             <ul className="list-disc pl-6 space-y-2">
-              <li>Mobile Money: 0795570541</li>
-              <li>MOMO: 1592374</li>
+              {/* <li>Mobile Money: 0795570541</li> */}
+              <li>MTN MOMO PAY: 1592374</li>
             </ul>
 
             <p>
@@ -734,7 +734,7 @@ const RegisterAsJobSeeker = () => {
                       <p className="font-medium text-blue-700">Registration Fee: {registrationFee.registrationFee}</p>
                       <p className="text-sm text-blue-600">Annual Renewal: {registrationFee.renewalFee}</p>
                       <p className="text-sm text-gray-600 mt-1">
-                        Your account will be activated after payment confirmation. Please pay using Mobile Money: 0795570541 or MOMO: 1592374
+                        Your account will be activated after payment confirmation. Please pay using MTN MOMO PAY: 1592374
                       </p>
                     </div>
                   </div>

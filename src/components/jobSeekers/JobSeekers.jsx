@@ -23,7 +23,7 @@ const FeaturedSeekers = () => {
         const activeJobSeekers = response.data.filter(seeker => seeker.status === true);
         
         // Get 8 random job seekers from the active ones
-        const randomizedSeekers = getRandomSeekers(response.data, 8);
+        const randomizedSeekers = getRandomSeekers(activeJobSeekers, 8);
         setFeaturedSeekers(randomizedSeekers);
         setLoading(false);
       } catch (err) {

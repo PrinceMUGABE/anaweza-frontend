@@ -3,8 +3,11 @@ import React from 'react';
 
 const Contact = () => {
     const phoneNumbers = [
-        { number: '+250795570541', display: '+250 725 169 154' },
-        { number: '+250725169154', display: '+250 789 990 408' }
+        
+        { number: '+250788457408', display: '+250 788 457 408' },
+        { number: '+250795570541', display: '+250 795 570 541' },
+        { number: '+250783251199', display: '+250 783 251 199' },
+        { number: '+250725169154', display: '+250 725 196 154' }
 
     ];
 
