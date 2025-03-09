@@ -197,10 +197,10 @@ const Policy = () => {
               We accept various payment methods to ensure convenience for all our users:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-gray-700">
-              <li>Mobile Money: 0795570541</li>
-              <li>MOMO: 15492374</li>
-              {/* <li>Credit/Debit Cards</li>
-              <li>PayPal (for international users)</li> */}
+              {/* <li>Mobile Money: 0795570541</li> */}
+              <li>MTN MOMO : 15492374</li>
+              <li>Anaweza App LTD</li>
+              {/* <li>PayPal (for international users)</li> */}
             </ul>
             <p className="text-gray-700 mt-4">
               All payments are secured using industry-standard encryption protocols to ensure the safety of your financial information.

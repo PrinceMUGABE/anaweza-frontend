@@ -1119,7 +1119,12 @@ function Job_seeker_Profile() {
                     <div className="p-3 bg-white rounded border border-yellow-300">
                       <p className="font-medium text-gray-800">Payment Information:</p>
                       <p className="text-gray-700">Please deposit the amount to:</p>
-                      <p className="font-bold text-gray-500">MOMO PAY: 1592374, 0795570541</p>
+                      <p className="font-bold text-gray-500">
+                        <ul>
+                          <li>MTN MOMO PAY: <span className='text-red-600'>1592374</span></li>
+                          <li>Anaweza App LTD</li>
+                        </ul>
+                      </p>
                     </div>
                   </div>
                 )}

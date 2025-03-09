@@ -734,7 +734,11 @@ const RegisterAsJobSeeker = () => {
                       <p className="font-medium text-blue-700">Registration Fee: {registrationFee.registrationFee}</p>
                       <p className="text-sm text-blue-600">Annual Renewal: {registrationFee.renewalFee}</p>
                       <p className="text-sm text-gray-600 mt-1">
-                        Your account will be activated after payment confirmation. Please pay using MTN MOMO PAY: 1592374
+                        Your account will be activated after payment confirmation. Please pay using:
+                        <ul>
+                          <li>MTN MOMO PAY: <span className='text-red-700'>1592374</span></li>
+                          <li>Anaweza App LTD</li>
+                        </ul>
                       </p>
                     </div>
                   </div>

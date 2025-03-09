@@ -707,7 +707,11 @@ const handleSubmit = async (e) => {
                       <p className="font-medium text-blue-700">Registration Fee: {registrationFee.registrationFee}</p>
                       <p className="text-sm text-blue-600">Annual Renewal: {registrationFee.renewalFee}</p>
                       <p className="text-sm text-gray-600 mt-1">
-                        Your account will be activated after payment confirmation. Please pay using Mobile Money: 0795570541 or MOMO: 1592374
+                        Your account will be activated after payment confirmation. Please pay using Mobile Money:
+                        <ul>
+                          <li>MTN MOMO: <span className='text-red-700'>1592374</span></li>
+                          <li>Anaweza App LTD</li>
+                        </ul>
                       </p>
                     </div>
                   </div>
