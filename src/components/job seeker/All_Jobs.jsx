@@ -299,7 +299,7 @@ const Job_Seeker_FeaturedJobs = () => {
             <div key={job.id} className="border rounded-lg p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start gap-4">
                 <div>
-                  <h3 className="font-semibold text-lg">{job.title}</h3>
+                  <h3 className="font-semibold text-lg text-gray-900">{job.title}</h3>
                   <p className="text-gray-600">{job.company_name || job.offer_type}</p>
                 </div>
               </div>
