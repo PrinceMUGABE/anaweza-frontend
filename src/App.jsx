@@ -59,6 +59,7 @@ import Employer_Advertisements from "./components/pages/job_provider/pages/adver
 import Job_Offer_ManageTestimonials from "./components/pages/job_provider/my_testimonies.jsx";
 import Employer_Manage_Jobs from "./components/pages/job_provider/pages/my_jobs.jsx";
 import Employer_RegisterAsJobSeeker from "./components/pages/job_provider/pages/employer_register_as_job_seeker.jsx";
+import Employer_Manage_Job_Applications from "./components/pages/job_provider/pages/My_Job_Applications.jsx";
 
 
 
@@ -152,6 +153,7 @@ const App = () => {
              <Route path="/employer/testimonials" element={<Job_Offer_ManageTestimonials />} />
              <Route path="/employer/jobs" element={<Employer_Manage_Jobs />} />
              <Route path="/employer/register_as_job_seeker" element={<Employer_RegisterAsJobSeeker />} />
+             <Route path="/employer/applications" element={<Employer_Manage_Job_Applications />} />
              
 
 

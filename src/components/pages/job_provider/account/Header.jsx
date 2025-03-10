@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { FaUserCircle, FaSignOutAlt, FaBriefcase, FaHome, FaPhone, FaInfoCircle, FaUsersCog, FaStar, FaBullhorn } from "react-icons/fa";
+import { FaUserCircle, FaSignOutAlt, FaBriefcase, FaHome, FaPhone, FaInfoCircle, FaUsersCog, FaStar, FaBullhorn, FaClipboardList } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { X, Menu } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../../../assets/pictures/system/anaweza.jpg";
+
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,13 +38,14 @@ const Header = () => {
 
   const Navbar_Links = useMemo(() => [
     { id: 1, name: "My Jobs", path: "/employer", icon: <MdDashboard className="text-xl" /> },
-    { id: 2, name: "About Us", path: "/employer/about", icon: <FaInfoCircle className="text-xl" /> },
-    { id: 3, name: "Contact Us", path: "/employer/contact", icon: <FaPhone className="text-xl" /> },
-    { id: 4, name: "Jobs", path: "/employer/jobs", icon: <FaBriefcase className="text-xl" /> },
-    { id: 5, name: "Job Seekers", path: "/employer/job_seekers", icon: <FaUsersCog className="text-xl" /> },
-    { id: 6, name: "Testimonials", path: "/employer/testimonials", icon: <FaStar className="text-xl" /> },
-    { id: 7, name: "Publicity", path: "/employer/advertisements", icon: <FaBullhorn className="text-xl" /> },
-    { id: 8, name: "Profile", path: `/employer/profile/${userId}`, icon: <FaUserCircle className="text-xl" /> },
+    { id: 2, name: "My Job Applications", path: "/applications", icon: <FaClipboardList className="text-xl" /> },
+    { id: 3, name: "About Us", path: "/employer/about", icon: <FaInfoCircle className="text-xl" /> },
+    { id: 4, name: "Contact Us", path: "/employer/contact", icon: <FaPhone className="text-xl" /> },
+    { id: 5, name: "Jobs", path: "/employer/jobs", icon: <FaBriefcase className="text-xl" /> },
+    { id: 6, name: "Job Seekers", path: "/employer/job_seekers", icon: <FaUsersCog className="text-xl" /> },
+    { id: 7, name: "Testimonials", path: "/employer/testimonials", icon: <FaStar className="text-xl" /> },
+    { id: 8, name: "Advertisements", path: "/employer/advertisements", icon: <FaBullhorn className="text-xl" /> },
+    { id: 9, name: "Profile", path: `/employer/profile/${userId}`, icon: <FaUserCircle className="text-xl" /> },
   ], [userId]);
 
   return (
