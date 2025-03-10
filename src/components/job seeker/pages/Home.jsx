@@ -590,7 +590,7 @@ function JobSeekerHome() {
               {/* Action Buttons */}
               <div className="flex justify-end space-x-4 border-t pt-4">
                 <button
-                  className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+                  className="px-4 py-2 bg-blue-700 rounded-lg hover:bg-gray-300 transition-colors"
                   onClick={() => setShowModal(false)}
                 >
                   Close
