@@ -708,7 +708,7 @@ const totalPages = Math.ceil(safeFilteredApplications.length / itemsPerPage);
                           <div>
                             <p className="font-medium text-gray-700">Experience</p>
                             <p className="text-gray-700">{selectedApplication.job_seeker.experience} years</p>
-                          </div>\
+                          </div>
 
 
 
