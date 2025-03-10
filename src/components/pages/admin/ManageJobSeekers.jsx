@@ -247,12 +247,12 @@ const JobSeekerDetailsModal = ({ jobSeeker, onClose }) => {
         </div>
 
         <div className="flex justify-end gap-2 mt-6">
-          <Link
+          {/* <Link
             to={`/admin/editJobSeeker/${jobSeeker.id}`}
             className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
           >
             Edit Profile
-          </Link>
+          </Link> */}
           <button
             onClick={onClose}
             className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
