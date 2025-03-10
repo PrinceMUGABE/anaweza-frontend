@@ -38,7 +38,7 @@ const Header = () => {
 
   const Navbar_Links = useMemo(() => [
     { id: 1, name: "My Jobs", path: "/employer", icon: <MdDashboard className="text-xl" /> },
-    { id: 2, name: "My Job Applications", path: "/applications", icon: <FaClipboardList className="text-xl" /> },
+    { id: 2, name: "Applications", path: "/employer/applications", icon: <FaClipboardList className="text-xl" /> },
     { id: 3, name: "About Us", path: "/employer/about", icon: <FaInfoCircle className="text-xl" /> },
     { id: 4, name: "Contact Us", path: "/employer/contact", icon: <FaPhone className="text-xl" /> },
     { id: 5, name: "Jobs", path: "/employer/jobs", icon: <FaBriefcase className="text-xl" /> },
@@ -53,7 +53,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 flex justify-between h-16 items-center">
         <img src={Logo} alt="Logo" className="h-12 w-auto" />
 
-        <div className="hidden md:flex items-center space-x-6">
+        <div className="hidden md:flex items-center space-x-1  mr-8">
           {Navbar_Links.map((link) => (
             <Link key={link.id} to={link.path} className="text-white hover:text-blue-200 flex items-center space-x-2">
               {link.icon}
