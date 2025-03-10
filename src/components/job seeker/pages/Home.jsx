@@ -423,7 +423,7 @@ function JobSeekerHome() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div className="flex items-start">
-                    <BriefcaseBusiness className="mr-2 mt-1 flex-shrink-0" size={18} />
+                    <BriefcaseBusiness className="mr-2 text-blue-700 mt-1 flex-shrink-0" size={18} />
                     <div>
                       <p className="font-medium text-gray-700">Company</p>
                       <p className="text-gray-700">{selectedApplication.job_offer?.company_name || "Individual"}</p>
@@ -431,7 +431,7 @@ function JobSeekerHome() {
                   </div>
 
                   <div className="flex items-start">
-                    <MapPin className="mr-2 mt-1 flex-shrink-0" size={18} />
+                    <MapPin className="mr-2 mt-1 text-blue-700 flex-shrink-0" size={18} />
                     <div>
                       <p className="font-medium text-gray-700">Location</p>
                       <p className="text-gray-700">{selectedApplication.job_offer.location}</p>
@@ -439,7 +439,7 @@ function JobSeekerHome() {
                   </div>
 
                   <div className="flex items-start">
-                    <Briefcase className="mr-2 mt-1 flex-shrink-0" size={18} />
+                    <Briefcase className="mr-2 mt-1 text-blue-700 flex-shrink-0" size={18} />
                     <div>
                       <p className="font-medium text-gray-700">Job Type</p>
                       <p className="text-gray-700">{selectedApplication.job_offer.job_type?.name || "Not specified"}</p>
@@ -447,7 +447,7 @@ function JobSeekerHome() {
                   </div>
 
                   <div className="flex items-start">
-                    <ListChecks className="mr-2 mt-1 flex-shrink-0" size={18} />
+                    <ListChecks className="mr-2 mt-1 text-blue-700 flex-shrink-0" size={18} />
                     <div>
                       <p className="font-medium text-gray-700">Category</p>
                       <p className="text-gray-700">{selectedApplication.job_offer.job_category?.name || "Not specified"}</p>
@@ -455,7 +455,7 @@ function JobSeekerHome() {
                   </div>
 
                   <div className="flex items-start">
-                    <Award className="mr-2 mt-1 flex-shrink-0" size={18} />
+                    <Award className="mr-2 mt-1 text-blue-700 flex-shrink-0" size={18} />
                     <div>
                       <p className="font-medium text-gray-700">Experience Level</p>
                       <p className="text-gray-700">{selectedApplication.job_offer.experience_level}</p>
@@ -463,7 +463,7 @@ function JobSeekerHome() {
                   </div>
 
                   <div className="flex items-start">
-                    <DollarSign className="mr-2 mt-1 flex-shrink-0" size={18} />
+                    <DollarSign className="mr-2 text-blue-700 mt-1 flex-shrink-0" size={18} />
                     <div>
                       <p className="font-medium text-gray-700">Salary Range</p>
                       <p className="text-gray-700">{selectedApplication.job_offer.salary_range || "Not disclosed"}</p>
@@ -471,7 +471,7 @@ function JobSeekerHome() {
                   </div>
 
                   <div className="flex items-start">
-                    <Clock className="mr-2 mt-1 flex-shrink-0" size={18} />
+                    <Clock className="mr-2 mt-1 text-blue-700 flex-shrink-0" size={18} />
                     <div>
                       <p className="font-medium text-gray-700">Application Deadline</p>
                       <p className="text-gray-700">{formatDate(selectedApplication.job_offer.deadline)}</p>
