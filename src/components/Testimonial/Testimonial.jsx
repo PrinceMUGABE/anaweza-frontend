@@ -13,6 +13,7 @@ import {
   faExclamationTriangle,
   faTimes
 } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 function Testimonials() {
   // State management
@@ -23,6 +24,7 @@ function Testimonials() {
   const [isPaused, setIsPaused] = useState(false);
   const [selectedTestimonial, setSelectedTestimonial] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const {t} = useTranslation();
   
   const sliderRef = useRef(null);
   const modalRef = useRef(null);
@@ -246,9 +248,9 @@ function Testimonials() {
     <div className="bg-gray-50 py-16">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Success Stories</h2>
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">{t("Success Stories")}</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Hear from our community members who have found success through our platform. Real stories from real people.
+            {t("Hear from our community members who have found success through our platform. Real stories from real people.")}
           </p>
         </div>
 
@@ -269,11 +271,11 @@ function Testimonials() {
 
         {isLoading ? (
           <div className="flex justify-center items-center h-32">
-            <p className="text-gray-500">Loading testimonials...</p>
+            <p className="text-gray-500">{t("Loading testimonials")}...</p>
           </div>
         ) : testimonials.length === 0 ? (
           <div className="text-center text-gray-500 py-8">
-            <p>No testimonials available yet.</p>
+            <p>{t("No testimonials available yet.")}</p>
           </div>
         ) : (
           <div className="relative overflow-hidden">

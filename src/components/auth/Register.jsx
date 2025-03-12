@@ -7,8 +7,10 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { UserPlusIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
 import loginImage from '../../assets/pictures/system/anaweza.jpg';
 import PasswordInput from './passwordValidation';
+import { useTranslation } from "react-i18next";
 
 const Register = () => {
+  const {t} = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState({
@@ -160,14 +162,14 @@ const Register = () => {
         </div>
         
         <div className="space-y-8 relative z-10">
-          <h1 className="text-5xl font-bold text-white leading-tight">Create Your <span className="text-blue-300">Account</span></h1>
+          <h1 className="text-5xl font-bold text-white leading-tight">{t("Create Your Account")}<span className="text-blue-300"></span></h1>
           <p className="text-blue-100 text-xl max-w-md leading-relaxed">
-            Join our platform and discover job opportunities tailored just for you.
+            {t("Join our platform and discover job opportunities tailored just for you.")}
           </p>
           
           <div className="bg-white/10 p-6 rounded-xl backdrop-blur-sm border border-white/20 shadow-xl">
             <p className="text-white text-lg italic mb-4">
-              "This platform helped me find my dream job within weeks. The personalized matching system is revolutionary!"
+              {t("This platform helped me find my dream job within weeks. The personalized matching system is revolutionary!")}
             </p>
             <div className="flex items-center">
               <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-blue-400 to-blue-300 flex items-center justify-center text-blue-900 font-bold text-lg shadow-md">
@@ -195,8 +197,8 @@ const Register = () => {
                 <UserPlusIcon className="h-8 w-8 text-white" />
               </div>
             </div>
-            <h2 className="text-3xl font-bold text-gray-800">Create a new account</h2>
-            <p className="mt-3 text-gray-600">Fill in your details to join Anaweza</p>
+            <h2 className="text-3xl font-bold text-gray-800">{t("Create a new account")}</h2>
+            <p className="mt-3 text-gray-600">{t("Fill in your details to join Anaweza")}</p>
           </div>
           
           {errors.form && (
@@ -236,7 +238,7 @@ const Register = () => {
               
               <div>
                 <label htmlFor="phone" className="block text-sm font-semibold text-gray-700">
-                  Phone Number
+                  {t("Phone Number")}
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm">
                   <input
@@ -251,12 +253,12 @@ const Register = () => {
                   />
                 </div>
                 {errors.phone && <p className="mt-1 text-xs text-red-500 font-medium">{errors.phone}</p>}
-                <p className="mt-1 text-xs text-gray-500">Must be 10 digits starting with 078, 079, 072, or 073</p>
+                <p className="mt-1 text-xs text-gray-500">{t("Must be 10 digits starting with 078, 079, 072, or 073")}</p>
               </div>
 
               <div>
                 <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
-                  Email <span className="text-gray-400 text-xs font-normal">(Optional but recommended)</span>
+                  {t("Email (Optional but recommended)")} <span className="text-gray-400 text-xs font-normal"></span>
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm">
                   <input
@@ -266,11 +268,11 @@ const Register = () => {
                     value={formData.email}
                     onChange={handleChange}
                     className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm sm:text-sm text-gray-700"
-                    placeholder="name@gmail.com"
+                    placeholder={t("name@gmail.com")}
                   />
                 </div>
                 {errors.email && <p className="mt-1 text-xs text-red-500 font-medium">{errors.email}</p>}
-                <p className="mt-1 text-xs text-gray-500">We only accept emails ending with @gmail.com</p>
+                <p className="mt-1 text-xs text-gray-500">{t("We only accept emails ending with @gmail.com")}</p>
               </div>
 
               {/* Using the PasswordInput component here */}
@@ -280,13 +282,13 @@ const Register = () => {
                 name="password"
                 id="password"
                 label="Password"
-                placeholder="Enter your password"
+                placeholder={t("Enter your password")}
                 required={true}
               />
 
               <div>
                 <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700">
-                  Confirm Password
+                  {t("Confirm Password")}
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm">
                   <input
@@ -296,7 +298,7 @@ const Register = () => {
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm sm:text-sm text-gray-700"
-                    placeholder="Confirm your password"
+                    placeholder={t("Confirm your password")}
                     required
                   />
                   <span
@@ -331,10 +333,10 @@ const Register = () => {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                     </svg>
-                    Creating Account...
+                    {t("Creating Account")}...
                   </div>
                 ) : (
-                  "Create Account"
+                  t("Create Account")
                 )}
               </button>
             </div>
@@ -344,13 +346,13 @@ const Register = () => {
             <div className="text-sm">
               <Link to="/" className="flex items-center font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
                 <ArrowLeftIcon className="mr-1 h-4 w-4" />
-                Back to home
+                {t("Back to home")}
               </Link>
             </div>
             
             <div className="text-sm">
               <Link to="/login" className="font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
-                Already have an account?
+                {t("Already have an account?")}
               </Link>
             </div>
           </div>

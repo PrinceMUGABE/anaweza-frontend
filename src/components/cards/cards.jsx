@@ -10,6 +10,7 @@ import accImage from "../../assets/pictures/system/accountant1.jpg";
 import drivImage from "../../assets/pictures/system/driving1.jpg";
 import teachImage from "../../assets/pictures/system/teaching1.jpg";
 
+
 const Cards = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -60,8 +61,8 @@ const Cards = () => {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-800">Job Seekers</h3>
-                  <p className="text-gray-600">Create your professional profile and get discovered by employers</p>
+                  <h3 className="font-semibold text-gray-800">{t("Job Seekers")}</h3>
+                  <p className="text-gray-600">{t("Create your professional profile and get discovered by employers")}</p>
                 </div>
               </div>
 
@@ -72,8 +73,8 @@ const Cards = () => {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-800">Employers</h3>
-                  <p className="text-gray-600">Post opportunities and find the perfect candidates for your positions</p>
+                  <h3 className="font-semibold text-gray-800">{t("Employers")}</h3>
+                  <p className="text-gray-600">{t("Post opportunities and find the perfect candidates for your positions")}</p>
                 </div>
               </div>
             </div>

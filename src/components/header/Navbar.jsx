@@ -1,8 +1,11 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React from 'react'
 import { FaBars } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import { FaBell } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 function Navbar({sidebarToggle, setSidebarToggle}) {
     return (

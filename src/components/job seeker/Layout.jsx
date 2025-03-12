@@ -4,6 +4,7 @@ import Header from './Header';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import WhatsAppButton from '../whatsapp';
+import { useTranslation } from "react-i18next";
 
 function JobSeeker_Layout() {
   const whatsappNumber = "+250788457408";

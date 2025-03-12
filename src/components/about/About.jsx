@@ -2,6 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
+import { useTranslation } from "react-i18next";
 
 function About() {
   const navigate = useNavigate();

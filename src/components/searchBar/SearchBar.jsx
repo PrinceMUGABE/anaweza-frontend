@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Search, MapPin, Briefcase, X } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -15,6 +16,7 @@ const SearchBar = () => {
   const [error, setError] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const resultsRef = useRef(null);
+  const {t} = useTranslation();
 
   // Fetch categories and job types on component mount
   useEffect(() => {
@@ -94,7 +96,7 @@ const SearchBar = () => {
   return (
     <div className="bg-gray-50 py-6 relative">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8 text-blue-800">Find Your Perfect Opportunity</h2>
+        <h2 className="text-3xl font-bold text-center mb-8 text-blue-800">{t("Find Your Perfect Opportunity")}</h2>
         <form onSubmit={handleSearch} className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 relative">
@@ -123,7 +125,7 @@ const SearchBar = () => {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
-                <option value="">All Categories</option>
+                <option value="">{t("All Categories")}</option>
                 {categories.map((cat) => (
                   <option key={cat.id} value={cat.id}>
                     {cat.name}
@@ -137,7 +139,7 @@ const SearchBar = () => {
                 value={jobType}
                 onChange={(e) => setJobType(e.target.value)}
               >
-                <option value="">All Job Types</option>
+                <option value="">{t("All Job Types")}</option>
                 {types.map((type) => (
                   <option key={type.id} value={type.id}>
                     {type.name}
@@ -186,7 +188,7 @@ const SearchBar = () => {
             <div className="max-h-96 overflow-y-auto">
               {searchResults.length === 0 ? (
                 <div className="p-8 text-center text-gray-500">
-                  No job matches your search criteria. Try different keywords or filters.
+                  {t("No job matches your search criteria. Try different keywords or filters.")}
                 </div>
               ) : (
                 <ul className="divide-y divide-gray-200">
@@ -255,7 +257,7 @@ const SearchBar = () => {
                   href="/jobs" 
                   className="text-blue-600 hover:text-blue-800 font-medium"
                 >
-                  View All Jobs
+                  {t("View All Jobs")}
                 </a>
               </div>
             )}

@@ -54,7 +54,7 @@ const ResponsiveMenu = ({ showMenu, setShowMenu, handleLinkClick }) => {
       <div className="mt-auto">
         {/* Language Selector */}
         <label className="block text-white text-sm mb-2">{t("language")}</label>
-        {/* <select
+        <select
           onChange={(e) => i18n.changeLanguage(e.target.value)}
           className="w-full bg-white text-black px-3 py-2 rounded"
           value={i18n.language}
@@ -62,7 +62,7 @@ const ResponsiveMenu = ({ showMenu, setShowMenu, handleLinkClick }) => {
           <option value="en">ENG</option>
           <option value="fr">FR</option>
           <option value="rw">RW</option>
-        </select> */}
+        </select>
 
         {/* Login Button */}
         <button

@@ -9,10 +9,12 @@ import { AiOutlineCloudUpload, AiOutlineInfoCircle } from 'react-icons/ai';
 import { FiCheck } from 'react-icons/fi';
 import { pdfjs } from 'react-pdf';
 import districtsData from './rwanda_districts.json';
+import { useTranslation } from "react-i18next";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const RegisterAsJobSeeker = () => {
+  const {t} = useTranslation();
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
@@ -83,7 +85,7 @@ const RegisterAsJobSeeker = () => {
     localStorage.removeItem("userData");
 
     // Show a logout message
-    setMessage('Logging out...');
+    setMessage(t("Logging out..."));
 
     // Redirect to login page after a short delay
     setTimeout(() => navigate('/login'), 1000);
@@ -142,14 +144,14 @@ const RegisterAsJobSeeker = () => {
     if (file) {
       // Validate file size (10MB max)
       if (file.size > 10 * 1024 * 1024) {
-        setErrors({ ...errors, resume: "File size cannot exceed 10MB" });
+        setErrors({ ...errors, resume: t("File size cannot exceed 10MB") });
         return;
       }
 
       // Validate file type
       const fileExtension = file.name.split('.').pop().toLowerCase();
       if (!['pdf', 'doc', 'docx'].includes(fileExtension)) {
-        setErrors({ ...errors, resume: "Only PDF, DOC, or DOCX files are allowed" });
+        setErrors({ ...errors, resume: t("Only PDF, DOC, or DOCX files are allowed") });
         return;
       }
 
@@ -200,7 +202,7 @@ const RegisterAsJobSeeker = () => {
     // Validation for experience - must be a positive number
     if (name === 'experience') {
       if (value < 0) {
-        setErrors(prev => ({ ...prev, experience: 'Experience cannot be negative' }));
+        setErrors(prev => ({ ...prev, experience: t("Experience cannot be negative") }));
       } else {
         setErrors(prev => ({ ...prev, experience: '' }));
       }
@@ -242,31 +244,31 @@ const RegisterAsJobSeeker = () => {
     const newErrors = {};
 
     // Required fields
-    if (!formData.first_name.trim()) newErrors.first_name = 'First name is required';
-    if (!formData.last_name.trim()) newErrors.last_name = 'Last name is required';
-    if (!formData.gender) newErrors.gender = 'Gender is required';
+    if (!formData.first_name.trim()) newErrors.first_name = t("First name is required");
+    if (!formData.last_name.trim()) newErrors.last_name = t("Last name is required");
+    if (!formData.gender) newErrors.gender = t("Gender is required");
 
     // Salary range validation
     if (!formData.salary_range.trim()) {
-      newErrors.salary_range = 'Salary range is required';
+      newErrors.salary_range = t("Salary range is required");
     } else {
       // Additional validation for salary range format
       const salaryRangeRegex = /^\d+(\s*-\s*\d+)?$/;
       if (!salaryRangeRegex.test(formData.salary_range)) {
-        newErrors.salary_range = 'Salary range must be in format "1000" or "1000 - 2000"';
+        newErrors.salary_range = t("Salary range must be in format '1000' or '1000 - 2000'");
       }
     }
 
     // Validate experience is a number
     if (isNaN(Number(formData.experience))) {
-      newErrors.experience = 'Experience must be a valid number';
+      newErrors.experience = t("Experience must be a valid number");
     }
 
     // Check if terms and conditions are accepted
     if (!acceptTerms) {
-      setTermsError('You must accept the terms and conditions to proceed');
+      setTermsError(t("You must accept the terms and conditions to proceed"));
     } else {
-      setTermsError('');
+      t(setTermsError(''));
     }
 
     setErrors(newErrors);
@@ -358,7 +360,7 @@ const RegisterAsJobSeeker = () => {
 
       if (response.status === 201) {
         console.log("Registration successful");
-        setMessage('Registration successful! Your account will be activated after payment confirmation.');
+        setMessage(t("Registration successful! Your account will be activated after payment confirmation."));
         setTimeout(() => navigate('/job_seeker'), 2000);
       }
     } catch (error) {
@@ -397,7 +399,7 @@ const RegisterAsJobSeeker = () => {
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold text-gray-800">Terms and Conditions</h2>
+            <h2 className="text-2xl font-bold text-gray-800">{t("Terms and Conditions")}</h2>
             <button
               onClick={() => setShowTermsModal(false)}
               className="text-gray-500 hover:text-gray-700"
@@ -410,42 +412,35 @@ const RegisterAsJobSeeker = () => {
 
           <div className="text-gray-700 space-y-4">
             <p>
-              <strong>Introduction:</strong> Welcome to Anaweza. These Terms and Conditions govern your use of our platform and services.
-              By accessing or using Anaweza, you agree to be bound by these Terms.
+              <strong>{t("Introduction")}:</strong> {t("Welcome to Anaweza. These Terms and Conditions govern your use of our platform and services. By accessing or using Anaweza, you agree to be bound by these Terms.")}
             </p>
 
             <p>
-              <strong>User Accounts:</strong> When you create an account with us, you must provide accurate,
-              complete, and up-to-date information. You are responsible for safeguarding your password
-              and for all activities that occur under your account.
+              <strong>{t("User Accounts")}:</strong> {t("When you create an account with us, you must provide accurate, complete, and up-to-date information. You are responsible for safeguarding your password and for all activities that occur under your account.")}
             </p>
 
             <p>
-              <strong>User Conduct:</strong> You agree not to provide false information, use the service for illegal purposes,
-              harass others, post discriminatory job listings, or create multiple accounts for deceptive purposes.
+              <strong>{t("User Conduct")}:</strong> {t("You agree not to provide false information, use the service for illegal purposes, harass others, post discriminatory job listings, or create multiple accounts for deceptive purposes.")}
             </p>
 
             <p>
-              <strong>Job Seeker Specific Terms:</strong> You must provide accurate information about your qualifications,
-              experience, and desired salary range. Your salary range determines your registration fee.
+              <strong>{t("Job Seeker Specific Terms")}:</strong> {t("You must provide accurate information about your qualifications, experience, and desired salary range. Your salary range determines your registration fee.")}
             </p>
 
             <p>
-              <strong>Payment Terms:</strong> You agree to pay all fees associated with your selected tier.
-              All payments are due in advance and are non-refundable except as specified in our Refund Policy.
+              <strong>{t("Payment Terms:")}</strong> {t("You agree to pay all fees associated with your selected tier. All payments are due in advance and are non-refundable except as specified in our Refund Policy.")}
             </p>
 
             <p>
-              <strong>Intellectual Property:</strong> The service and its content remain the exclusive property of Anaweza.
-              You retain rights to content you post, but grant us a license to use it in connection with the service.
+              <strong>{t("Intellectual Property:")}</strong> {t("The service and its content remain the exclusive property of Anaweza. You retain rights to content you post, but grant us a license to use it in connection with the service.")}
             </p>
 
             <p>
-              <strong>Termination:</strong> We may terminate your account without prior notice if you breach the Terms.
+              <strong>{t("Termination:")}</strong> {t("We may terminate your account without prior notice if you breach the Terms.")}
             </p>
 
             <p>
-              For the complete Terms and Conditions, please visit our full Terms and Conditions page.
+              {t("For the complete Terms and Conditions, please visit our full Terms and Conditions page.")}
             </p>
           </div>
 
@@ -454,7 +449,7 @@ const RegisterAsJobSeeker = () => {
               onClick={() => setShowTermsModal(false)}
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
             >
-              Close
+              {t("Close")}
             </button>
           </div>
         </div>
@@ -468,7 +463,7 @@ const RegisterAsJobSeeker = () => {
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold text-gray-800">Pricing Policy</h2>
+            <h2 className="text-2xl font-bold text-gray-800">{t("Pricing Policy")}</h2>
             <button
               onClick={() => setShowPolicyModal(false)}
               className="text-gray-500 hover:text-gray-700"
@@ -481,23 +476,22 @@ const RegisterAsJobSeeker = () => {
 
           <div className="text-gray-700 space-y-4">
             <p>
-              <strong>Overview:</strong> At Anaweza, we provide fair and transparent pricing that aligns with our users' career levels.
-              Our pricing structure is designed to be accessible to job seekers at all income levels.
+              <strong>{t("Overview")}:</strong> {t("At Anaweza, we provide fair and transparent pricing that aligns with our users' career levels. Our pricing structure is designed to be accessible to job seekers at all income levels.")}
             </p>
 
             <p>
-              <strong>Job Seeker Registration Pricing:</strong> Our registration fees are scaled according to your target salary range:
+              <strong>{t("Job Seeker Registration Pricing:")}</strong> {t("Our registration fees are scaled according to your target salary range:")}
             </p>
 
             <ul className="list-disc pl-6 space-y-2">
-              <li><strong>Below 100,000 RWF:</strong> 2,000 RWF registration fee, 1,000 RWF annual renewal</li>
-              <li><strong>100,000 - 199,000 RWF:</strong> 5,000 RWF registration fee, 2,500 RWF annual renewal</li>
-              <li><strong>199,000 - 499,000 RWF:</strong> 10,000 RWF registration fee, 5,000 RWF annual renewal</li>
-              <li><strong>500,000 RWF and Above:</strong> 20,000 RWF registration fee, 10,000 RWF annual renewal</li>
+              <li><strong>{t("Below")} 100,000 RWF:</strong> 2,000 RWF {t("registration fee")}, 1,000 RWF {t("annual renewal")}</li>
+              <li><strong>100,000 - 199,000 RWF:</strong> 5,000 RWF {t("registration fee")}, 2,500 RWF {t("annual renewal")}</li>
+              <li><strong>199,000 - 499,000 RWF:</strong> 10,000 RWF {t("registration fee")}, 5,000 RWF {t("annual renewal")}</li>
+              <li><strong>500,000 RWF and Above:</strong> 20,000 RWF {t("registration fee")}, 10,000 RWF {t("annual renewal")}</li>
             </ul>
 
             <p>
-              <strong>Payment Methods:</strong> We accept various payment methods including:
+              <strong>{t("Payment Methods")}:</strong> {t("We accept various payment methods including")}:
             </p>
 
             <ul className="list-disc pl-6 space-y-2">
@@ -506,7 +500,7 @@ const RegisterAsJobSeeker = () => {
             </ul>
 
             <p>
-              For any questions regarding our pricing, please contact our support team at support@anaweza.com.
+              {t("For any questions regarding our pricing, please contact our support team at ltdanaweza@gmail.com, princemugabe567@gmail.com")}
             </p>
           </div>
 
@@ -515,7 +509,7 @@ const RegisterAsJobSeeker = () => {
               onClick={() => setShowPolicyModal(false)}
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
             >
-              Close
+              {t("Close")}
             </button>
           </div>
         </div>
@@ -532,10 +526,10 @@ const RegisterAsJobSeeker = () => {
         <div className="bg-white rounded-xl shadow-xl p-8 border border-blue-100">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-blue-800">
-              Create Your Job Seeker Profile
+              {t("Create Your Job Seeker Profile")}
             </h2>
             <p className="mt-2 text-gray-600">
-              Complete your profile to start applying for jobs
+              {t("Complete your profile to start applying for jobs")}
             </p>
           </div>
 
@@ -561,7 +555,7 @@ const RegisterAsJobSeeker = () => {
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  First Name *
+                  {t("First Name *")}
                 </label>
                 <input
                   type="text"
@@ -576,7 +570,7 @@ const RegisterAsJobSeeker = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Middle Name (Optional)
+                  {t("Middle Name (Optional)")}
                 </label>
                 <input
                   type="text"
@@ -589,7 +583,7 @@ const RegisterAsJobSeeker = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Last Name *
+                  {t("Last Name *")}
                 </label>
                 <input
                   type="text"
@@ -603,18 +597,18 @@ const RegisterAsJobSeeker = () => {
               </div>
 
               <div>
-                <label>District *</label>
+                <label>{t("District *")}</label>
                 <select className='text-gray-500 w-72' name="district" value={formData.district} onChange={handleChange} required>
-                  <option value="">Select District</option>
+                  <option value="">{t("Select District")}</option>
                   {Object.keys(districtsData.districts).map((district) => (
                     <option key={district} value={district}>{district}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label>Sector *</label>
+                <label>{t("Sector *")}</label>
                 <select className='text-gray-500 w-72' name="sector" value={formData.sector} onChange={handleChange} required>
-                  <option value="">Select Sector</option>
+                  <option value="">{t("Select Sector")}</option>
                   {sectors.map(([name]) => (
                     <option key={name} value={name}>{name}</option>
                   ))}
@@ -623,7 +617,7 @@ const RegisterAsJobSeeker = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Gender *
+                  {t("Gender *")}
                 </label>
                 <select
                   name="gender"
@@ -632,17 +626,17 @@ const RegisterAsJobSeeker = () => {
                   className={`w-full px-3 text-gray-500 py-2 border ${errors.gender ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   required
                 >
-                  <option value="">Select gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
+                  <option value="">{t("Select gender")}</option>
+                  <option value="male">{t("Male")}</option>
+                  <option value="female">{t("Female")}</option>
+                  <option value="other">{t("Other")}</option>
                 </select>
                 {renderError('gender')}
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Years of Experience
+                  {t("Years of Experience")}
                 </label>
                 <input
                   type="number"
@@ -657,7 +651,7 @@ const RegisterAsJobSeeker = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Education Level
+                  {t("Education Level")}
                 </label>
                 <select
                   name="education_level"
@@ -665,24 +659,24 @@ const RegisterAsJobSeeker = () => {
                   onChange={handleChange}
                   className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="none">No Formal Education</option>
+                  <option value="none">{t("No Formal Education")}</option>
 
-                  <option value="primary">Primary Education</option>
-                  <option value="ordinary_level">Ordinary Level</option>
+                  <option value="primary">{t("Primary Education")}</option>
+                  <option value="ordinary_level">{t("Ordinary Level")}</option>
 
-                  <option value="secondary">Secondary Level</option>
-                  <option value="advanced_diploma">Advanced Diploma</option>
-                  <option value="vocational">Vocational Training</option>
-                  <option value="bachelor">Bachelor's Degree</option>
-                  <option value="master">Master's Degree</option>
-                  <option value="phd">PhD</option>
+                  <option value="secondary">{t("Secondary Level")}</option>
+                  <option value="advanced_diploma">{t("Advanced Diploma")}</option>
+                  <option value="vocational">{t("Vocational Training")}</option>
+                  <option value="bachelor">{t("Bachelor's Degree")}</option>
+                  <option value="master">{t("Master's Degree")}</option>
+                  <option value="phd">{t("PhD")}</option>
                 </select>
               </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Field of Study
+                {t("Field of Study")}
               </label>
               <input
                 type="text"
@@ -696,7 +690,7 @@ const RegisterAsJobSeeker = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Skills
+                {t("Skills")}
               </label>
               <input
                 type="text"
@@ -706,20 +700,20 @@ const RegisterAsJobSeeker = () => {
                 placeholder="e.g., Python, Project Management, Digital Marketing"
                 className={`w-full px-3 text-gray-500 py-2 border ${errors.skills ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
               />
-              <p className="mt-1 text-sm text-gray-500">Separate skills with commas</p>
+              <p className="mt-1 text-sm text-gray-500">{t("Separate skills with commas")}</p>
               {renderError('skills')}
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Salary Range (e.g., 1000 - 100000) *
+                {t("Salary Range (e.g., 1000 - 100000) *")}
               </label>
               <input
                 type="text"
                 name="salary_range"
                 value={formData.salary_range}
                 onChange={handleChange}
-                placeholder="Enter your expected salary range in RWF (e.g., 1000 or 1000 - 2000)"
+                placeholder={t("Enter your expected salary range in RWF (e.g., 1000 or 1000 - 2000)")}
                 className={`w-full px-3 text-gray-500 py-2 border ${errors.salary_range ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 required
               />
@@ -731,10 +725,10 @@ const RegisterAsJobSeeker = () => {
                   <div className="flex items-start">
                     <AiOutlineInfoCircle className="text-blue-500 mt-1 mr-2 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-blue-700">Registration Fee: {registrationFee.registrationFee}</p>
-                      <p className="text-sm text-blue-600">Annual Renewal: {registrationFee.renewalFee}</p>
+                      <p className="font-medium text-blue-700">{t("Registration Fee")}: {registrationFee.registrationFee}</p>
+                      <p className="text-sm text-blue-600">{t("Annual Renewal")}: {registrationFee.renewalFee}</p>
                       <p className="text-sm text-gray-600 mt-1">
-                        Your account will be activated after payment confirmation. Please pay using:
+                        {t("Your account will be activated after payment confirmation. Please pay using:")}
                         <ul>
                           <li>MTN MOMO PAY: <span className='text-red-700'>1592374</span></li>
                           <li>Anaweza App LTD</li>
@@ -748,14 +742,14 @@ const RegisterAsJobSeeker = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Resume
+                {t("Resume")}
               </label>
               <div className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 ${errors.resume ? 'border-red-500' : 'border-gray-300'} border-dashed rounded-lg`}>
                 <div className="space-y-1 text-center">
                   <AiOutlineCloudUpload className="mx-auto h-12 w-12 text-gray-400" />
                   <div className="flex text-sm text-gray-600">
                     <label className="relative cursor-pointer rounded-md font-medium text-blue-600 hover:text-blue-500">
-                      <span>Upload a file</span>
+                      <span>{t("Upload a file")}</span>
                       <input
                         ref={fileInputRef}
                         type="file"
@@ -764,7 +758,7 @@ const RegisterAsJobSeeker = () => {
                         onChange={handleFileUpload}
                       />
                     </label>
-                    <p className="pl-1">or drag and drop</p>
+                    <p className="pl-1">{t("or drag and drop")}</p>
                   </div>
                   <p className="text-xs text-gray-500">PDF, DOC, or DOCX up to 10MB</p>
                   {fileName && (
@@ -790,21 +784,21 @@ const RegisterAsJobSeeker = () => {
                 </div>
                 <div className="ml-3 text-sm">
                   <label htmlFor="terms" className="font-medium text-gray-700">
-                    I accept the{" "}
+                    {t("I accept the")}{" "}
                     <button
                       type="button"
                       onClick={() => setShowTermsModal(true)}
                       className="text-blue-600 hover:text-blue-500 underline"
                     >
-                      Terms and Conditions
+                      {t("Terms and Conditions")}
                     </button>{" "}
-                    and{" "}
+                    {t("and")}{" "}
                     <button
                       type="button"
                       onClick={() => setShowPolicyModal(true)}
                       className="text-blue-600 hover:text-blue-500 underline"
                     >
-                      Pricing Policy
+                      {t("Pricing Policy")}
                     </button>
                   </label>
                   {termsError && <p className="text-red-500 mt-1">{termsError}</p>}
@@ -823,10 +817,10 @@ const RegisterAsJobSeeker = () => {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Creating Profile...
+                    {t("Creating Profile...")}
                   </span>
                 ) : (
-                  "Create Profile"
+                  t("Create Profile")
                 )}
               </button>
 
@@ -835,7 +829,7 @@ const RegisterAsJobSeeker = () => {
                 onClick={handleLogout}
                 className="sm:w-1/2 py-3 px-4 border border-gray-300 rounded-md shadow-sm text-lg font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300"
               >
-                Exit
+                {t("Exit")}
               </button>
 
             </div>

@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import { useTranslation } from "react-i18next";
 
 function Job_Seeker_About() {
+  const {t} = useTranslation();
   return (
     <section id="about" className="py-10 bg-slate-100 dark:text-white">
       <div className="bg-gray-300 mt-2 py-2">
@@ -9,7 +11,7 @@ function Job_Seeker_About() {
           data-aos="fade-up"
           className="text-center text-4xl font-bold mb-10 text-black dark:text-black py-2"
         >
-          About Us
+          {t("About Us")}
         </h2>
       </div>
 
@@ -18,18 +20,15 @@ function Job_Seeker_About() {
           <div data-aos="fade-right" className="w-full h-80 bg-blue-700 rounded-lg p-4"></div>
           <div data-aos="fade-left" className="flex flex-col gap-4">
             <div className="p-4 border-l-4 border-gray-700">
-              <h3 className="text-2xl font-semibold mb-2 text-black">Who We Are</h3>
+              <h3 className="text-2xl font-semibold mb-2 text-black">{t("Who We Are")}</h3>
               <p className="text-sm dark:text-slate-800">
-                Anaweza is an innovative job-matching platform that connects job seekers with employers globally. 
-                Our system enables job seekers to create professional profiles visible to potential employers, 
-                while job providers can post opportunities and manage applicants seamlessly.
+                {t("Anaweza is an innovative job-matching platform that connects job seekers with employers globally. Our system enables job seekers to create professional profiles visible to potential employers, while job providers can post opportunities and manage applicants seamlessly.")}
               </p>
             </div>
             <div className="p-4 border-l-4 border-gray-700">
-              <h3 className="text-2xl font-semibold mb-2 text-black">Vision</h3>
+              <h3 className="text-2xl font-semibold mb-2 text-black">{t("Vision")}</h3>
               <p className="text-sm dark:text-slate-800">
-                Our vision is to create a globally accessible platform where job seekers can showcase their skills 
-                and job providers can find the right talent effortlessly, bridging employment gaps worldwide.
+                {t("Our vision is to create a globally accessible platform where job seekers can showcase their skills and job providers can find the right talent effortlessly, bridging employment gaps worldwide.")}
               </p>
             </div>
             <div className="p-4 border-l-4 border-gray-700">

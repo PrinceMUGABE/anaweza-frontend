@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import Navbar from '../Navbar/Navbar';
+import { useTranslation } from "react-i18next";
 
 const Cookies = () => {
   return (

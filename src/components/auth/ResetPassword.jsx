@@ -7,8 +7,10 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { KeyIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
 import loginImage from '../../assets/pictures/system/anaweza.jpg';
 import PasswordInput from './passwordValidation'; // Make sure the path is correct
+import { useTranslation } from "react-i18next";
 
 const ResetPassword = () => {
+  const {t} = useTranslation();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
@@ -49,11 +51,11 @@ const ResetPassword = () => {
     }
 
     if (!validatePassword(formData.new_password)) {
-      newErrors.new_password = 'Password must contain at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special character.';
+      newErrors.new_password = t("Password must contain at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special character.");
     }
 
     if (formData.new_password !== formData.confirm_password) {
-      newErrors.confirm_password = 'Passwords do not match.';
+      newErrors.confirm_password = t("Passwords do not match.");
     }
 
     return newErrors;
@@ -154,14 +156,14 @@ const ResetPassword = () => {
         </div>
         
         <div className="space-y-8 relative z-10">
-          <h1 className="text-5xl font-bold text-white leading-tight">Reset Your <span className="text-blue-300">Password</span></h1>
+          <h1 className="text-5xl font-bold text-white leading-tight">{t("Reset Your Password")}<span className="text-blue-300"></span></h1>
           <p className="text-blue-100 text-xl max-w-md leading-relaxed">
-            Secure your account with a new password and get back to exploring job opportunities tailored just for you.
+            {t("Secure your account with a new password and get back to exploring job opportunities tailored just for you.")}
           </p>
           
           <div className="bg-white/10 p-6 rounded-xl backdrop-blur-sm border border-white/20 shadow-xl">
             <p className="text-white text-lg italic mb-4">
-              "The security features on this platform give me peace of mind. I can focus on my job search knowing my information is safe."
+              {t("The security features on this platform give me peace of mind. I can focus on my job search knowing my information is safe.")}
             </p>
             <div className="flex items-center">
               <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-blue-400 to-blue-300 flex items-center justify-center text-blue-900 font-bold text-lg shadow-md">
@@ -189,8 +191,8 @@ const ResetPassword = () => {
                 <KeyIcon className="h-8 w-8 text-white" />
               </div>
             </div>
-            <h2 className="text-3xl font-bold text-gray-800">Reset your password</h2>
-            <p className="mt-3 text-gray-600">Enter your email and a new secure password</p>
+            <h2 className="text-3xl font-bold text-gray-800">{t("Reset your password")}</h2>
+            <p className="mt-3 text-gray-600">{t("Enter your email and a new secure password")}</p>
           </div>
           
           {errors.form && (
@@ -202,7 +204,7 @@ const ResetPassword = () => {
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm text-red-700 font-medium">{errors.form}</p>
+                  <p className="text-sm text-red-700 font-medium">{t(errors.form)}</p>
                 </div>
               </div>
             </div>
@@ -217,7 +219,7 @@ const ResetPassword = () => {
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm text-green-700 font-medium">{message}</p>
+                  <p className="text-sm text-green-700 font-medium">{t(message)}</p>
                 </div>
               </div>
             </div>
@@ -227,7 +229,7 @@ const ResetPassword = () => {
             <div className="space-y-5">
               <div>
                 <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
-                  Email Address
+                  {t("Email Address")}
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm">
                   <input
@@ -237,27 +239,27 @@ const ResetPassword = () => {
                     value={formData.email}
                     onChange={handleChange}
                     className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm sm:text-sm text-gray-700"
-                    placeholder="name@gmail.com"
+                    placeholder={t("name@gmail.com")}
                     required
                   />
                 </div>
                 {errors.email && <p className="mt-1 text-xs text-red-500 font-medium">{errors.email}</p>}
-                <p className="mt-1 text-xs text-gray-500">We only accept emails ending with @gmail.com</p>
+                <p className="mt-1 text-xs text-gray-500">{t("We only accept emails ending with @gmail.com")}</p>
               </div>
 
               {/* Using the PasswordInput component for new password */}
               <PasswordInput
                 id="new_password"
                 name="new_password"
-                label="New Password"
+                label={t("New Password")}
                 value={formData.new_password}
                 onChange={handleChange}
-                placeholder="Enter your new password"
+                placeholder= {t("Enter your new password")}
               />
 
               <div>
                 <label htmlFor="confirm_password" className="block text-sm font-semibold text-gray-700">
-                  Confirm Password
+                  {t("Confirm Password")}
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm">
                   <input
@@ -271,7 +273,7 @@ const ResetPassword = () => {
                       formData.confirm_password && formData.confirm_password === formData.new_password ? "border-green-300" : 
                       "border-gray-300"
                     } focus:ring-blue-500 focus:border-blue-500 shadow-sm sm:text-sm text-gray-700`}
-                    placeholder="Confirm your new password"
+                    placeholder= {t("Confirm your new password")}
                     required
                   />
                   <span
@@ -291,7 +293,7 @@ const ResetPassword = () => {
                     <svg className="h-4 w-4 text-green-500 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
-                    Passwords match
+                    {t("Passwords match")}
                   </p>
                 )}
               </div>
@@ -314,10 +316,10 @@ const ResetPassword = () => {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                     </svg>
-                    Resetting Password...
+                    {t("Resetting Password")}...
                   </div>
                 ) : (
-                  "Reset Password"
+                  t("Reset Password")
                 )}
               </button>
             </div>
@@ -327,13 +329,13 @@ const ResetPassword = () => {
             <div className="text-sm">
               <Link to="/" className="flex items-center font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
                 <ArrowLeftIcon className="mr-1 h-4 w-4" />
-                Back to home
+                {t("Back to home")}
               </Link>
             </div>
             
             <div className="text-sm">
               <Link to="/login" className="font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
-                Return to login
+                {t("Return to login")}
               </Link>
             </div>
           </div>

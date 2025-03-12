@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 
 const FeaturedJobs = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const FeaturedJobs = () => {
   const [applying, setApplying] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(null);
   const token = localStorage.getItem("token");
+  const {t} = useTranslation();
 
   useEffect(() => {
     const fetchFeaturedJobs = async () => {
@@ -206,7 +208,7 @@ const FeaturedJobs = () => {
       <div className="py-16 bg-white">
         <div className="container mx-auto px-4 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading featured jobs...</p>
+          <p className="mt-4 text-gray-600">{t("Loading featured jobs")}...</p>
         </div>
       </div>
     );
@@ -226,8 +228,8 @@ const FeaturedJobs = () => {
     return (
       <div className="py-16 bg-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-blue-800 mb-4">Featured Jobs</h2>
-          <p className="text-gray-600">No job listings available at the moment. Please check back later.</p>
+          <h2 className="text-3xl font-bold text-blue-800 mb-4">{t("Featured Jobs")}</h2>
+          <p className="text-gray-600">{t("No job listings available at the moment. Please check back later.")}</p>
         </div>
       </div>
     );
@@ -237,12 +239,12 @@ const FeaturedJobs = () => {
     <div className="py-16 bg-white" id='jobs'>
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold text-blue-800">Featured Jobs</h2>
+          <h2 className="text-3xl font-bold text-blue-800">{t("Featured Jobs")}</h2>
           <button
             onClick={handleViewAllJobs}
             className="text-blue-600 hover:text-blue-700"
           >
-            View All Jobs →
+            {t("View all jobs")} →
           </button>
         </div>
 
@@ -251,7 +253,7 @@ const FeaturedJobs = () => {
             <div key={job.id} className="border rounded-lg p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start gap-4">
                 <div>
-                  <h3 className="font-semibold text-lg text-gray-700">Status</h3>
+                  <h3 className="font-semibold text-lg text-gray-700">{t("Status")}</h3>
                   <p className="text-gray-600">{job.status}</p>
                 </div>
               </div>
@@ -299,7 +301,7 @@ const FeaturedJobs = () => {
 
 
                 <div className="text-gray-500">
-                  <p>Application Deadline: {new Date(job.deadline).toLocaleDateString()}</p>
+                  <p>{t("Application Deadline")}: {new Date(job.deadline).toLocaleDateString()}</p>
                 </div>
               </div>
 
@@ -307,7 +309,7 @@ const FeaturedJobs = () => {
                 onClick={() => openJobDetails(job)}
                 className="mt-4 block w-full bg-blue-600 text-white py-2 rounded text-center hover:bg-blue-700 transition-colors"
               >
-                Explore
+                {t("Explore")}
               </button>
             </div>
           ))}
@@ -323,7 +325,7 @@ const FeaturedJobs = () => {
           <div className="bg-white rounded-lg w-full max-w-3xl overflow-auto mx-auto my-4 relative" style={{ maxHeight: '90vh' }}>
             {/* Close Button */}
             <div className="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
-              <h2 className="text-xl font-bold text-gray-900">Job Details</h2>
+              <h2 className="text-xl font-bold text-gray-900">{t("Job Details")}</h2>
               <button
                 onClick={closeModal}
                 className="text-gray-500 hover:text-gray-700"
@@ -353,27 +355,27 @@ const FeaturedJobs = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-4 border-b border-t">
                 <div>
-                  <h3 className="font-medium text-gray-500">Salary</h3>
+                  <h3 className="font-medium text-gray-500">{t("Salary")}</h3>
                   <p className="text-gray-900 font-semibold">{formatSalary(selectedJob.salary_range)}</p>
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-500">Job Type</h3>
+                  <h3 className="font-medium text-gray-500">{t("Job Type")}</h3>
                   <p className="text-gray-900 font-semibold">{selectedJob.job_type?.name || 'Not specified'}</p>
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-500">Experience</h3>
+                  <h3 className="font-medium text-gray-500">{t("Experience")}</h3>
                   <p className="text-gray-900 font-semibold">{selectedJob.experience_level}</p>
                 </div>
               </div>
 
               <div className="mt-4">
-                <h3 className="font-semibold text-xl text-gray-900 mb-2">Job Description</h3>
+                <h3 className="font-semibold text-xl text-gray-900 mb-2">{t("Job Description")}</h3>
                 <p className="text-gray-700 whitespace-pre-line">{selectedJob.description}</p>
               </div>
 
               {selectedJob.responsibilities?.length > 0 && (
                 <div className="mt-4">
-                  <h3 className="font-semibold text-xl text-gray-900 mb-2">Responsibilities</h3>
+                  <h3 className="font-semibold text-xl text-gray-900 mb-2">{t("Responsibilities")}</h3>
                   <ul className="list-disc pl-5 space-y-1">
                     {selectedJob.responsibilities.map((item, index) => (
                       <li key={index} className="text-gray-700">{item}</li>
@@ -384,7 +386,7 @@ const FeaturedJobs = () => {
 
               {selectedJob.requirements?.length > 0 && (
                 <div className="mt-4">
-                  <h3 className="font-semibold text-xl text-gray-900 mb-2">Requirements</h3>
+                  <h3 className="font-semibold text-xl text-gray-900 mb-2">{t("Requirements")}</h3>
                   <ul className="list-disc pl-5 space-y-1">
                     {selectedJob.requirements.map((item, index) => (
                       <li key={index} className="text-gray-700">{item}</li>
@@ -395,7 +397,7 @@ const FeaturedJobs = () => {
 
               {selectedJob.benefits?.length > 0 && (
                 <div className="mt-4">
-                  <h3 className="font-semibold text-xl text-gray-900 mb-2">Benefits</h3>
+                  <h3 className="font-semibold text-xl text-gray-900 mb-2">{t("Benefits")}</h3>
                   <ul className="list-disc pl-5 space-y-1">
                     {selectedJob.benefits.map((item, index) => (
                       <li key={index} className="text-gray-700">{item}</li>
@@ -405,13 +407,13 @@ const FeaturedJobs = () => {
               )}
 
               <div className="text-gray-500">
-                <p>Number of Employees: <span className='text-blue-700'>{(selectedJob.employees_needed)}</span></p>
+                <p>{t("Number of Employees")}: <span className='text-blue-700'>{(selectedJob.employees_needed)}</span></p>
               </div>
 
               <div className="mt-6 pt-4 border-t">
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                   <div className="text-gray-500">
-                    <p>Application Deadline: <span className='text-red-700'>{new Date(selectedJob.deadline).toLocaleDateString()}</span> </p>
+                    <p>{t("Application Deadline")}: <span className='text-red-700'>{new Date(selectedJob.deadline).toLocaleDateString()}</span> </p>
                   </div>
                   <button
                     onClick={() => handleApply(selectedJob.id)}

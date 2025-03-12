@@ -32,6 +32,8 @@ import {
     Area,
     AreaChart,
 } from "recharts";
+import { useTranslation } from "react-i18next";
+
 
 function Job_Seeker_ManageTestimonials() {
     // State management

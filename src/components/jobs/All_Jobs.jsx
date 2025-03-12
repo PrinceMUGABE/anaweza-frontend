@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Navbar from '../Navbar/Navbar';
+import { useTranslation } from "react-i18next";
 
 const List_of_Jobs = () => {
     const [allJobs, setAllJobs] = useState([]);
@@ -14,6 +15,7 @@ const List_of_Jobs = () => {
     const [applying, setApplying] = useState(false);
     const [applicationStatus, setApplicationStatus] = useState(null);
     const token = localStorage.getItem("token");
+    
 
     const jobsPerPage = 9;
 

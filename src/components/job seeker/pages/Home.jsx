@@ -4,11 +4,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BriefcaseBusiness, Filter, Search, ChevronLeft, ChevronRight, Calendar, AlertCircle, X, MapPin, Clock, Briefcase, ListChecks, DollarSign, Award } from "lucide-react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const BASE_URL = "https://anaweza-backend.up.railway.app/application";
 
 function JobSeekerHome() {
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   // State Management
   const [loading, setLoading] = useState(true);
@@ -54,7 +56,7 @@ function JobSeekerHome() {
 
   // Withdraw an application
   const handleWithdraw = async (applicationId) => {
-    if (window.confirm("Are you sure you want to withdraw this application?")) {
+    if (window.confirm(t("Are you sure you want to withdraw this application?"))) {
       try {
         const token = localStorage.getItem("token");
         await axios.put(
@@ -79,10 +81,10 @@ function JobSeekerHome() {
           setSelectedApplication({ ...selectedApplication, status: "withdrawn" });
         }
 
-        alert("Application withdrawn successfully");
+        alert(t("Application withdrawn successfully"));
       } catch (err) {
-        console.error("Error withdrawing application:", err);
-        alert(err.response?.data?.error || "Failed to withdraw application");
+        console.error(t("Error withdrawing application:"), err);
+        alert(err.response?.data?.error || t("Failed to withdraw application"));
       }
     }
   };
@@ -176,7 +178,7 @@ function JobSeekerHome() {
           <div className="spinner-border text-primary" role="status">
             <span className="sr-only">Loading...</span>
           </div>
-          <p className="mt-2 text-gray-500">Loading your applications...</p>
+          <p className="mt-2 text-gray-500">{t("Loading your applications...")}</p>
         </div>
       </div>
     );
@@ -195,7 +197,7 @@ function JobSeekerHome() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-8 text-gray-700">My Job Applications</h1>
+      <h1 className="text-2xl font-bold mb-8 text-gray-700">{t("My Job Applications")}</h1>
 
       {/* Filters and Search */}
       <div className="bg-white p-4 mb-6 rounded-lg shadow flex flex-col md:flex-row gap-4 justify-between">
@@ -208,13 +210,13 @@ function JobSeekerHome() {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
-              <option value="all">All Statuses</option>
-              <option value="pending">Pending</option>
-              <option value="reviewing">Reviewing</option>
-              <option value="shortlisted">Shortlisted</option>
-              <option value="accepted">Accepted</option>
-              <option value="rejected">Rejected</option>
-              <option value="withdrawn">Withdrawn</option>
+              <option value="all">{t("All Statuses")}</option>
+              <option value="pending">{t("Pending")}</option>
+              <option value="reviewing">{t("Reviewing")}</option>
+              <option value="shortlisted">{t("Shortlisted")}</option>
+              <option value="accepted">{t("Accepted")}</option>
+              <option value="rejected">{t("Rejected")}</option>
+              <option value="withdrawn">{t("Withdrawn")}</option>
             </select>
           </div>
 
@@ -226,15 +228,15 @@ function JobSeekerHome() {
               value={timeFilter}
               onChange={(e) => setTimeFilter(e.target.value)}
             >
-              <option value="all">All Time</option>
-              <option value="month">Last 30 Days</option>
-              <option value="week">Last 7 Days</option>
+              <option value="all">{t("All Time")}</option>
+              <option value="month">{t("Last 30 Days")}</option>
+              <option value="week">{t("Last 7 Days")}</option>
             </select>
           </div>
 
           {/* Items Per Page */}
           <div className="flex items-center">
-            <span className="mr-2">Show:</span>
+            <span className="mr-2">{t("Show:")}</span>
             <select
               className="border text-gray-500 rounded-md px-2 py-1"
               value={itemsPerPage}
@@ -257,7 +259,7 @@ function JobSeekerHome() {
           <input
             type="text"
             className="border text-gray-500 rounded-md pl-8 pr-4 py-1 w-full md:w-64"
-            placeholder="Search jobs..."
+            placeholder={t("Search jobs...")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -269,10 +271,10 @@ function JobSeekerHome() {
       {currentItems.length === 0 ? (
         <div className="bg-white p-8 rounded-lg shadow text-center">
           <BriefcaseBusiness size={48} className="mx-auto text-gray-400 mb-4" />
-          <h3 className="text-xl font-semibold text-gray-500 mb-2">No applications found</h3>
+          <h3 className="text-xl font-semibold text-gray-500 mb-2">{t("No applications found")}</h3>
           <p className="text-gray-600">
             {applications.length > 0
-              ? "Try adjusting your filters to see more results."
+              ? t("Try adjusting your filters to see more results.")
               : ""}
           </p>
         </div>
@@ -298,7 +300,7 @@ function JobSeekerHome() {
 
                 <div className="flex items-center text-sm text-gray-500 mb-4">
                   <Calendar size={14} className="mr-1" />
-                  <span>Applied: {formatDate(application.applied_at)}</span>
+                  <span>{t("Applied:")} {formatDate(application.applied_at)}</span>
                 </div>
 
                 {application.feedback && (
@@ -314,7 +316,7 @@ function JobSeekerHome() {
                   className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                   onClick={() => openApplicationDetails(application)}
                 >
-                  View Details
+                  {t("View Details")}
                 </button>
 
                 {/* Only show withdraw button for applications that can be withdrawn */}
@@ -323,7 +325,7 @@ function JobSeekerHome() {
                     className="text-red-600 hover:text-red-800 text-sm font-medium"
                     onClick={() => handleWithdraw(application.id)}
                   >
-                    Withdraw
+                    {t("Withdraw")}
                   </button>
                 )}
               </div>
@@ -336,7 +338,7 @@ function JobSeekerHome() {
       {filteredApplications.length > 0 && (
         <div className="mt-8 flex justify-between items-center">
           <div className="text-sm text-gray-600">
-            Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredApplications.length)} of {filteredApplications.length} applications
+            {t("Showing")} {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredApplications.length)} {t("of")} {filteredApplications.length} {t("applications")}
           </div>
 
           <div className="flex space-x-2">
@@ -394,7 +396,7 @@ function JobSeekerHome() {
           <div className="bg-white rounded-lg shadow-lg w-full max-w-4xl max-h-screen overflow-auto">
             {/* Modal Header */}
             <div className="p-4 border-b flex justify-between items-center sticky top-0 bg-white z-10">
-              <h2 className="text-xl font-bold text-gray-700">Application Details</h2>
+              <h2 className="text-xl font-bold text-gray-700">{t("Application Details")}</h2>
               <button
                 className="text-gray-500 hover:text-gray-700"
                 onClick={() => setShowModal(false)}
@@ -410,10 +412,10 @@ function JobSeekerHome() {
                 <span
                   className={`text-sm px-3 py-1 text-blue-700 rounded-full ${getStatusColor(selectedApplication.status)}`}
                 >
-                  Status: {selectedApplication.status.charAt(0).toUpperCase() + selectedApplication.status.slice(1)}
+                  {t("Status:")} {selectedApplication.status.charAt(0).toUpperCase() + selectedApplication.status.slice(1)}
                 </span>
                 <span className="text-sm text-gray-500">
-                  Applied on {formatDate(selectedApplication.applied_at)}
+                  {t("Applied on")} {formatDate(selectedApplication.applied_at)}
                 </span>
               </div>
 
@@ -425,7 +427,7 @@ function JobSeekerHome() {
                   <div className="flex items-start">
                     <BriefcaseBusiness className="mr-2 text-blue-700 mt-1 flex-shrink-0" size={18} />
                     <div>
-                      <p className="font-medium text-gray-700">Company</p>
+                      <p className="font-medium text-gray-700">{t("Company")}</p>
                       <p className="text-gray-700">{selectedApplication.job_offer?.company_name || "Individual"}</p>
                     </div>
                   </div>
@@ -433,7 +435,7 @@ function JobSeekerHome() {
                   <div className="flex items-start">
                     <MapPin className="mr-2 mt-1 text-blue-700 flex-shrink-0" size={18} />
                     <div>
-                      <p className="font-medium text-gray-700">Location</p>
+                      <p className="font-medium text-gray-700">{t("Location")}</p>
                       <p className="text-gray-700">{selectedApplication.job_offer.location}</p>
                     </div>
                   </div>
@@ -441,7 +443,7 @@ function JobSeekerHome() {
                   <div className="flex items-start">
                     <Briefcase className="mr-2 mt-1 text-blue-700 flex-shrink-0" size={18} />
                     <div>
-                      <p className="font-medium text-gray-700">Job Type</p>
+                      <p className="font-medium text-gray-700">{t("Job Type")}</p>
                       <p className="text-gray-700">{selectedApplication.job_offer.job_type?.name || "Not specified"}</p>
                     </div>
                   </div>
@@ -449,7 +451,7 @@ function JobSeekerHome() {
                   <div className="flex items-start">
                     <ListChecks className="mr-2 mt-1 text-blue-700 flex-shrink-0" size={18} />
                     <div>
-                      <p className="font-medium text-gray-700">Category</p>
+                      <p className="font-medium text-gray-700">{t("Category")}</p>
                       <p className="text-gray-700">{selectedApplication.job_offer.job_category?.name || "Not specified"}</p>
                     </div>
                   </div>
@@ -457,7 +459,7 @@ function JobSeekerHome() {
                   <div className="flex items-start">
                     <Award className="mr-2 mt-1 text-blue-700 flex-shrink-0" size={18} />
                     <div>
-                      <p className="font-medium text-gray-700">Experience Level</p>
+                      <p className="font-medium text-gray-700">{t("Experience Level")}</p>
                       <p className="text-gray-700">{selectedApplication.job_offer.experience_level}</p>
                     </div>
                   </div>
@@ -465,7 +467,7 @@ function JobSeekerHome() {
                   <div className="flex items-start">
                     <DollarSign className="mr-2 text-blue-700 mt-1 flex-shrink-0" size={18} />
                     <div>
-                      <p className="font-medium text-gray-700">Salary Range</p>
+                      <p className="font-medium text-gray-700">{t("Salary Range")}</p>
                       <p className="text-gray-700">{selectedApplication.job_offer.salary_range || "Not disclosed"}</p>
                     </div>
                   </div>
@@ -473,7 +475,7 @@ function JobSeekerHome() {
                   <div className="flex items-start">
                     <Clock className="mr-2 mt-1 text-blue-700 flex-shrink-0" size={18} />
                     <div>
-                      <p className="font-medium text-gray-700">Application Deadline</p>
+                      <p className="font-medium text-gray-700">{t("Application Deadline")}</p>
                       <p className="text-gray-700">{formatDate(selectedApplication.job_offer.deadline)}</p>
                     </div>
                   </div>
@@ -481,14 +483,14 @@ function JobSeekerHome() {
 
                 {/* Description */}
                 <div className="mb-4">
-                  <h4 className="font-medium mb-2 text-gray-700">Job Description</h4>
+                  <h4 className="font-medium mb-2 text-gray-700">{t("Job Description")}</h4>
                   <p className="text-gray-700 whitespace-pre-line">{selectedApplication.job_offer.description}</p>
                 </div>
 
                 {/* Requirements */}
                 {selectedApplication.job_offer.requirements && (
                   <div className="mb-4">
-                    <h4 className="font-medium mb-2 text-gray-700">Requirements</h4>
+                    <h4 className="font-medium mb-2 text-gray-700">{t("Requirements")}</h4>
                     <p className="text-gray-700 whitespace-pre-line">{selectedApplication.job_offer.requirements}</p>
                   </div>
                 )}
@@ -496,7 +498,7 @@ function JobSeekerHome() {
                 {/* Responsibilities */}
                 {selectedApplication.job_offer.responsibilities && (
                   <div className="mb-4">
-                    <h4 className="font-medium mb-2 text-gray-700">Responsibilities</h4>
+                    <h4 className="font-medium mb-2 text-gray-700">{t("Responsibilities")}</h4>
                     <p className="text-gray-700 whitespace-pre-line">{selectedApplication.job_offer.responsibilities}</p>
                   </div>
                 )}
@@ -504,7 +506,7 @@ function JobSeekerHome() {
                 {/* Benefits */}
                 {selectedApplication.job_offer.benefits && (
                   <div>
-                    <h4 className="font-medium mb-2 text-gray-700">Benefits</h4>
+                    <h4 className="font-medium mb-2 text-gray-700">{t("Benefits")}</h4>
                     <p className="text-gray-700 whitespace-pre-line">{selectedApplication.job_offer.benefits}</p>
                   </div>
                 )}
@@ -513,7 +515,7 @@ function JobSeekerHome() {
                 <div className="flex items-start">
 
                   <div>
-                    <p className="font-medium text-gray-700">Number of position</p>
+                    <p className="font-medium text-gray-700">{t("Number of position")}</p>
                     <p className="text-gray-700">{selectedApplication.job_offer?.employees_needed || "1"}</p>
                   </div>
                 </div>
@@ -521,12 +523,12 @@ function JobSeekerHome() {
 
               {/* Application Details */}
               <div className="mb-6">
-                <h3 className="text-lg font-semibold mb-4 text-gray-900">Your Application</h3>
+                <h3 className="text-lg font-semibold mb-4 text-gray-900">{t("Your Application")}</h3>
 
                 {/* Cover Letter */}
                 {selectedApplication.cover_letter && (
                   <div className="mb-4">
-                    <h4 className="font-medium mb-2 text-gray-700">Cover Letter</h4>
+                    <h4 className="font-medium mb-2 text-gray-700">{t("Cover Letter")}</h4>
                     <div className="bg-gray-50 p-3 rounded">
                       <p className="text-gray-500 whitespace-pre-line">{selectedApplication.cover_letter}</p>
                     </div>
@@ -536,14 +538,14 @@ function JobSeekerHome() {
                 {/* Resume */}
                 {selectedApplication.resume && (
                   <div className="mb-4">
-                    <h4 className="font-medium mb-2">Resume</h4>
+                    <h4 className="font-medium mb-2">{t("Resume")}</h4>
                     <a
                       href={selectedApplication.resume}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-600 hover:text-blue-800 flex items-center"
                     >
-                      View Resume
+                      {t("View Resume")}
                     </a>
                   </div>
                 )}
@@ -551,7 +553,7 @@ function JobSeekerHome() {
                 {/* Additional Documents */}
                 {selectedApplication.additional_documents && selectedApplication.additional_documents.length > 0 && (
                   <div className="mb-4">
-                    <h4 className="font-medium mb-2">Additional Documents</h4>
+                    <h4 className="font-medium mb-2">{t("Additional Documents")}</h4>
                     <ul className="list-disc list-inside">
                       {selectedApplication.additional_documents.map((doc, index) => (
                         <li key={index}>
@@ -572,7 +574,7 @@ function JobSeekerHome() {
                 {/* Feedback */}
                 {selectedApplication.feedback && (
                   <div className="mb-4">
-                    <h4 className="font-medium mb-2">Feedback from Employer</h4>
+                    <h4 className="font-medium mb-2">{t("Feedback from Employer")}</h4>
                     <div className="bg-blue-50 p-3 rounded border border-blue-100">
                       <p className="text-gray-800">{selectedApplication.feedback}</p>
                     </div>
@@ -582,7 +584,7 @@ function JobSeekerHome() {
                 {/* Review Information */}
                 {selectedApplication.reviewed_at && (
                   <div className="text-sm text-gray-500">
-                    Reviewed on: {formatDate(selectedApplication.reviewed_at)}
+                    {t("Reviewed on:")} {formatDate(selectedApplication.reviewed_at)}
                   </div>
                 )}
               </div>
@@ -593,7 +595,7 @@ function JobSeekerHome() {
                   className="px-4 py-2 bg-blue-700 rounded-lg hover:bg-gray-300 transition-colors"
                   onClick={() => setShowModal(false)}
                 >
-                  Close
+                  {t("Close")}
                 </button>
 
                 {!["accepted", "rejected", "withdrawn"].includes(selectedApplication.status) && (
@@ -604,7 +606,7 @@ function JobSeekerHome() {
                       // Don't close modal, it will update with the new status
                     }}
                   >
-                    Withdraw Application
+                    {t("Withdraw Application")}
                   </button>
                 )}
               </div>

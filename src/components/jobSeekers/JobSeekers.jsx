@@ -2,12 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useTranslation } from "react-i18next";
 
 const FeaturedSeekers = () => {
   // State for job seekers data
   const [featuredSeekers, setFeaturedSeekers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const {t} = useTranslation();
   
   // State for modal
   const [selectedSeeker, setSelectedSeeker] = useState(null);
@@ -113,10 +115,9 @@ const FeaturedSeekers = () => {
     <div id='talent-pool' className="py-16 bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-3">Top Talent Highlights</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">{t("Top Talent Highlights")}</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Meet some of our exceptional job seekers ready to bring their expertise to your organization.
-            Each candidate has been randomly selected from our talent pool.
+            {t("Meet some of our exceptional job seekers ready to bring their expertise to your organization. Each candidate has been randomly selected from our talent pool.")}
           </p>
         </div>
         
@@ -125,7 +126,7 @@ const FeaturedSeekers = () => {
             className="flex items-center text-blue-700 hover:text-blue-800 font-medium transition duration-300"
             onClick={() => navigate('/job_seekers')}
           >
-            View All Candidates
+            {t("View All Candidates")}
             <svg className="w-5 h-5 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
@@ -137,7 +138,7 @@ const FeaturedSeekers = () => {
             <svg className="w-16 h-16 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
-            <p className="text-gray-600 mt-4">No active job seekers found at the moment.</p>
+            <p className="text-gray-600 mt-4">{t("No active job seekers found at the moment.")}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -168,7 +169,7 @@ const FeaturedSeekers = () => {
                         <svg className="w-4 h-4 mr-1 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
                         </svg>
-                        {seeker.experience} years experience
+                        {seeker.experience} {t("years experience")}
                       </div>
                     </div>
                     
@@ -204,7 +205,7 @@ const FeaturedSeekers = () => {
                           className="px-3 py-1 bg-blue-700 text-white rounded hover:bg-blue-800 transition-colors text-sm"
                           onClick={() => openModal(seeker)}
                         >
-                          View Profile
+                          {t("View Profile")}
                         </button>
                       </div>
                     </div>
@@ -252,7 +253,7 @@ const FeaturedSeekers = () => {
                   
                   <div className="mt-6 w-full">
                     <div className="bg-blue-50 p-4 rounded-lg">
-                      <h3 className="text-lg text-blue-800 font-semibold mb-3">Contact Information</h3>
+                      <h3 className="text-lg text-blue-800 font-semibold mb-3">{t("Contact Information")}</h3>
                       <div className="space-y-3">
                         <div className="flex items-center gap-3">
                           <div className="bg-white p-2 rounded-full">
@@ -288,27 +289,27 @@ const FeaturedSeekers = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                     <div className="bg-white p-4 rounded-lg border border-gray-100">
                       <h3 className="font-semibold text-gray-700 mb-2">Experience</h3>
-                      <p className="text-gray-800 text-lg font-medium">{selectedSeeker.experience} years</p>
+                      <p className="text-gray-800 text-lg font-medium">{selectedSeeker.experience} {t("years")}</p>
                     </div>
                     <div className="bg-white p-4 rounded-lg border border-gray-100">
-                      <h3 className="font-semibold text-gray-700 mb-2">Education</h3>
+                      <h3 className="font-semibold text-gray-700 mb-2">{t("Education")}</h3>
                       <p className="text-gray-800 text-lg font-medium">{selectedSeeker.education_level}</p>
                       {selectedSeeker.education_sector && (
                         <p className="text-gray-600 mt-1">{selectedSeeker.education_sector}</p>
                       )}
                     </div>
                     <div className="bg-white p-4 rounded-lg border border-gray-100">
-                      <h3 className="font-semibold text-gray-700 mb-2">Gender</h3>
+                      <h3 className="font-semibold text-gray-700 mb-2">{t("Gender")}</h3>
                       <p className="text-gray-800 text-lg font-medium">{selectedSeeker.gender}</p>
                     </div>
                     <div className="bg-white p-4 rounded-lg border border-gray-100">
-                      <h3 className="font-semibold text-gray-700 mb-2">Salary Expectation</h3>
+                      <h3 className="font-semibold text-gray-700 mb-2">{t("Salary Expectation")}</h3>
                       <p className="text-gray-800 text-lg font-medium">{selectedSeeker.salary_range}</p>
                     </div>
                   </div>
                   
                   <div className="bg-white p-5 rounded-lg border border-gray-100 mb-6">
-                    <h3 className="font-semibold text-lg mb-3 text-blue-800">Key Skills</h3>
+                    <h3 className="font-semibold text-lg mb-3 text-blue-800">{t("Key Skills")}</h3>
                     <div className="flex flex-wrap gap-2">
                       {parseSkills(selectedSeeker.skills).map((skill, index) => (
                         <span key={index} className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full">
@@ -324,13 +325,13 @@ const FeaturedSeekers = () => {
             <div className="bg-gray-50 px-6 py-4 rounded-b-lg border-t border-gray-100">
               <div className="flex justify-between items-center">
                 <p className="text-gray-600 text-sm">
-                  Contact this candidate to discuss potential opportunities.
+                  {t("Contact this candidate to discuss potential opportunities.")}
                 </p>
                 <button 
                   onClick={closeModal}
                   className="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors"
                 >
-                  Close
+                  {t("Close")}
                 </button>
               </div>
             </div>

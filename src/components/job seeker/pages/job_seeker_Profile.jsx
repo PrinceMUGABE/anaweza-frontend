@@ -5,6 +5,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import districtsData from '../../job seeker/rwanda_districts.json';
+import { useTranslation } from "react-i18next";
 
 function Job_seeker_Profile() {
   const { id } = useParams();

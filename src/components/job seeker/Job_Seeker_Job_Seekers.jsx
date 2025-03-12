@@ -2,6 +2,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useTranslation } from "react-i18next";
 
 const Job_Seeker_Job_Seekers = () => {
   // State for job seekers data

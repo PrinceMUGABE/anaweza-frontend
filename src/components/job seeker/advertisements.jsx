@@ -11,6 +11,7 @@ import {
   faFilter,
   faSort
 } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 function Job_Seeker_Advertisements() {
     const [advertisements, setAdvertisements] = useState([]);

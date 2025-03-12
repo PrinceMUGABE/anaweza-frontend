@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../Navbar/Navbar';
+import { useTranslation } from "react-i18next";
 
 const All_Job_Seekers = () => {
   // State for job seekers data

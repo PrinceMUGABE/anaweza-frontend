@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
+import { useTranslation } from "react-i18next";
 
 const PasswordInput = ({ 
   value, 
@@ -13,6 +14,8 @@ const PasswordInput = ({
   label = "Password",
   required = true 
 }) => {
+  const { t } = useTranslation();
+  const finalLabel = label || t("Password");
   const [showPassword, setShowPassword] = useState(false);
   const [validations, setValidations] = useState({
     length: false,
@@ -21,6 +24,7 @@ const PasswordInput = ({
     number: false,
     special: false
   });
+
 
   // Validate password on every change
   useEffect(() => {
@@ -69,7 +73,7 @@ const PasswordInput = ({
 
       {/* Password requirements checklist */}
       <div className="mt-2 space-y-1">
-        <h4 className="text-xs font-medium text-gray-500">Password requirements:</h4>
+        <h4 className="text-xs font-medium text-gray-500">{t("Password requirements:")}</h4>
         <ul className="text-xs space-y-1">
           <li className="flex items-center">
             {validations.length ? (
@@ -78,7 +82,7 @@ const PasswordInput = ({
               <XCircleIcon className="h-4 w-4 text-red-500 mr-1" />
             )}
             <span className={validations.length ? "text-green-600" : "text-red-600"}>
-              At least 8 characters
+              {t("At least 8 characters")}
             </span>
           </li>
           <li className="flex items-center">
@@ -88,7 +92,7 @@ const PasswordInput = ({
               <XCircleIcon className="h-4 w-4 text-red-500 mr-1" />
             )}
             <span className={validations.uppercase ? "text-green-600" : "text-red-600"}>
-              At least one uppercase letter (A-Z)
+              {t("At least one uppercase letter (A-Z)")}
             </span>
           </li>
           <li className="flex items-center">
@@ -98,7 +102,7 @@ const PasswordInput = ({
               <XCircleIcon className="h-4 w-4 text-red-500 mr-1" />
             )}
             <span className={validations.lowercase ? "text-green-600" : "text-red-600"}>
-              At least one lowercase letter (a-z)
+              {t("At least one lowercase letter (a-z)")}
             </span>
           </li>
           <li className="flex items-center">
@@ -108,7 +112,7 @@ const PasswordInput = ({
               <XCircleIcon className="h-4 w-4 text-red-500 mr-1" />
             )}
             <span className={validations.number ? "text-green-600" : "text-red-600"}>
-              At least one number (0-9)
+              {t("At least one number (0-9)")}
             </span>
           </li>
           <li className="flex items-center">
@@ -118,7 +122,7 @@ const PasswordInput = ({
               <XCircleIcon className="h-4 w-4 text-red-500 mr-1" />
             )}
             <span className={validations.special ? "text-green-600" : "text-red-600"}>
-              At least one special character (#, !, @, etc.)
+              {t("At least one special character (#, !, @, etc.)")}
             </span>
           </li>
         </ul>

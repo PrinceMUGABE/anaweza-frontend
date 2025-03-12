@@ -6,6 +6,7 @@ import axios from 'axios';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { KeyIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
 import loginImage from '../../assets/pictures/system/anaweza.jpg';
+import { useTranslation } from "react-i18next";
 
 const ResetPassword = () => {
   const navigate = useNavigate();

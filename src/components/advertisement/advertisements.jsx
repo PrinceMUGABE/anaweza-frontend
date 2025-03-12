@@ -5,6 +5,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight, faImage, faPhone, faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 import crystalBallVideo from "../../assets/pictures/videos/video game2.mp4";
+import { useTranslation } from "react-i18next";
 
 function Advertisements() {
     const [advertisements, setAdvertisements] = useState([]);

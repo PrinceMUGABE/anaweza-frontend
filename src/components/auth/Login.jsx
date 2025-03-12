@@ -8,9 +8,11 @@ import { UserIcon, ArrowLeftIcon, LockClosedIcon } from "@heroicons/react/24/out
 import axios from "axios";
 import loginImage from "../../assets/pictures/system/anaweza.jpg";
 import PasswordInput from './passwordValidation';
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
@@ -120,13 +122,13 @@ const Login = () => {
     } catch (error) {
       setIsLoading(false);
       console.error("Login error:", error);
-      
+
       // More detailed error handling
       if (error.response) {
         // The server responded with a status code outside the 2xx range
         console.error("Error status:", error.response.status);
         console.error("Error data:", error.response.data);
-        
+
         if (error.response.data.detail) {
           setError(error.response.data.detail);
         } else {
@@ -153,20 +155,20 @@ const Login = () => {
           <div className="absolute bottom-40 right-20 w-60 h-60 rounded-full bg-blue-400"></div>
           <div className="absolute top-1/3 right-10 w-20 h-20 rounded-full bg-indigo-300"></div>
         </div>
-        
+
         <div className="relative z-10">
           <img src={loginImage} alt="Logo" className="h-14 w-auto" />
         </div>
-        
+
         <div className="space-y-8 relative z-10">
-          <h1 className="text-5xl font-bold text-white leading-tight">Welcome <span className="text-blue-300">Back</span></h1>
+          <h1 className="text-5xl font-bold text-white leading-tight">{t("Welcome Back")} <span className="text-blue-300">{t("")}</span></h1>
           <p className="text-blue-100 text-xl max-w-md leading-relaxed">
-            Access your account to discover job opportunities tailored just for you.
+            {t("Access your account to discover job opportunities tailored just for you.")}
           </p>
-          
+
           <div className="bg-white/10 p-6 rounded-xl backdrop-blur-sm border border-white/20 shadow-xl">
             <p className="text-white text-lg italic mb-4">
-              "This platform helped me find my dream job within weeks. The personalized matching system is revolutionary!"
+              {t("This platform helped me find my dream job within weeks. The personalized matching system is revolutionary!")}
             </p>
             <div className="flex items-center">
               <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-blue-400 to-blue-300 flex items-center justify-center text-blue-900 font-bold text-lg shadow-md">
@@ -179,12 +181,12 @@ const Login = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="text-blue-200 text-sm relative z-10">
           © 2025 Anaweza. All rights reserved.
         </div>
       </div>
-      
+
       {/* Right side - Login form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50">
         <div className="max-w-md w-full space-y-8">
@@ -194,10 +196,10 @@ const Login = () => {
                 <UserIcon className="h-8 w-8 text-white" />
               </div>
             </div>
-            <h2 className="text-3xl font-bold text-gray-800">Sign in to your account</h2>
-            <p className="mt-3 text-gray-600">Enter your credentials to access the system</p>
+            <h2 className="text-3xl font-bold text-gray-800">{t("Sign in to your account")}</h2>
+            <p className="mt-3 text-gray-600">{t("Enter your credentials to access the system")}</p>
           </div>
-          
+
           {error && (
             <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg shadow-sm">
               <div className="flex">
@@ -212,12 +214,12 @@ const Login = () => {
               </div>
             </div>
           )}
-          
+
           <form className="mt-8 space-y-6" onSubmit={handleLogin}>
             <div className="space-y-5">
               <div>
                 <label htmlFor="identifier" className="block text-sm font-semibold text-gray-700">
-                  Email or Phone Number
+                  {t("Email or Phone Number")}
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm">
                   <input
@@ -227,26 +229,26 @@ const Login = () => {
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
                     className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm sm:text-sm text-gray-700"
-                    placeholder="name@gmail.com or 0781234567"
+                    placeholder={t("name@gmail.com or 0781234567")}
                     required
                   />
                 </div>
-                <p className="mt-1 text-xs text-gray-500">We only accept emails ending with @gmail.com</p>
+                <p className="mt-1 text-xs text-gray-500">{t("We only accept emails ending with @gmail.com")}</p>
               </div>
 
               {/* Replace the old password input with the PasswordInput component */}
-              <PasswordInput 
+              <PasswordInput
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 id="password"
                 name="password"
                 label="Password"
-                placeholder="Enter your password"
+                placeholder={t("Enter your password")}
                 required={true}
               />
               <div className="flex justify-end">
                 <Link to="/passwordreset" className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
-                  Forgot password?
+                  {t("Forgot password?")}
                 </Link>
               </div>
             </div>
@@ -271,10 +273,10 @@ const Login = () => {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                     </svg>
-                    Signing in...
+                    {t("Signing in")}...
                   </div>
                 ) : (
-                  "Sign in"
+                  t("Sign in")
                 )}
               </button>
             </div>
@@ -284,15 +286,12 @@ const Login = () => {
             <div className="text-sm">
               <Link to="/" className="flex items-center font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
                 <ArrowLeftIcon className="mr-1 h-4 w-4" />
-                Back to home
+                {t("Back to home")}
               </Link>
+
             </div>
-            
-            {/* <div className="text-sm">
-              <Link to="/register" className="font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
-                Don't have an account?
-              </Link>
-            </div> */}
+
+
           </div>
         </div>
       </div>

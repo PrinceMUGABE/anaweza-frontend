@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { useTranslation } from "react-i18next";
 
 const Job_Seeker_FeaturedJobs = () => {
   const [allJobs, setAllJobs] = useState([]);

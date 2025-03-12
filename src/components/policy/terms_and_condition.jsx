@@ -3,10 +3,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
+import { useTranslation } from "react-i18next";
 
 
 const TermsAndConditions = () => {
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   return (
     <section className="bg-gray-100 min-h-screen">
@@ -35,7 +37,7 @@ const TermsAndConditions = () => {
               </p>
               <p>
                 <strong>Account Security:</strong> You are responsible for safeguarding the password used to access 
-                the service and for any activities or actions under your password. We encourage you to use "strong" 
+                the service and for any activities or actions under your password. We encourage you to use 'strong' 
                 passwords (passwords that use a combination of upper and lower case letters, numbers, and symbols) 
                 with your account.
               </p>
