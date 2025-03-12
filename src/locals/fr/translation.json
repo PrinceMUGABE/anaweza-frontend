@@ -349,7 +349,35 @@
 "Additional Documents": "Documents supplémentaires",
 "Feedback from Employer": "Retour de l'employeur",
 "Reviewed on:": "Examiné le :",
-"Withdraw Application": "Retirer la candidature"
+"Withdraw Application": "Retirer la candidature",
+
+
+
+"Job Seeker Information": "Informations du Chercheur d'Emploi",
+  "Phone": "Téléphone",
+  "Email": "Email",
+  "Role": "Rôle",
+  "Choose Image Source": "Choisir la Source d'Image",
+  "Upload from Device": "Télécharger depuis l'Appareil",
+  "Capture with Webcam": "Capturer avec la Webcam",
+  "Capture": "Capturer",
+  "Cancel": "Annuler",
+  "Upload Image": "Télécharger l'Image",
+  "Profile picture is optional": "La photo de profil est facultative",
+  "Active": "Actif",
+  "Non-Active": "Non-Actif",
+  "First Name": "Prénom",
+  "Middle Name": "Deuxième Prénom",
+  "Last Name": "Nom de Famille",
+  "Registration Fee:": "Frais d'Inscription :",
+  "Additional Fees Required": "Frais Supplémentaires Requis",
+  "Your new salary range requires additional fees:": "Votre nouvelle fourchette de salaire nécessite des frais supplémentaires :",
+  "Additional Renewal Fee:": "Frais de Renouvellement Supplémentaires :",
+  "Additional Registration Fee:": "Frais d'Inscription Supplémentaires :",
+  "Payment Information:": "Informations de Paiement :",
+  "Please deposit the amount to:": "Veuillez déposer le montant sur :",
+  "Save Changes": "Enregistrer les Modifications",
+  "Profile updated successfully!": "Profil mis à jour avec succès !"
 
 
 }

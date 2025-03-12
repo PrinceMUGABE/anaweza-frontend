@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslation } from "react-i18next";
 
 const Job_Seeker_ContactUs = () => {
+    const {t} = useTranslation();
     const phoneNumbers = [
         
         { number: '+250788457408', display: '+250 788 457 408' },
@@ -26,11 +27,11 @@ const Job_Seeker_ContactUs = () => {
         <section id="contact" className="bg-gray-100 py-12 rounded-lg">
             <div className="container text-center">
                 <h2 className='text-headingColor font-[700] text-[2.5rem] mb-8 text-black dark:text-black'>
-                    Contact Us
+                    {t("Contact Us")}
                 </h2>
                 <div className='bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row md:justify-between text-left'>
                     <div className="md:w-1/2 md:mr-4">
-                        <h3 className="text-xl font-semibold text-gray-800">Phone Numbers:</h3>
+                        <h3 className="text-xl font-semibold text-gray-800">{("Phone Numbers")}</h3>
                         <ul className="mt-2 mb-4 text-lg text-gray-600">
                             {phoneNumbers.map((phone, index) => (
                                 <li key={index} className="mt-1">
@@ -42,7 +43,7 @@ const Job_Seeker_ContactUs = () => {
                         </ul>
                     </div>
                     <div className="md:w-1/2 md:ml-4">
-                        <h3 className="text-xl font-semibold text-gray-800">Email Addresses:</h3>
+                        <h3 className="text-xl font-semibold text-gray-800">{t("Email Addresses")}</h3>
                         <ul className="mt-2 text-lg text-gray-600">
                             {emails.map((email, index) => (
                                 <li key={index} className="mt-1">

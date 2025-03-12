@@ -138,7 +138,7 @@
   "Profile Picture": "Ifoto y'Imyirondoro",
   "Skills (comma separated)": "Ubumenyi (butandukanyijwe na koma)",
   "Experience (years)": "Uburambe (imyaka)",
-  "Education Sector": "Urwego rw'Uburezi",
+  "Education Sector": "Ibyo Wize",
   "Salary Range (Frw)": "Urwego rw'Umushahara (Frw)",
   "Current Fee Information": "Amakuru y'Igiciro cy'Ubu",
   "Status": "Imimerere",
@@ -354,7 +354,35 @@
 "Additional Documents": "Inyandiko zindi",
 "Feedback from Employer": "Igisubizo cy'umukoresha",
 "Reviewed on:": "Yasuzumwe ku wa:",
-"Withdraw Application": "Kuraho dosiye"
+"Withdraw Application": "Kuraho dosiye",
+
+
+
+"Job Seeker Information": "Umwirondoro W'Usaba Akazi",
+"Phone": "Telefoni",
+"Email": "Imeyili",
+"Role": "Uruhare",
+"Choose Image Source": "Hitamo Aho Ushaka Gukura Ifoto",
+"Upload from Device": "Zana Ifoto Mu Bubiko",
+"Capture with Webcam": "Fata Ifoto Ukoresheje camera",
+"Capture": "Fata",
+"Cancel": "Kuraho",
+"Upload Image": "Zana Ifoto",
+"Profile picture is optional": "Ifoto y'umwirondoro ntabwo ari ngombwa",
+"Active": "Urakora",
+"Non-Active": "Ntukora",
+"First Name": "Izina",
+"Middle Name": "Izina rya Kabiri",
+"Last Name": "Izina ry'Umuryango",
+"Registration Fee:": "Amafaranga yo Kwiyandikisha:",
+"Additional Fees Required": "Amafaranga y'Inyongera Asabwa",
+"Your new salary range requires additional fees:": "Urutonde rw'umushahara mushya rusaba amafaranga y'inyongera:",
+"Additional Renewal Fee:": "Amafaranga y'Inyongera yo Kongerera Igihe:",
+"Additional Registration Fee:": "Amafaranga y'Inyongera yo Kwiyandikisha:",
+"Payment Information:": "Amakuru yo Kwishyura:",
+"Please deposit the amount to:": "Nyamuneka shyira amafaranga kuri:",
+"Save Changes": "Bika Impinduka",
+"Profile updated successfully!": "Umwirondoro wawe wavuguruwe neza!"
 
 
 }

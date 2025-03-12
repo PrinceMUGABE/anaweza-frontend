@@ -20,6 +20,7 @@ function Job_seeker_Profile() {
   const [sectors, setSectors] = useState([]);
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
+  const {t} = useTranslation();
 
 
   // Form data for CustomUser
@@ -172,7 +173,7 @@ function Job_seeker_Profile() {
     // Validation for experience - must be a positive number
     if (name === 'experience') {
       if (value < 0) {
-        setErrors(prev => ({ ...prev, experience: 'Experience cannot be negative' }));
+        setErrors(prev => ({ ...prev, experience: t('Experience cannot be negative' )}));
       } else {
         setErrors(prev => ({ ...prev, experience: '' }));
       }
@@ -468,7 +469,7 @@ function Job_seeker_Profile() {
 
         setIsEditing(false);
         setAdditionalFees(null);
-        alert('Profile updated successfully!');
+        alert(t("Profile updated successfully!"));
       } else {
         // Better error handling
         const errorData = await response.json().catch(() => ({}));
@@ -500,7 +501,7 @@ function Job_seeker_Profile() {
   if (!userData || !jobSeekerData) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-lg text-gray-600">No user data found.</div>
+        <div className="text-lg text-gray-600">{t("No user data found.")}</div>
       </div>
     );
   }
@@ -509,7 +510,7 @@ function Job_seeker_Profile() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-4xl p-8 bg-white shadow-lg rounded-lg transition-all">
         <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">
-          Job Seeker Profile
+          {t("Job Seeker Profile")}
         </h1>
 
         {!isEditing ? (
@@ -543,7 +544,7 @@ function Job_seeker_Profile() {
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                     }`}
                 >
-                  Account Information
+                  {t("Account Information")}
                 </button>
                 <button
                   onClick={() => setIsUserInfoEditing(false)}
@@ -552,7 +553,7 @@ function Job_seeker_Profile() {
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                     }`}
                 >
-                  Job Seeker Information
+                  {t("Job Seeker Information")}
                 </button>
               </nav>
             </div>
@@ -561,29 +562,29 @@ function Job_seeker_Profile() {
               // User Account Information
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Phone</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Phone")}</strong>
                   <span className="text-gray-800 text-lg">{userData.phone_number}</span>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Email</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Email")}</strong>
                   <span className="text-gray-800 text-lg">{userData.email}</span>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Role</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Role")}</strong>
                   <span className="text-gray-800 text-lg">{userData.role}</span>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Status</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Status")}</strong>
                   <span className="text-gray-800 text-lg">
                     {typeof userData.status === 'string' ? userData.status : (userData.status ? 'Active' : 'Non-Active')}
                   </span>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Created At</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Created At")}</strong>
                   <span className="text-gray-800 text-lg">
                     {new Date(userData.created_at).toLocaleString()}
                   </span>
@@ -593,61 +594,61 @@ function Job_seeker_Profile() {
               // Job Seeker Information
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Full Name</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Full Name")}</strong>
                   <span className="text-gray-800 text-lg">
                     {jobSeekerData.first_name} {jobSeekerData.middle_name} {jobSeekerData.last_name}
                   </span>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Location</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Location")}</strong>
                   <span className="text-gray-800 text-lg">
                     {jobSeekerData.district} {jobSeekerData.sector}
                   </span>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Gender</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Gender")}</strong>
                   <span className="text-gray-800 text-lg capitalize">{jobSeekerData.gender}</span>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Skills</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Skills")}</strong>
                   <span className="text-gray-800 text-lg">{jobSeekerData.skills}</span>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Experience</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Experience")}</strong>
                   <span className="text-gray-800 text-lg">{jobSeekerData.experience} years</span>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Education Level</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Education Level")}</strong>
                   <span className="text-gray-800 text-lg capitalize">{jobSeekerData.education_level}</span>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Education Sector</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Education Sector")}</strong>
                   <span className="text-gray-800 text-lg">{jobSeekerData.education_sector}</span>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Salary Range</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Salary Range")}</strong>
                   <span className="text-gray-800 text-lg">{jobSeekerData.salary_range}</span>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Registration Fee</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Registration Fee")}</strong>
                   <span className="text-gray-800 text-lg">{jobSeekerData.registration_fee} Frw</span>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Renewal Fee</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Renewal Fee")}</strong>
                   <span className="text-gray-800 text-lg">{jobSeekerData.renewal_fee} Frw</span>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">Status</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Status")}</strong>
                   <span className="text-gray-800 text-lg">
                     {typeof jobSeekerData.status === 'string' ? jobSeekerData.status : (jobSeekerData.status ? 'Active' : 'Non-Active')}
                   </span>
@@ -660,7 +661,7 @@ function Job_seeker_Profile() {
                 onClick={handleEditClick}
                 className="px-8 py-3 text-white bg-sky-900 hover:bg-gray-700 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               >
-                Edit Profile
+                {t("Edit Profile")}
               </button>
             </div>
           </div>
@@ -677,7 +678,7 @@ function Job_seeker_Profile() {
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                     }`}
                 >
-                  Account Information
+                  {t("Account Information")}
                 </button>
                 <button
                   type="button"
@@ -687,7 +688,7 @@ function Job_seeker_Profile() {
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                     }`}
                 >
-                  Job Seeker Information
+                  {t("Job Seeker Information")}
                 </button>
               </nav>
             </div>
@@ -699,7 +700,7 @@ function Job_seeker_Profile() {
                 <div className="space-y-4">
                   <div className="flex flex-col items-center">
                     <label className="block text-gray-700 text-sm font-medium mb-2">
-                      Profile Picture
+                      {t("Profile Picture")}
                     </label>
 
                     {/* Preview Image */}
@@ -731,15 +732,15 @@ function Job_seeker_Profile() {
                     {/* Image Source Dropdown */}
                     <div className="w-full max-w-sm mb-4">
                       <label className="block text-gray-700 text-sm font-medium mb-2">
-                        Choose Image Source
+                        {t("Choose Image Source")}
                       </label>
                       <select
                         value={imageOption}
                         onChange={handleImageOptionChange}
                         className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
                       >
-                        <option value="upload">Upload from Device</option>
-                        <option value="webcam">Capture with Webcam</option>
+                        <option value="upload">{t("Upload from Device")}</option>
+                        <option value="webcam">{t("Capture with Webcam")}</option>
                       </select>
                     </div>
 
@@ -758,14 +759,14 @@ function Job_seeker_Profile() {
                             onClick={captureImage}
                             className="px-4 py-2 bg-green-500 text-white rounded mr-2 hover:bg-green-600"
                           >
-                            Capture
+                            {t("Capture")}
                           </button>
                           <button
                             type="button"
                             onClick={() => setImageOption('upload')}
                             className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                           >
-                            Cancel
+                            {t("Cancel")}
                           </button>
                         </div>
                       </div>
@@ -775,7 +776,7 @@ function Job_seeker_Profile() {
                     {imageOption === 'upload' && (
                       <div className="flex justify-center">
                         <label className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-600 transition">
-                          Upload Image
+                          {t("Upload Image")}
                           <input
                             type="file"
                             accept="image/*"
@@ -786,7 +787,7 @@ function Job_seeker_Profile() {
                       </div>
                     )}
 
-                    <p className="text-xs text-gray-500 mt-2">Profile picture is optional</p>
+                    <p className="text-xs text-gray-500 mt-2">{t("Profile picture is optional")}</p>
                   </div>
                 </div>
 
@@ -796,7 +797,7 @@ function Job_seeker_Profile() {
                       className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="phone_number"
                     >
-                      Phone
+                      {t("Phone")}
                     </label>
                     <input
                       type="text"
@@ -814,7 +815,7 @@ function Job_seeker_Profile() {
                       className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="email"
                     >
-                      Email
+                      {t("Email")}
                     </label>
                     <input
                       type="email"
@@ -832,7 +833,7 @@ function Job_seeker_Profile() {
                       className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="role"
                     >
-                      Role
+                      {t("Role")}
                     </label>
                     <input
                       type="text"
@@ -851,7 +852,7 @@ function Job_seeker_Profile() {
                       className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="status"
                     >
-                      Status
+                      {t("Status")}
                     </label>
                     <select
                       id="status"
@@ -863,8 +864,8 @@ function Job_seeker_Profile() {
                       })}
                       className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
                     >
-                      <option value="true">Active</option>
-                      <option value="false">Non-Active</option>
+                      <option value="true">{t("Active")}</option>
+                      <option value="false">{t("Non-Active")}</option>
                     </select>
                   </div>
                 </div>
@@ -878,7 +879,7 @@ function Job_seeker_Profile() {
                       className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="first_name"
                     >
-                      First Name
+                      {t("First Name")}
                     </label>
                     <input
                       type="text"
@@ -896,7 +897,7 @@ function Job_seeker_Profile() {
                       className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="middle_name"
                     >
-                      Middle Name
+                      {t("Middle Name")}
                     </label>
                     <input
                       type="text"
@@ -913,7 +914,7 @@ function Job_seeker_Profile() {
                       className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="last_name"
                     >
-                      Last Name
+                      {t("Last Name")}
                     </label>
                     <input
                       type="text"
@@ -928,18 +929,18 @@ function Job_seeker_Profile() {
 
 
                   <div>
-                    <label>District *</label>
+                    <label>{t("District *")}</label>
                     <select className='text-gray-500 w-72' name="district" value={jobSeekerFormData.district} onChange={handleChange} required>
-                      <option value="">Select District</option>
+                      <option value="">{t("Select District")}</option>
                       {Object.keys(districtsData.districts).map((district) => (
                         <option key={district} value={district}>{district}</option>
                       ))}
                     </select>
                   </div>
                   <div>
-                    <label>Sector *</label>
+                    <label>{t("Sector *")}</label>
                     <select className="text-gray-500 w-72" name="sector" value={jobSeekerFormData.sector} onChange={handleChange} required>
-                      <option value="">Select Sector</option>
+                      <option value="">{t("Select Sector")}</option>
                       {sectors.map(([name]) => (
                         <option key={name} value={name}>{name}</option>
                       ))}
@@ -952,7 +953,7 @@ function Job_seeker_Profile() {
                       className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="gender"
                     >
-                      Gender
+                      {t("Gender")}
                     </label>
                     <select
                       id="gender"
@@ -962,10 +963,10 @@ function Job_seeker_Profile() {
                       className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
                       required
                     >
-                      <option value="">Select Gender</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
+                      <option value="">{t("Select Gender")}</option>
+                      <option value="male">{t("Male")}</option>
+                      <option value="female">{t("Female")}</option>
+                      <option value="other">{t("Other")}</option>
                     </select>
                   </div>
 
@@ -974,7 +975,7 @@ function Job_seeker_Profile() {
                       className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="skills"
                     >
-                      Skills (comma separated)
+                      {t("Skills (comma separated)")}
                     </label>
                     <input
                       type="text"
@@ -992,7 +993,7 @@ function Job_seeker_Profile() {
                       className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="experience"
                     >
-                      Experience (years)
+                      {t("Experience (years)")}
                     </label>
                     <input
                       type="number"
@@ -1010,7 +1011,7 @@ function Job_seeker_Profile() {
                       className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="education_level"
                     >
-                      Education Level
+                      {t("Education Level")}
                     </label>
                     <select
                       id="education_level"
@@ -1019,16 +1020,16 @@ function Job_seeker_Profile() {
                       onChange={handleJobSeekerChange}
                       className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
                     >
-                      <option value="none">No Formal Education</option>
-                      <option value="primary">Primary Education</option>
-                      <option value="ordinary_level">Ordinary Level</option>
-                      <option value="secondary">Secondary Education</option>
-                      <option value="advance_dimploma">Advanced Diploma</option>
-                      <option value="vocational">Vocational Training</option>
-                      <option value="advance_dimploma">Advanced Diploma</option>
-                      <option value="bachelor">Bachelor's Degree</option>
-                      <option value="master">Master's Degree</option>
-                      <option value="phd">PhD</option>
+                      <option value="none">{t("No Formal Education")}</option>
+                      <option value="primary">{t("Primary Education")}</option>
+                      <option value="ordinary_level">{t("Ordinary Level")}</option>
+                      <option value="secondary">{t("Secondary Education")}</option>
+                      <option value="advance_dimploma">{t("Advanced Diploma")}</option>
+                      <option value="vocational">{t("Vocational Training")}</option>
+                      <option value="advance_dimploma">{t("Advanced Diploma")}</option>
+                      <option value="bachelor">{t("Bachelor's Degree")}</option>
+                      <option value="master">{t("Master's Degree")}</option>
+                      <option value="phd">{t("PhD")}</option>
                     </select>
                   </div>
 
@@ -1037,7 +1038,7 @@ function Job_seeker_Profile() {
                       className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="education_sector"
                     >
-                      Education Sector
+                      {t("Education Sector")}
                     </label>
                     <input
                       type="text"
@@ -1055,7 +1056,7 @@ function Job_seeker_Profile() {
                       className="block text-gray-700 text-sm font-medium mb-2"
                       htmlFor="salary_range"
                     >
-                      Salary Range (Frw)
+                      {t("Salary Range (Frw)")}
                     </label>
                     <input
                       type="text"
@@ -1092,14 +1093,14 @@ function Job_seeker_Profile() {
 
                 {/* Display information about current fees */}
                 <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                  <h3 className="font-medium text-blue-900 mb-2">Current Fee Information</h3>
+                  <h3 className="font-medium text-blue-900 mb-2">{t("Current Fee Information")}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <span className="text-gray-700">Registration Fee:</span>
+                      <span className="text-gray-700">{t("Registration Fee")}:</span>
                       <span className="ml-2 text-gray-500 font-medium">{jobSeekerData.registration_fee} FRW</span>
                     </div>
                     <div>
-                      <span className="text-gray-700">Renewal Fee:</span>
+                      <span className="text-gray-700">{t("Renewal Fee")}:</span>
                       <span className="ml-2 text-gray-500 font-medium">{jobSeekerData.renewal_fee} FRW</span>
                     </div>
                   </div>
@@ -1108,18 +1109,18 @@ function Job_seeker_Profile() {
                 {/* Display Additional Fees if salary range changes */}
                 {additionalFees && (
                   <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <h3 className="font-bold text-yellow-800 mb-2">Additional Fees Required</h3>
+                    <h3 className="font-bold text-yellow-800 mb-2">{t("Additional Fees Required")}</h3>
                     <p className="text-gray-800 mb-2">
-                      Your new salary range requires additional fees:
+                      {t("Your new salary range requires additional fees:")}
                     </p>
                     <ul className="list-disc pl-5 mb-3 text-gray-800">
-                      <li>Additional Registration Fee: <strong>{additionalFees.additionalRegistrationFee} Frw</strong></li>
-                      <li>Additional Renewal Fee: <strong>{additionalFees.additionalRenewalFee} Frw</strong></li>
+                      <li>{t("Additional Registration Fee:")} <strong>{additionalFees.additionalRegistrationFee} Frw</strong></li>
+                      <li>{t("Additional Renewal Fee:")} <strong>{additionalFees.additionalRenewalFee} Frw</strong></li>
 
                     </ul>
                     <div className="p-3 bg-white rounded border border-yellow-300">
-                      <p className="font-medium text-gray-800">Payment Information:</p>
-                      <p className="text-gray-700">Please deposit the amount to:</p>
+                      <p className="font-medium text-gray-800">{t("Payment Information:")}</p>
+                      <p className="text-gray-700">{t("Please deposit the amount to:")}</p>
                       <p className="font-bold text-gray-500">
                         <ul>
                           <li>MTN MOMO PAY: <span className='text-red-600'>1592374</span></li>
@@ -1137,14 +1138,14 @@ function Job_seeker_Profile() {
                 type="submit"
                 className="px-8 py-3 text-white bg-sky-900 hover:bg-sky-700 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               >
-                Save Changes
+                {t("Save Changes")}
               </button>
               <button
                 type="button"
                 onClick={handleEditClick}
                 className="px-8 py-3 text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-lg transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
               >
-                Cancel
+                {t("Cancel")}
               </button>
             </div>
           </form>

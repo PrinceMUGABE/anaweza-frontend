@@ -351,7 +351,36 @@
   "Additional Documents": "Additional Documents",
   "Feedback from Employer": "Feedback from Employer",
   "Reviewed on:": "Reviewed on:",
-  "Withdraw Application": "Withdraw Application"
+  "Withdraw Application": "Withdraw Application",
+
+
+
+  "Job Seeker Information": "Job Seeker Information",
+  "Phone": "Phone",
+  "Email": "Email",
+  "Role": "Role",
+  "Choose Image Source": "Choose Image Source",
+  "Upload from Device": "Upload from Device",
+  "Capture with Webcam": "Capture with Webcam",
+  "Capture": "Capture",
+  "Cancel": "Cancel",
+  "Upload Image": "Upload Image",
+  "Profile picture is optional": "Profile picture is optional",
+  "Active": "Active",
+  "Non-Active": "Non-Active",
+  "First Name": "First Name",
+  "Middle Name": "Middle Name",
+  "Last Name": "Last Name",
+  "Registration Fee:": "Registration Fee:",
+  "Additional Fees Required": "Additional Fees Required",
+  "Your new salary range requires additional fees:": "Your new salary range requires additional fees:",
+  "Additional Renewal Fee:": "Additional Renewal Fee:",
+  "Additional Registration Fee:": "Additional Registration Fee:",
+  "Payment Information:": "Payment Information:",
+  "Please deposit the amount to:": "Please deposit the amount to:",
+  "Save Changes": "Save Changes",
+  "Profile updated successfully!": "Profile updated successfully!"
+
 
 
 
