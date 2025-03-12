@@ -78,7 +78,7 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold mb-4">Anaweza</h3>
             <p className="text-gray-400 mb-4">
-              Connecting talented professionals with outstanding opportunities across East Africa.
+              {t("Connecting talented professionals with outstanding opportunities across East Africa.")}
             </p>
             <div className="flex space-x-4">
               {footerLinks.social.map((item) => (
@@ -97,7 +97,7 @@ const Footer = () => {
 
           {/* For Job Seekers */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">For Job Seekers</h3>
+            <h3 className="text-lg font-semibold mb-4">{t("For Job Seekers")}</h3>
             <ul className="space-y-2">
               {footerLinks.forJobSeekers.map((link) => (
                 <li key={link.name}>
@@ -114,7 +114,7 @@ const Footer = () => {
 
           {/* For Employers */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">For Employers</h3>
+            <h3 className="text-lg font-semibold mb-4">{t("For Employers")}</h3>
             <ul className="space-y-2">
               {footerLinks.forEmployers.map((link) => (
                 <li key={link.name}>
@@ -155,15 +155,15 @@ const Footer = () => {
             </p>
             <div className="flex gap-4 mt-4 md:mt-0">
               <a href="/policy" className="text-sm text-gray-400 hover:text-white">
-                Privacy Policy
+                {t("Privacy Policy")}
               </a>
               <span className="text-gray-600">|</span>
               <a href="/terms_and_conditions" className="text-sm text-gray-400 hover:text-white">
-                Terms of Service
+                {t("Terms of Service")}
               </a>
               <span className="text-gray-600">|</span>
               <a href="/cookies" className="text-sm text-gray-400 hover:text-white">
-                Cookie Policy
+                {t("Cookie Policy")}
               </a>
             </div>
           </div>

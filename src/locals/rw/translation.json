@@ -382,7 +382,48 @@
 "Payment Information:": "Amakuru yo Kwishyura:",
 "Please deposit the amount to:": "Nyamuneka shyira amafaranga kuri:",
 "Save Changes": "Bika Impinduka",
-"Profile updated successfully!": "Umwirondoro wawe wavuguruwe neza!"
+"Profile updated successfully!": "Umwirondoro wawe wavuguruwe neza!",
+
+
+
+
+
+
+
+
+
+
+
+
+"'You must complete your job seeker profile before applying.'": "'Ugomba kuzuza umwirondoro wawe w'ukora umurimo mbere yo gusaba.'",
+"'You must be logged in to apply for jobs.'": "'Ugomba kwinjira kugira ngo usabe akazi.'",
+"'Failed to submit application. Please try again.'": "'Kwoherereza ubusabe byanze. Nyamuneka, ongera ugerageze.'",
+"'No response received from server. Please check your connection.'": "'Nta gisubizo cyabonetse kuva kuri seriveri. Nyamuneka, genzura umurongo wawe.'",
+"Loading featured jobs...": "Gutaha imirimo yerekanwe...",
+"No job listings available at the moment. Please check back later.": "Nta mirimo ihari kuri ubu. Nyamuneka, garuka nyuma.",
+"Job Details": "Ibisobanuro by'akazi",
+"If this error persists, please contact support.": "Niba iyi kibazo gikomeje, nyamuneka, menyesha ubufasha.",
+"Applying...": "Gusaba...",
+"Loading job seekers...": "Gutaha abashakisha akazi...",
+"No active job seekers found.": "Nta bashakisha akazi baboneka.",
+"Salary": "Umushahara",
+"Education": "Uburezi",
+"Contact Info": "Amakuru yo guhamagara",
+"Salary Expectation": "Igishobora kuba umushahara",
+"Discovering talented job seekers...": "Gushaka abakandida b'impano...",
+"Connecting talented professionals with outstanding opportunities across East Africa.": "Guhuza impuguke z'impano n'amahirwe adasanzwe mu Burasirazuba bwa Afurika.",
+"For Job Seekers": "Ku bashaka akazi",
+"Terms of Service": "Amabwiriza y'imikorere",
+"Cookie Policy": "Politiki ya cookie",
+"For Employers": "Kubakoresha",
+"Show More": "Birambuye",
+"Show Less": "Funga",
+
+"Job title or keywords": "Izina ry'akazi cg ijambo ry'ingenzi",
+"All Categories": "Ibyiciro Byose",
+"All Job Types": "Ubwoko bwose bw'akazi",
+"Search": "Shakisha"
+
 
 
 }

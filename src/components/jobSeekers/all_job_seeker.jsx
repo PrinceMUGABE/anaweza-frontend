@@ -20,6 +20,7 @@ const All_Job_Seekers = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(9);
   const [totalPages, setTotalPages] = useState(1);
+  const {t} = useTranslation();
   
   // Fetch job seekers from API
   useEffect(() => {
@@ -187,7 +188,7 @@ const All_Job_Seekers = () => {
     <div className="py-16 bg-gray-50">
       <Navbar/>
       <div className="container mx-auto px-4 py-8">
-        <h2 className="text-3xl text-center font-bold text-blue-800">Job Seekers</h2>
+        <h2 className="text-3xl text-center font-bold text-blue-800">{t("Job Seekers")}</h2>
 
         {/* Display filters and counts */}
         <div className="flex flex-col md:flex-row justify-between items-center my-6">
@@ -198,7 +199,7 @@ const All_Job_Seekers = () => {
           </div>
           
           <div className="flex items-center">
-            <label htmlFor="itemsPerPage" className="mr-2 text-gray-600">Show:</label>
+            <label htmlFor="itemsPerPage" className="mr-2 text-gray-600">{t("Show:")}</label>
             <select
               id="itemsPerPage"
               value={itemsPerPage}
@@ -216,14 +217,14 @@ const All_Job_Seekers = () => {
         
         {loading ? (
           <div className="text-center">
-            <p className='text-gray-700'>Loading job seekers...</p>
+            <p className='text-gray-700'>{t("Loading job seekers...")}</p>
           </div>
         ) : error ? (
           <div className="text-center">
             <p className="text-red-500">{error}</p>
           </div>
         ) : featuredSeekers.length === 0 ? (
-          <p className="text-center text-gray-600">No active job seekers found.</p>
+          <p className="text-center text-gray-600">{t("No active job seekers found.")}</p>
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -278,13 +279,13 @@ const All_Job_Seekers = () => {
                     <div className="mt-4 pt-4 border-t">
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-gray-600">
-                          Salary: {seeker.salary_range}
+                          {t("Salary")}: {seeker.salary_range}
                         </span>
                         <button 
                           className="text-blue-600 hover:text-blue-700"
                           onClick={() => openModal(seeker)}
                         >
-                          View Profile
+                          {t("View Profile")}
                         </button>
                       </div>
                     </div>
@@ -334,11 +335,11 @@ const All_Job_Seekers = () => {
                     )}
                   </div>
                   <h2 className="text-xl font-bold text-center">{formatFullName(selectedSeeker)}</h2>
-                  <p className="text-gray-900 text-center">Education: <span className='text-blue-700'>{selectedSeeker.education_sector || selectedSeeker.education_level}</span></p>
+                  <p className="text-gray-900 text-center">{t("Education")}: <span className='text-blue-700'>{selectedSeeker.education_sector || selectedSeeker.education_level}</span></p>
                   
                   <div className="mt-4 w-full">
                     <div className="bg-gray-100 p-4 rounded-lg">
-                      <h3 className="text-lg text-blue-700 font-semibold mb-2">Contact Info</h3>
+                      <h3 className="text-lg text-blue-700 font-semibold mb-2">{t("Contact Info")}</h3>
                       <div className="space-y-2">
                         <div className="flex items-center gap-2">
                           <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -354,7 +355,7 @@ const All_Job_Seekers = () => {
                         </div>
 
                         <div className="bg-gray-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-gray-700">Location</h3>
+                      <h3 className="font-semibold text-gray-700">{t("Location")}</h3>
                       <p className="text-gray-800">{selectedSeeker.district || "N/A"} - {selectedSeeker.sector || "N/A"}</p>
                     </div>
                       </div>
@@ -365,29 +366,29 @@ const All_Job_Seekers = () => {
                 <div className="md:w-2/3">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                     <div className="bg-gray-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-gray-700">Experience</h3>
+                      <h3 className="font-semibold text-gray-700">{t("Experience")}</h3>
                       <p className="text-gray-800">{selectedSeeker.experience} years</p>
                     </div>
                     <div className="bg-gray-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-gray-700">Education</h3>
+                      <h3 className="font-semibold text-gray-700">{t("Education")}</h3>
                       <p className="text-gray-800">{selectedSeeker.education_level}</p>
                       {selectedSeeker.education_sector && (
                         <p className="text-gray-600">{selectedSeeker.education_sector}</p>
                       )}
                     </div>
                     <div className="bg-gray-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-gray-700">Gender</h3>
+                      <h3 className="font-semibold text-gray-700">{t("Gender")}</h3>
                       <p className="text-gray-800">{selectedSeeker.gender}</p>
                     </div>
                     <div className="bg-gray-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-gray-700">Salary Expectation</h3>
+                      <h3 className="font-semibold text-gray-700">{t("Salary Expectation")}</h3>
                       <p className="text-gray-800">{selectedSeeker.salary_range}</p>
                     </div>
                     
                   </div>
                   
                   <div className="mb-6">
-                    <h3 className="font-semibold text-lg mb-2 text-gray-700">Skills</h3>
+                    <h3 className="font-semibold text-lg mb-2 text-gray-700">{t("Skills")}</h3>
                     <div className="flex flex-wrap gap-2">
                       {parseSkills(selectedSeeker.skills).map((skill, index) => (
                         <span key={index} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full">
@@ -423,7 +424,7 @@ const All_Job_Seekers = () => {
                   onClick={closeModal}
                   className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
                 >
-                  Close
+                  {t("Close")}
                 </button>
               </div>
             </div>

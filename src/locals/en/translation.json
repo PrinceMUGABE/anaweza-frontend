@@ -379,9 +379,40 @@
   "Payment Information:": "Payment Information:",
   "Please deposit the amount to:": "Please deposit the amount to:",
   "Save Changes": "Save Changes",
-  "Profile updated successfully!": "Profile updated successfully!"
+  "Profile updated successfully!": "Profile updated successfully!",
 
 
+
+
+
+
+  "'You must complete your job seeker profile before applying.'": "'You must complete your job seeker profile before applying.'",
+  "'You must be logged in to apply for jobs.'": "'You must be logged in to apply for jobs.'",
+  "'Failed to submit application. Please try again.'": "'Failed to submit application. Please try again.'",
+  "'No response received from server. Please check your connection.'": "'No response received from server. Please check your connection.'",
+  "Loading featured jobs...": "Loading featured jobs...",
+  "No job listings available at the moment. Please check back later.": "No job listings available at the moment. Please check back later.",
+  "Job Details": "Job Details",
+  "If this error persists, please contact support.": "If this error persists, please contact support.",
+  "Applying...": "Applying...",
+  "Loading job seekers...": "Loading job seekers...",
+  "No active job seekers found.": "No active job seekers found.",
+  "Salary": "Salary",
+  "Education": "Education",
+  "Contact Info": "Contact Info",
+  "Salary Expectation": "Salary Expectation",
+  "Discovering talented job seekers...": "Discovering talented job seekers...",
+  "Connecting talented professionals with outstanding opportunities across East Africa.": "Connecting talented professionals with outstanding opportunities across East Africa.",
+  "For Job Seekers": "For Job Seekers",
+  "Terms of Service": "Terms of Service",
+  "Cookie Policy": "Cookie Policy",
+  "For Employers": "For Employers",
+  "Show More": "Show More",
+  "Show Less": "Show Less",
+  "Job title or keywords": "Job title or keywords",
+  "All Categories": "All Categories",
+  "All Job Types": "All Job Types",
+  "Search": "Search"
 
 
 }

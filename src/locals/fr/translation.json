@@ -377,7 +377,47 @@
   "Payment Information:": "Informations de Paiement :",
   "Please deposit the amount to:": "Veuillez déposer le montant sur :",
   "Save Changes": "Enregistrer les Modifications",
-  "Profile updated successfully!": "Profil mis à jour avec succès !"
+  "Profile updated successfully!": "Profil mis à jour avec succès !",
+
+
+
+
+
+
+
+
+
+
+
+
+  "'You must complete your job seeker profile before applying.'": "'Vous devez compléter votre profil de chercheur d'emploi avant de postuler.'",
+"'You must be logged in to apply for jobs.'": "'Vous devez être connecté pour postuler à des emplois.'",
+"'Failed to submit application. Please try again.'": "'Échec de l'envoi de la candidature. Veuillez réessayer.'",
+"'No response received from server. Please check your connection.'": "'Aucune réponse reçue du serveur. Veuillez vérifier votre connexion.'",
+"Loading featured jobs...": "Chargement des emplois en vedette...",
+"No job listings available at the moment. Please check back later.": "Aucune offre d'emploi disponible pour le moment. Veuillez vérifier ultérieurement.",
+"Job Details": "Détails de l'emploi",
+"If this error persists, please contact support.": "Si cette erreur persiste, veuillez contacter le support.",
+"Applying...": "Candidature en cours...",
+"Loading job seekers...": "Chargement des chercheurs d'emploi...",
+"No active job seekers found.": "Aucun chercheur d'emploi actif trouvé.",
+"Salary": "Salaire",
+"Education": "Formation",
+"Contact Info": "Coordonnées",
+"Salary Expectation": "Prétentions salariales",
+"Discovering talented job seekers...": "Découverte de chercheurs d'emploi talentueux...",
+"Connecting talented professionals with outstanding opportunities across East Africa.": "Mise en relation de professionnels talentueux avec d'excellentes opportunités à travers l'Afrique de l'Est.",
+"For Job Seekers": "Pour les chercheurs d'emploi",
+"Terms of Service": "Conditions d'utilisation",
+"Cookie Policy": "Politique relative aux cookies",
+"For Employers": "Pour les employeurs",
+"Show More": "Afficher plus",
+"Show Less": "Afficher moins",
+
+"Job title or keywords": "Intitulé du poste ou mots-clés",
+"All Categories": "Toutes les catégories",
+"All Job Types": "Tous les types de poste",
+"Search": "Rechercher"
 
 
 }

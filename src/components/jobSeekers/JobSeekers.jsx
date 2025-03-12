@@ -95,7 +95,7 @@ const FeaturedSeekers = () => {
           <div className="flex justify-center">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-700"></div>
           </div>
-          <p className="text-gray-700 mt-4">Discovering talented job seekers...</p>
+          <p className="text-gray-700 mt-4">{t("Discovering talented job seekers...")}</p>
         </div>
       </div>
     );
@@ -199,7 +199,7 @@ const FeaturedSeekers = () => {
                     <div className="mt-4 pt-4 border-t border-gray-100">
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-gray-600">
-                          Salary: <span className="font-medium">{seeker.salary_range}</span>
+                          {t("Salary")}: <span className="font-medium">{seeker.salary_range}</span>
                         </span>
                         <button 
                           className="px-3 py-1 bg-blue-700 text-white rounded hover:bg-blue-800 transition-colors text-sm"

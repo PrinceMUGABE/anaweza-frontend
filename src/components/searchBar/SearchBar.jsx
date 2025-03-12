@@ -103,7 +103,7 @@ const SearchBar = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <input
                 type="text"
-                placeholder="Job title or keywords"
+                placeholder= {t("Job title or keywords")}
                 className="w-full pl-10 pr-4 py-3 rounded-lg text-gray-700 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -155,7 +155,7 @@ const SearchBar = () => {
               {loading ? (
                 <div className="h-5 w-5 border-t-2 border-b-2 border-white rounded-full animate-spin"></div>
               ) : (
-                'Search'
+                t("Search")
               )}
             </button>
           </div>

@@ -16,6 +16,7 @@ function Advertisements() {
     const intervalRef = useRef(null);
     const cardsPerView = useRef(3);
     const videoRefs = useRef({});
+    const {t} = useTranslation();
 
     useEffect(() => {
         fetchData();
@@ -304,7 +305,7 @@ function Advertisements() {
                                     </div>
                                     <div className="p-4">
                                         <h3 className="text-lg font-semibold text-gray-800 line-clamp-1 mb-2">{ad.title}</h3>
-                                        <button className="text-indigo-600 hover:text-indigo-800 font-medium">Show More</button>
+                                        <button className="text-indigo-600 hover:text-indigo-800 font-medium">{t("Show More")}</button>
                                     </div>
                                 </div>
                             </div>
@@ -326,7 +327,7 @@ function Advertisements() {
                                 <span className="text-gray-700">{selectedAd.contact_info || "Contact info not provided"}</span>
                             </div>
                             <div className="text-right mt-6">
-                                <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors">Show Less</button>
+                                <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors">{t("Show Less")}</button>
                             </div>
                         </div>
                     </div>

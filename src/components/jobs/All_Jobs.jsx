@@ -15,6 +15,7 @@ const List_of_Jobs = () => {
     const [applying, setApplying] = useState(false);
     const [applicationStatus, setApplicationStatus] = useState(null);
     const token = localStorage.getItem("token");
+    const {t} = useTranslation();
     
 
     const jobsPerPage = 9;
@@ -125,7 +126,7 @@ const List_of_Jobs = () => {
         if (!token) {
             setApplicationStatus({
                 type: 'error',
-                message: 'You must be logged in to apply for jobs.'
+                message: t('You must be logged in to apply for jobs.')
             });
             return;
         }
@@ -141,7 +142,7 @@ const List_of_Jobs = () => {
             if (!isRegistered) {
                 setApplicationStatus({
                     type: 'error',
-                    message: 'You must complete your job seeker profile before applying.'
+                    message: t('You must complete your job seeker profile before applying.')
                 });
                 setApplying(false);
                 return;
@@ -169,7 +170,7 @@ const List_of_Jobs = () => {
             // Error handling code remains the same
             console.error('Error applying for job:', error);
 
-            let errorMessage = 'Failed to submit application. Please try again.';
+            let errorMessage = t('Failed to submit application. Please try again.');
 
             if (error.response) {
                 console.error('Error status:', error.response.status);
@@ -198,7 +199,7 @@ const List_of_Jobs = () => {
                 console.error(`HTTP Error ${error.response.status}: ${errorMessage}`);
             } else if (error.request) {
                 console.error('No response received:', error.request);
-                errorMessage = 'No response received from server. Please check your connection.';
+                errorMessage = t('No response received from server. Please check your connection.');
             } else {
                 console.error('Request setup error:', error.message);
                 errorMessage = `Error setting up request: ${error.message}`;
@@ -264,7 +265,7 @@ const List_of_Jobs = () => {
                 <div className="py-16 bg-white">
                     <div className="container mx-auto px-4 text-center">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-                        <p className="mt-4 text-gray-600">Loading featured jobs...</p>
+                        <p className="mt-4 text-gray-600">{t("Loading featured jobs...")}</p>
                     </div>
                 </div>
             );
@@ -284,8 +285,8 @@ const List_of_Jobs = () => {
             return (
                 <div className="py-16 bg-white">
                     <div className="container mx-auto px-4 text-center">
-                        <h2 className="text-3xl font-bold text-blue-800 mb-4">Featured Jobs</h2>
-                        <p className="text-gray-600">No job listings available at the moment. Please check back later.</p>
+                        <h2 className="text-3xl font-bold text-blue-800 mb-4">{t("Featured Jobs")}</h2>
+                        <p className="text-gray-600">{t("No job listings available at the moment. Please check back later.")}</p>
                     </div>
                 </div>
             );
@@ -294,7 +295,7 @@ const List_of_Jobs = () => {
         return (
             <div className="container mx-auto pt-8 px-4">
                 <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-3xl font-bold text-blue-800">Featured Jobs</h2>
+                    <h2 className="text-3xl font-bold text-blue-800">{t("Featured Jobs")}</h2>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -344,7 +345,7 @@ const List_of_Jobs = () => {
                                 onClick={() => openJobDetails(job)}
                                 className="mt-4 block w-full bg-blue-600 text-white py-2 rounded text-center hover:bg-blue-700 transition-colors"
                             >
-                                Explore
+                                {t("Explore")}
                             </button>
                         </div>
                     ))}
@@ -373,7 +374,7 @@ const List_of_Jobs = () => {
                     <div className="bg-white rounded-lg w-full max-w-3xl overflow-auto mx-auto my-4 relative" style={{ maxHeight: '90vh' }}>
                         {/* Close Button */}
                         <div className="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
-                            <h2 className="text-xl font-bold text-gray-900">Job Details</h2>
+                            <h2 className="text-xl font-bold text-gray-900">{t("Job Details")}</h2>
                             <button
                                 onClick={closeModal}
                                 className="text-gray-500 hover:text-gray-700"
@@ -403,27 +404,27 @@ const List_of_Jobs = () => {
 
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-4 border-b border-t">
                                 <div>
-                                    <h3 className="font-medium text-gray-500">Salary</h3>
+                                    <h3 className="font-medium text-gray-500">{t("Salary")}</h3>
                                     <p className="text-gray-900 font-semibold">{formatSalary(selectedJob.salary_range)}</p>
                                 </div>
                                 <div>
-                                    <h3 className="font-medium text-gray-500">Job Type</h3>
+                                    <h3 className="font-medium text-gray-500">{t("Job Type")}</h3>
                                     <p className="text-gray-900 font-semibold">{selectedJob.job_type?.name || 'Not specified'}</p>
                                 </div>
                                 <div>
-                                    <h3 className="font-medium text-gray-500">Experience</h3>
+                                    <h3 className="font-medium text-gray-500">{t("Experience")}</h3>
                                     <p className="text-gray-900 font-semibold">{selectedJob.experience_level}</p>
                                 </div>
                             </div>
 
                             <div className="mt-4">
-                                <h3 className="font-semibold text-xl text-gray-900 mb-2">Job Description</h3>
+                                <h3 className="font-semibold text-xl text-gray-900 mb-2">{t("Job Description")}</h3>
                                 <p className="text-gray-700 whitespace-pre-line">{selectedJob.description}</p>
                             </div>
 
                             {selectedJob.responsibilities?.length > 0 && (
                                 <div className="mt-4">
-                                    <h3 className="font-semibold text-xl text-gray-900 mb-2">Responsibilities</h3>
+                                    <h3 className="font-semibold text-xl text-gray-900 mb-2">{t("Responsibilities")}</h3>
                                     <ul className="list-disc pl-5 space-y-1">
                                         {selectedJob.responsibilities.map((item, index) => (
                                             <li key={index} className="text-gray-700">{item}</li>
@@ -434,7 +435,7 @@ const List_of_Jobs = () => {
 
                             {selectedJob.requirements?.length > 0 && (
                                 <div className="mt-4">
-                                    <h3 className="font-semibold text-xl text-gray-900 mb-2">Requirements</h3>
+                                    <h3 className="font-semibold text-xl text-gray-900 mb-2">{t("Requirements")}</h3>
                                     <ul className="list-disc pl-5 space-y-1">
                                         {selectedJob.requirements.map((item, index) => (
                                             <li key={index} className="text-gray-700">{item}</li>
@@ -445,7 +446,7 @@ const List_of_Jobs = () => {
 
                             {selectedJob.benefits?.length > 0 && (
                                 <div className="mt-4">
-                                    <h3 className="font-semibold text-xl text-gray-900 mb-2">Benefits</h3>
+                                    <h3 className="font-semibold text-xl text-gray-900 mb-2">{t("Benefits")}</h3>
                                     <ul className="list-disc pl-5 space-y-1">
                                         {selectedJob.benefits.map((item, index) => (
                                             <li key={index} className="text-gray-700">{item}</li>
@@ -455,7 +456,7 @@ const List_of_Jobs = () => {
                             )}
 
                             <div className="mt-4">
-                                <h3 className="font-semibold text-xl text-gray-900 mb-2">Number of position:</h3>
+                                <h3 className="font-semibold text-xl text-gray-900 mb-2">{t("Number of position")}:</h3>
                                 <p className="text-gray-700 whitespace-pre-line">{selectedJob.employees_needed}</p>
                             </div>
 
@@ -487,7 +488,7 @@ const List_of_Jobs = () => {
                                             {applicationStatus.type === 'error' && (
                                                 <div className="mt-2">
                                                     <p className="text-xs text-red-700">
-                                                        If this error persists, please contact support.
+                                                        {t("If this error persists, please contact support.")}
                                                     </p>
                                                 </div>
                                             )}
@@ -499,7 +500,7 @@ const List_of_Jobs = () => {
                             <div className="mt-6 pt-4 border-t">
                                 <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                                     <div className="text-gray-500">
-                                        <p>Application Deadline: {new Date(selectedJob.deadline).toLocaleDateString()}</p>
+                                        <p>{t("Application Deadline")}: {new Date(selectedJob.deadline).toLocaleDateString()}</p>
                                     </div>
                                     <button
                                         onClick={() => handleApply(selectedJob.id)}
@@ -517,7 +518,7 @@ const List_of_Jobs = () => {
                                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                                 </svg>
-                                                Applying...
+                                                {t("Applying...")}
                                             </span>
                                         ) : (applicationStatus && applicationStatus.type === 'success') ? 'Applied' : 'Apply Now'}
                                     </button>
