@@ -486,7 +486,7 @@ const RegisterAsJobSeeker = () => {
             <ul className="list-disc pl-6 space-y-2">
               <li><strong>{t("Below")} 100,000 RWF:</strong> 2,000 RWF {t("registration fee")}, 1,000 RWF {t("annual renewal")}</li>
               <li><strong>100,000 - 199,000 RWF:</strong> 5,000 RWF {t("registration fee")}, 2,500 RWF {t("annual renewal")}</li>
-              <li><strong>199,000 - 499,000 RWF:</strong> 10,000 RWF {t("registration fee")}, 5,000 RWF {t("annual renewal")}</li>
+              <li><strong>200,000 - 499,000 RWF:</strong> 10,000 RWF {t("registration fee")}, 5,000 RWF {t("annual renewal")}</li>
               <li><strong>500,000 RWF and Above:</strong> 20,000 RWF {t("registration fee")}, 10,000 RWF {t("annual renewal")}</li>
             </ul>
 
