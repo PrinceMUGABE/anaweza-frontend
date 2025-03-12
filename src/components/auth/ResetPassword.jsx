@@ -241,6 +241,7 @@ const ResetPassword = () => {
                     className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm sm:text-sm text-gray-700"
                     placeholder={t("name@gmail.com")}
                     required
+                    disabled={loading}
                   />
                 </div>
                 {errors.email && <p className="mt-1 text-xs text-red-500 font-medium">{errors.email}</p>}
@@ -254,7 +255,8 @@ const ResetPassword = () => {
                 label={t("New Password")}
                 value={formData.new_password}
                 onChange={handleChange}
-                placeholder= {t("Enter your new password")}
+                placeholder={t("Enter your new password")}
+                disabled={loading}
               />
 
               <div>
@@ -273,8 +275,9 @@ const ResetPassword = () => {
                       formData.confirm_password && formData.confirm_password === formData.new_password ? "border-green-300" : 
                       "border-gray-300"
                     } focus:ring-blue-500 focus:border-blue-500 shadow-sm sm:text-sm text-gray-700`}
-                    placeholder= {t("Confirm your new password")}
+                    placeholder={t("Confirm your new password")}
                     required
+                    disabled={loading}
                   />
                   <span
                     className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
@@ -302,13 +305,13 @@ const ResetPassword = () => {
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-md"
+                className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-md ${loading ? 'cursor-not-allowed opacity-80' : ''}`}
                 disabled={loading}
               >
                 {loading ? (
-                  <div className="flex items-center">
+                  <div className="flex items-center justify-center">
                     <svg
-                      className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                      className="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -327,20 +330,39 @@ const ResetPassword = () => {
 
           <div className="flex items-center justify-between mt-6">
             <div className="text-sm">
-              <Link to="/" className="flex items-center font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
+              <Link to="/" className={`flex items-center font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200 ${loading ? 'pointer-events-none opacity-50' : ''}`}>
                 <ArrowLeftIcon className="mr-1 h-4 w-4" />
                 {t("Back to home")}
               </Link>
             </div>
             
             <div className="text-sm">
-              <Link to="/login" className="font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
+              <Link to="/login" className={`font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200 ${loading ? 'pointer-events-none opacity-50' : ''}`}>
                 {t("Return to login")}
               </Link>
             </div>
           </div>
         </div>
       </div>
+      
+      {/* Full-screen loading overlay */}
+      {loading && (
+        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 backdrop-blur-sm">
+          <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center">
+            <svg
+              className="animate-spin h-10 w-10 text-blue-600 mb-4"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+            <p className="text-gray-700 font-medium">{t("Processing your request...")}</p>
+            <p className="text-gray-500 text-sm mt-1">{t("Please wait")}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -32,10 +32,9 @@ function Job_Seeker_About() {
               </p>
             </div>
             <div className="p-4 border-l-4 border-gray-700">
-              <h3 className="text-2xl font-semibold mb-2 text-black">Mission</h3>
+              <h3 className="text-2xl font-semibold mb-2 text-black">{t("Mission")}</h3>
               <p className="text-sm dark:text-slate-800">
-                We are committed to empowering job seekers by enhancing their visibility and access to opportunities, 
-                while providing job providers with efficient tools to recruit top talent and manage applications effectively.
+                {t("We are committed to empowering job seekers by enhancing their visibility and access to opportunities, while providing job providers with efficient tools to recruit top talent and manage applications effectively.")}
               </p>
             </div>
           </div>
