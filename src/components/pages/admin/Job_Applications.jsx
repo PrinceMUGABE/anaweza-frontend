@@ -63,6 +63,8 @@ useEffect(() => {
   
       // Safely extract results and ensure it's always an array
       const results = response.data?.results;
+
+      console.log("Retrieved applications: ", response.data);
       setApplications(Array.isArray(results) ? results : []);
       setLoading(false);
     } catch (err) {
