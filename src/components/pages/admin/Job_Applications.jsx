@@ -56,9 +56,9 @@ useEffect(() => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        params: {
-          status: statusFilter !== "all" ? statusFilter : undefined,
-        },
+        // params: {
+        //   status: statusFilter !== "all" ? statusFilter : undefined,
+        // },
       });
   
       // Safely extract results and ensure it's always an array
