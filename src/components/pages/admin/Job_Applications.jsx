@@ -37,44 +37,56 @@ function Admin_Job_Applications() {
   const [isChangeStatusOpen, setIsChangeStatusOpen] = useState(false);
 
   // Add this at the beginning of your component after the state declarations:
+// useEffect(() => {
+//   // Initialize filteredApplications when applications changes
+//   if (Array.isArray(applications)) {
+//     setFilteredApplications([...applications]);
+//   } else {
+//     setFilteredApplications([]);
+//   }
+// }, [applications]);
+
+
+
+// Fix 4: Update the fetchApplications call in the useEffect to ensure it runs on component mount
 useEffect(() => {
-  // Initialize filteredApplications when applications changes
-  if (Array.isArray(applications)) {
-    setFilteredApplications([...applications]);
-  } else {
-    setFilteredApplications([]);
+  fetchApplications();
+}, []); // Empty dependency array to ensure it only runs on mount
+
+// Fix 5: Add an additional useEffect to reset filtering when statusFilter changes
+useEffect(() => {
+  if (statusFilter !== "all") {
+    fetchApplications();
   }
-}, [applications]);
+}, [statusFilter]);
 
 
   // Fetch applications
-  const fetchApplications = async () => {
-    setLoading(true);
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`${BASE_URL}/applications/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        // params: {
-        //   status: statusFilter !== "all" ? statusFilter : undefined,
-        // },
-      });
-  
-      // Safely extract results and ensure it's always an array
-      const results = response.data?.results;
+  // Fix 1: Modify the fetchApplications function to better handle the response
+const fetchApplications = async () => {
+  setLoading(true);
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${BASE_URL}/applications/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-      console.log("Retrieved applications: ", response.data);
-      setApplications(Array.isArray(results) ? results : []);
-      setLoading(false);
-    } catch (err) {
-      console.error("Error fetching applications:", err);
-      setError(err.response?.data?.error || "Failed to load applications");
-      // Set applications to empty array on error
-      setApplications([]);
-      setLoading(false);
-    }
-  };
+    // Safely extract results and ensure it's always an array
+    const results = response.data?.results || [];
+    
+    console.log("Retrieved applications: ", response.data);
+    setApplications(results);
+    // Don't set filteredApplications here - let the useEffect handle it
+    setLoading(false);
+  } catch (err) {
+    console.error("Error fetching applications:", err);
+    setError(err.response?.data?.error || "Failed to load applications");
+    setApplications([]);
+    setLoading(false);
+  }
+};
 
   // Update application status
   const updateApplicationStatus = async () => {
@@ -175,60 +187,65 @@ useEffect(() => {
 
   // Apply filters
   // In your useEffect for filtering applications
-  useEffect(() => {
-    if (!Array.isArray(applications)) {
-      setFilteredApplications([]);
-      return;
+ // Fix 2: Ensure proper dependency tracking in the useEffect for filtering
+// This useEffect should run whenever applications, statusFilter, searchTerm or timeFilter changes
+useEffect(() => {
+  if (!Array.isArray(applications) || applications.length === 0) {
+    setFilteredApplications([]);
+    return;
+  }
+
+  let filtered = [...applications];
+
+  // Apply status filter
+  if (statusFilter !== "all") {
+    filtered = filtered.filter(app => app && app.status === statusFilter);
+  }
+
+  // Apply search filter with null checks
+  if (searchTerm) {
+    filtered = filtered.filter(app =>
+      app && (
+        (app.job_offer?.title?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (app.job_offer?.company_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (app.job_seeker?.first_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (app.job_seeker?.last_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (app.user?.phone_number?.includes(searchTerm))
+      )
+    );
+  }
+
+  // Apply time filter
+  if (timeFilter !== "all") {
+    const now = new Date();
+    let timeLimit;
+
+    if (timeFilter === "month") {
+      timeLimit = new Date(now);
+      timeLimit.setDate(now.getDate() - 30);
+    } else if (timeFilter === "week") {
+      timeLimit = new Date(now);
+      timeLimit.setDate(now.getDate() - 7);
     }
-  
-    let filtered = [...applications];
-  
-    // Apply status filter
-    if (statusFilter !== "all") {
-      filtered = filtered.filter(app => app && app.status === statusFilter);
-    }
-  
-    // Apply search filter with null checks
-    if (searchTerm) {
-      filtered = filtered.filter(app =>
-        app && (
-          (app.job_offer?.title?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (app.job_offer?.company_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (app.job_seeker?.first_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (app.job_seeker?.last_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (app.user?.phone_number?.includes(searchTerm))
-        )
-      );
-    }
-  
-    // Apply time filter
-    if (timeFilter !== "all") {
-      const now = new Date();
-      let timeLimit;
-  
-      if (timeFilter === "month") {
-        timeLimit = new Date(now);
-        timeLimit.setDate(now.getDate() - 30);
-      } else if (timeFilter === "week") {
-        timeLimit = new Date(now);
-        timeLimit.setDate(now.getDate() - 7);
-      }
-  
-      filtered = filtered.filter(app => {
-        if (!app || !app.applied_at) return false;
-        const appliedDate = new Date(app.applied_at);
-        return appliedDate >= timeLimit;
-      });
-    }
-  
-    setFilteredApplications(filtered);
-  }, [applications, statusFilter, searchTerm, timeFilter]);
-  
+
+    filtered = filtered.filter(app => {
+      if (!app || !app.applied_at) return false;
+      const appliedDate = new Date(app.applied_at);
+      return appliedDate >= timeLimit;
+    });
+  }
+
+  setFilteredApplications(filtered);
+}, [applications, statusFilter, searchTerm, timeFilter]); // Ensure all dependencies are listed
+
 
   // Fetch applications on component mount and when filters change
   useEffect(() => {
     fetchApplications();
   }, [statusFilter]);
+
+
+  
 
   // Calculate pagination
 // Then modify the pagination section:
