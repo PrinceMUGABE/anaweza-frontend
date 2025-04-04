@@ -70,15 +70,18 @@ const ResetPassword = () => {
       return;
     }
 
+    // Set loading to true before making the API call
+    setLoading(true);
+
     const dataToSubmit = {
       email: formData.email,
       new_password: formData.new_password
     };
 
-    setLoading(true);
     const csrfToken = getCsrfToken();
 
     try {
+      console.log("Submitted Data: ", dataToSubmit);
       const response = await axios.post('https://anaweza-backend.up.railway.app/forget_password/', dataToSubmit, {
         headers: {
           'X-CSRFToken': csrfToken,
@@ -121,6 +124,7 @@ const ResetPassword = () => {
         }));
       }
     } finally {
+      // Set loading to false after the API call completes
       setLoading(false);
     }
   };
@@ -345,7 +349,7 @@ const ResetPassword = () => {
         </div>
       </div>
       
-      {/* Full-screen loading overlay */}
+      {/* Full-screen loading overlay - Enhanced to be visible while form is being submitted */}
       {loading && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 backdrop-blur-sm">
           <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center">
