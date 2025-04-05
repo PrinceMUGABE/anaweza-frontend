@@ -369,8 +369,8 @@
 "Cancel": "Kuraho",
 "Upload Image": "Zana Ifoto",
 "Profile picture is optional": "Ifoto y'umwirondoro ntabwo ari ngombwa",
-"Active": "Urakora",
-"Non-Active": "Ntukora",
+"Active": "Ntakazi Mfite",
+"Non-Active": "Ndakora",
 "First Name": "Izina",
 "Middle Name": "Izina rya Kabiri",
 "Last Name": "Izina ry'Umuryango",
@@ -383,6 +383,8 @@
 "Please deposit the amount to:": "Nyamuneka shyira amafaranga kuri:",
 "Save Changes": "Bika Impinduka",
 "Profile updated successfully!": "Umwirondoro wawe wavuguruwe neza!",
+
+
 
 
 
@@ -418,11 +420,18 @@
 "For Employers": "Kubakoresha",
 "Show More": "Birambuye",
 "Show Less": "Funga",
+"job_seeker": "Ushaka Akazi",
 
 "Job title or keywords": "Izina ry'akazi cg ijambo ry'ingenzi",
 "All Categories": "Ibyiciro Byose",
 "All Job Types": "Ubwoko bwose bw'akazi",
-"Search": "Shakisha"
+"Search": "Shakisha",
+"NOTE: This payment is made after the job seeker finds a job as part of their support to qualify.": "ICYITONDERWA: Ubu bwishyu bwishyurwa nyuma yuko ushaka akazi abonye akazi mu rwego rwo gushyigikira anaweza",
+"For any questions regarding our pricing, please contact our support team at ltdanaweza@gmail.com": "Kubibazo byose bijyanye nigiciro cyacu, hamagara itsinda ryadufasha kuri ltdanaweza@gmail.com",
+"Our payment fees are scaled according to your target salary range:": "Amafaranga yo kwishyura aragabanijwe ukurikije umushahara uhembwa:",
+"payment fee": "umusanzu utangwa",
+"Payment Fee": "Umusanzu Utangwa"
+
 
 
 

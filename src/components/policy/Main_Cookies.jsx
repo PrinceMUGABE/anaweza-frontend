@@ -105,7 +105,7 @@ const Cookies = () => {
             </p>
             <ul className='text-gray-500'>
                 <li>Phone: +250 788 457 408</li>
-                <li>Email: princemugabe567@gmail.com</li>
+                <li>Email: ltdanaweza@gmail.com</li>
 
             </ul>
 

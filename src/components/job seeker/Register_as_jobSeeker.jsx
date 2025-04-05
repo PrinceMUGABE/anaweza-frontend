@@ -37,7 +37,7 @@ const RegisterAsJobSeeker = () => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [fileName, setFileName] = useState('');
-  const [registrationFee, setRegistrationFee] = useState(null);
+  const [paymentFee, setpaymentFee] = useState(null);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [termsError, setTermsError] = useState('');
   const [showTermsModal, setShowTermsModal] = useState(false);
@@ -51,28 +51,28 @@ const RegisterAsJobSeeker = () => {
       range: "Below 100,000 RWF",
       min: 0,
       max: 99999,
-      registrationFee: "2,000 RWF",
+      paymentFee: "2,000 RWF",
       renewalFee: "1,000 RWF/year",
     },
     {
       range: "100,000 - 199,000 RWF",
       min: 100000,
       max: 199000,
-      registrationFee: "5,000 RWF",
+      paymentFee: "5,000 RWF",
       renewalFee: "2,500 RWF/year",
     },
     {
       range: "2000,000 - 499,000 RWF",
       min: 199000,
       max: 499000,
-      registrationFee: "10,000 RWF",
+      paymentFee: "10,000 RWF",
       renewalFee: "5,000 RWF/year",
     },
     {
       range: "500,000 RWF and Above",
       min: 500000,
       max: Number.MAX_SAFE_INTEGER,
-      registrationFee: "20,000 RWF",
+      paymentFee: "20,000 RWF",
       renewalFee: "10,000 RWF/year",
     }
   ];
@@ -102,8 +102,8 @@ const RegisterAsJobSeeker = () => {
     }
   }, [navigate, token]);
 
-  // Modify calculateRegistrationFee to handle the new format
-  const calculateRegistrationFee = (salaryRange) => {
+  // Modify calculatepaymentFee to handle the new format
+  const calculatepaymentFee = (salaryRange) => {
     if (!salaryRange) return null;
 
     try {
@@ -135,8 +135,8 @@ const RegisterAsJobSeeker = () => {
   };
 
   useEffect(() => {
-    const fee = calculateRegistrationFee(formData.salary_range);
-    setRegistrationFee(fee);
+    const fee = calculatepaymentFee(formData.salary_range);
+    setpaymentFee(fee);
   }, [formData.salary_range]);
 
   const handleFileUpload = async (e) => {
@@ -312,27 +312,27 @@ const RegisterAsJobSeeker = () => {
       console.log(`Added resume: ${formData.resume.name} (${formData.resume.size} bytes)`);
     }
 
-    // Add registration fee and renewal fee to form data with proper formatting
-    if (registrationFee) {
+    // Add payment fee and renewal fee to form data with proper formatting
+    if (paymentFee) {
       // Extract the numeric value from strings like "2,000 RWF" or "10,000 RWF/year"
       const extractNumericValue = (feeString) => {
         // Remove all non-numeric characters except decimals, then remove commas
         return feeString.replace(/[^\d,.]/g, '').replace(/,/g, '');
       };
 
-      const registrationFeeValue = extractNumericValue(registrationFee.registrationFee);
-      const renewalFeeValue = extractNumericValue(registrationFee.renewalFee);
+      const paymentFeeValue = extractNumericValue(paymentFee.paymentFee);
+      const renewalFeeValue = extractNumericValue(paymentFee.renewalFee);
 
-      console.log(`Original registration fee: ${registrationFee.registrationFee}`);
-      console.log(`Extracted registration fee value: ${registrationFeeValue}`);
+      console.log(`Original payment fee: ${paymentFee.paymentFee}`);
+      console.log(`Extracted payment fee value: ${paymentFeeValue}`);
 
-      console.log(`Original renewal fee: ${registrationFee.renewalFee}`);
+      console.log(`Original renewal fee: ${paymentFee.renewalFee}`);
       console.log(`Extracted renewal fee value: ${renewalFeeValue}`);
 
-      formDataToSend.append('registration_fee', registrationFeeValue);
+      formDataToSend.append('registration_fee', paymentFeeValue);
       formDataToSend.append('renewal_fee', renewalFeeValue);
     } else {
-      console.warn("No registration fee information available");
+      console.warn("No payment fee information available");
     }
 
     // Display complete form data object being sent
@@ -359,8 +359,8 @@ const RegisterAsJobSeeker = () => {
       console.log("Response received:", response);
 
       if (response.status === 201) {
-        console.log("Registration successful");
-        setMessage(t("Registration successful! Your account will be activated after payment confirmation."));
+        console.log("payment successful");
+        setMessage(t("payment successful! Your account will be activated after payment confirmation."));
         setTimeout(() => navigate('/job_seeker'), 2000);
       }
     } catch (error) {
@@ -424,7 +424,7 @@ const RegisterAsJobSeeker = () => {
             </p>
 
             <p>
-              <strong>{t("Job Seeker Specific Terms")}:</strong> {t("You must provide accurate information about your qualifications, experience, and desired salary range. Your salary range determines your registration fee.")}
+              <strong>{t("Job Seeker Specific Terms")}:</strong> {t("You must provide accurate information about your qualifications, experience, and desired salary range. Your salary range determines your payment fee.")}
             </p>
 
             <p>
@@ -480,14 +480,14 @@ const RegisterAsJobSeeker = () => {
             </p>
 
             <p>
-              <strong>{t("Job Seeker Registration Pricing:")}</strong> {t("Our registration fees are scaled according to your target salary range:")}
+              <strong>{t("Job Seeker payment Pricing:")}</strong> {t("Our payment fees are scaled according to your target salary range:")}
             </p>
 
             <ul className="list-disc pl-6 space-y-2">
-              <li><strong>{t("Below")} 100,000 RWF:</strong> 2,000 RWF {t("registration fee")}, 1,000 RWF {t("annual renewal")}</li>
-              <li><strong>100,000 - 199,000 RWF:</strong> 5,000 RWF {t("registration fee")}, 2,500 RWF {t("annual renewal")}</li>
-              <li><strong>200,000 - 499,000 RWF:</strong> 10,000 RWF {t("registration fee")}, 5,000 RWF {t("annual renewal")}</li>
-              <li><strong>500,000 RWF and Above:</strong> 20,000 RWF {t("registration fee")}, 10,000 RWF {t("annual renewal")}</li>
+              <li><strong>{t("Below")} 100,000 RWF:</strong> 2,000 RWF {t("payment fee")}, 1,000 RWF {t("annual renewal")}</li>
+              <li><strong>100,000 - 199,000 RWF:</strong> 5,000 RWF {t("payment fee")}, 2,500 RWF {t("annual renewal")}</li>
+              <li><strong>200,000 - 499,000 RWF:</strong> 10,000 RWF {t("payment fee")}, 5,000 RWF {t("annual renewal")}</li>
+              <li><strong>500,000 RWF and Above:</strong> 20,000 RWF {t("payment fee")}, 10,000 RWF {t("annual renewal")}</li>
             </ul>
 
             <p>
@@ -497,10 +497,13 @@ const RegisterAsJobSeeker = () => {
             <ul className="list-disc pl-6 space-y-2">
               {/* <li>Mobile Money: 0795570541</li> */}
               <li>MTN MOMO PAY: 1592374</li>
+              <p>Anaweza App Ltd</p>
             </ul>
 
+            <p>{t("NOTE: This payment is made after the job seeker finds a job as part of their support to qualify.")}</p>
+
             <p>
-              {t("For any questions regarding our pricing, please contact our support team at ltdanaweza@gmail.com, princemugabe567@gmail.com")}
+              {t("For any questions regarding our pricing, please contact our support team at ltdanaweza@gmail.com")}
             </p>
           </div>
 
@@ -719,14 +722,14 @@ const RegisterAsJobSeeker = () => {
               />
               {renderError('salary_range')}
 
-              {/* Registration Fee Information */}
-              {registrationFee && (
+              {/* payment Fee Information */}
+              {/* {paymentFee && (
                 <div className="mt-2 p-4 bg-blue-50 border border-blue-200 rounded-md">
                   <div className="flex items-start">
                     <AiOutlineInfoCircle className="text-blue-500 mt-1 mr-2 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-blue-700">{t("Registration Fee")}: {registrationFee.registrationFee}</p>
-                      <p className="text-sm text-blue-600">{t("Annual Renewal")}: {registrationFee.renewalFee}</p>
+                      <p className="font-medium text-blue-700">{t("payment Fee")}: {paymentFee.paymentFee}</p>
+                      <p className="text-sm text-blue-600">{t("Annual Renewal")}: {paymentFee.renewalFee}</p>
                       <p className="text-sm text-gray-600 mt-1">
                         {t("Your account will be activated after payment confirmation. Please pay using:")}
                         <ul>
@@ -737,7 +740,7 @@ const RegisterAsJobSeeker = () => {
                     </div>
                   </div>
                 </div>
-              )}
+              )} */}
             </div>
 
             <div>

@@ -573,15 +573,17 @@ function Job_seeker_Profile() {
 
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <strong className="text-gray-700 block mb-1">{t("Role")}</strong>
-                  <span className="text-gray-800 text-lg">{userData.role}</span>
+                  <span className="text-gray-800 text-lg">{t(userData.role)}</span>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">{t("Status")}</strong>
-                  <span className="text-gray-800 text-lg">
-                    {typeof userData.status === 'string' ? userData.status : (userData.status ? 'Active' : 'Non-Active')}
-                  </span>
-                </div>
+  <strong className="text-gray-700 block mb-1">{t("Status")}</strong>
+  <span className="text-gray-800 text-lg">
+    {typeof userData.status === 'string' 
+      ? t(userData.status) 
+      : t(userData.status ? 'Active' : 'Non-Active')}
+  </span>
+</div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <strong className="text-gray-700 block mb-1">{t("Created At")}</strong>
@@ -638,7 +640,7 @@ function Job_seeker_Profile() {
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <strong className="text-gray-700 block mb-1">{t("Registration Fee")}</strong>
+                  <strong className="text-gray-700 block mb-1">{t("Payment Fee")}</strong>
                   <span className="text-gray-800 text-lg">{jobSeekerData.registration_fee} Frw</span>
                 </div>
 
@@ -840,7 +842,7 @@ function Job_seeker_Profile() {
                       id="role"
                       name="role"
                       // Completing the Role input field that was cut off
-                      value={userFormData.role}
+                      value={t(userFormData.role)}
                       onChange={handleUserChange}
                       className="w-full p-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
                       readOnly // Role should typically be read-only
@@ -1096,11 +1098,11 @@ function Job_seeker_Profile() {
                   <h3 className="font-medium text-blue-900 mb-2">{t("Current Fee Information")}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <span className="text-gray-700">{t("Registration Fee")}:</span>
+                      <span className="text-gray-700">{t("payment fee")}:</span>
                       <span className="ml-2 text-gray-500 font-medium">{jobSeekerData.registration_fee} FRW</span>
                     </div>
                     <div>
-                      <span className="text-gray-700">{t("Renewal Fee")}:</span>
+                      <span className="text-gray-700">{t("renewal ree")}:</span>
                       <span className="ml-2 text-gray-500 font-medium">{jobSeekerData.renewal_fee} FRW</span>
                     </div>
                   </div>
@@ -1114,11 +1116,11 @@ function Job_seeker_Profile() {
                       {t("Your new salary range requires additional fees:")}
                     </p>
                     <ul className="list-disc pl-5 mb-3 text-gray-800">
-                      <li>{t("Additional Registration Fee:")} <strong>{additionalFees.additionalRegistrationFee} Frw</strong></li>
+                      <li>{t("Additional Payment Fee:")} <strong>{additionalFees.additionalRegistrationFee} Frw</strong></li>
                       <li>{t("Additional Renewal Fee:")} <strong>{additionalFees.additionalRenewalFee} Frw</strong></li>
 
                     </ul>
-                    <div className="p-3 bg-white rounded border border-yellow-300">
+                    {/* <div className="p-3 bg-white rounded border border-yellow-300">
                       <p className="font-medium text-gray-800">{t("Payment Information:")}</p>
                       <p className="text-gray-700">{t("Please deposit the amount to:")}</p>
                       <p className="font-bold text-gray-500">
@@ -1127,7 +1129,7 @@ function Job_seeker_Profile() {
                           <li>Anaweza App LTD</li>
                         </ul>
                       </p>
-                    </div>
+                    </div> */}
                   </div>
                 )}
               </div>

@@ -12,7 +12,7 @@ const Policy = () => {
   const pricingTiers = [
     {
       range: "Below 100,000 RWF",
-      registrationFee: "2,000 RWF",
+      paymentFee: "2,000 RWF",
       renewalFee: "1,000 RWF/year",
       features: [
         "Basic profile visibility",
@@ -22,7 +22,7 @@ const Policy = () => {
     },
     {
       range: "100,000 - 199,000 RWF",
-      registrationFee: "5000 RWF",
+      paymentFee: "5000 RWF",
       renewalFee: "2,500 RWF/year",
       features: [
         "Enhanced profile visibility",
@@ -33,7 +33,7 @@ const Policy = () => {
     },
     {
       range: "199,000 - 499,000 RWF -",
-      registrationFee: "10,000 RWF",
+      paymentFee: "10,000 RWF",
       renewalFee: "5,000 RWF/year",
       features: [
         "Premium profile visibility",
@@ -45,7 +45,7 @@ const Policy = () => {
     },
     {
         range: "500,000 - Above RWF -",
-        registrationFee: "20,000 RWF",
+        paymentFee: "20,000 RWF",
         renewalFee: "10,000 RWF/year",
         features: [
           "Premium profile visibility",
@@ -115,11 +115,11 @@ const Policy = () => {
             </p>
           </div>
           
-          {/* Job Seeker Registration Pricing */}
+          {/* Job Seeker payment Pricing */}
           <div className="bg-white rounded-lg shadow-lg p-6 mb-10">
-            <h2 className="text-2xl font-semibold mb-6 text-gray-800">Job Seeker Registration Pricing</h2>
+            <h2 className="text-2xl font-semibold mb-6 text-gray-800">Job Seeker payment Pricing</h2>
             <p className="text-gray-700 mb-4">
-              Our registration fees are scaled according to the salary range you're targeting in your job search. 
+              Our payment fees are scaled according to the salary range you're targeting in your job search. 
               This ensures that our service remains accessible to everyone.
             </p>
             
@@ -131,8 +131,8 @@ const Policy = () => {
                   </div>
                   <div className="p-6">
                     <div className="mb-4">
-                      <span className="text-2xl font-bold text-gray-800">{tier.registrationFee}</span>
-                      <span className="text-gray-600"> registration</span>
+                      <span className="text-2xl font-bold text-gray-800">{tier.paymentFee}</span>
+                      <span className="text-gray-600"> payment</span>
                     </div>
                     <div className="mb-6 text-sm text-gray-600">
                       Annual renewal: {tier.renewalFee}
