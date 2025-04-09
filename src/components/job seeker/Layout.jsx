@@ -7,7 +7,7 @@ import WhatsAppButton from '../whatsapp';
 import { useTranslation } from "react-i18next";
 
 function JobSeeker_Layout() {
-  const whatsappNumber = "+250788457408";
+  const whatsappNumber = "+250796087267";
   return (
     <div className="bg-gray-100 min-h-screen">
      <Header />

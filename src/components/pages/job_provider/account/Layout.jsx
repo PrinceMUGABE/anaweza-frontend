@@ -6,7 +6,7 @@ import Sidebar from './Sidebar';
 import WhatsAppButton from '../../../whatsapp';
 
 function Employer_Layout() {
-  const whatsappNumber = "+250788457408";
+  const whatsappNumber = "+250796087267";
   return (
     
     <div className="bg-gray-100 min-h-screen">

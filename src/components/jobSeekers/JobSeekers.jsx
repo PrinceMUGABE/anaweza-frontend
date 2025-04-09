@@ -393,10 +393,10 @@ const FeaturedSeekers = () => {
                               />
                             </svg>
                           </div>
-                          <span className="text-gray-700">
+                          {/* <span className="text-gray-700">
                             {selectedSeeker.custom_user?.phone_number ||
                               "Phone not provided"}
-                          </span>
+                          </span> */}
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="bg-white p-2 rounded-full">
@@ -414,10 +414,10 @@ const FeaturedSeekers = () => {
                               />
                             </svg>
                           </div>
-                          <span className="text-gray-700">
+                          {/* <span className="text-gray-700">
                             {selectedSeeker.custom_user?.email ||
                               "Email not provided"}
-                          </span>
+                          </span> */}
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="bg-white p-2 rounded-full">
