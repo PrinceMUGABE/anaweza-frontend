@@ -29,7 +29,7 @@ const FeaturedSeekers = () => {
         );
 
         // Get 8 random job seekers from the active ones
-        const randomizedSeekers = getRandomSeekers(response.data, 8);
+        const randomizedSeekers = getRandomSeekers(activeJobSeekers, 8);
         setFeaturedSeekers(randomizedSeekers);
         setLoading(false);
       } catch (err) {
@@ -401,7 +401,7 @@ const FeaturedSeekers = () => {
                           <p className="text-blue-800">Contact ltdanaweza@gmail.com or +250796087267 for candidate contacts</p>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="bg-white p-2 rounded-full">
+                          {/* <div className="bg-white p-2 rounded-full">
                             <svg
                               className="w-5 h-5 text-blue-600"
                               fill="none"
@@ -415,12 +415,12 @@ const FeaturedSeekers = () => {
                                 d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                               />
                             </svg>
-                          </div>
+                          </div> */}
                           {/* <span className="text-gray-700">
                             {selectedSeeker.custom_user?.email ||
                               "Email not provided"}
                           </span> */}
-                          <p className="text-blue-800">Contact ltdanaweza@gmail.com or +250796087267 for candidate contacts</p>
+                          
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="bg-white p-2 rounded-full">
