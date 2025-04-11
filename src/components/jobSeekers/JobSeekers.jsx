@@ -376,6 +376,7 @@ const FeaturedSeekers = () => {
                       <h3 className="text-lg text-blue-800 font-semibold mb-3">
                         {t("Contact Information")}
                       </h3>
+                      <p className='text-blue-800'>Contact ltdanaweza@gmail.com or +250796087267 for candidate contacts</p>
                       <div className="space-y-3">
   
 
