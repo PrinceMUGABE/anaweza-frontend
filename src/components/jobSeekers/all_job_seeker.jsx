@@ -379,8 +379,7 @@ const All_Job_Seekers = () => {
                           </svg>
                           <span className='text-gray-700'>{selectedSeeker.custom_user?.email || "Email not provided"}</span>
                         </div> */}
-                        <p className='text-blue-800'>Contact ltdanaweza@gmail.com or +250796087267 for candidate contacts</p>
-
+                 
                         <div className="bg-gray-50 p-4 rounded-lg">
                       <h3 className="font-semibold text-gray-700">{t("Location")}</h3>
                       <p className="text-gray-800">{selectedSeeker.district || "N/A"} - {selectedSeeker.sector || "N/A"}</p>
