@@ -212,7 +212,7 @@ const Policy = () => {
           <div className="bg-white rounded-lg shadow-lg p-6">
 
             <p className="text-gray-700">
-              For any questions regarding our pricing or refund policy, please contact our support team at ltdanaweza@gmail.com or call us on: 0788457408, 0783251199.
+              For any questions regarding our pricing or refund policy, please contact our support team at ltdanaweza@gmail.com or call us on: 0796087267, 0783251199.
             </p>
           </div>
         </div>

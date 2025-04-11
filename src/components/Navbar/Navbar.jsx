@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 export const MenuLinks = [
   { id: 1, name: "home", link: "/" },
   { id: 2, name: "jobs", link: "/jobs" },
-  { id: 3, name: "Job Seekers", link: "/jobseekers" },
+  { id: 3, name: "Job Seekers", link: "/job_seekers" },
   { id: 4, name: "about", link: "/about" },
   { id: 5, name: "services", link: "/#service" },
   { id: 6, name: "contact", link: "#contact" },
@@ -62,15 +62,14 @@ const Navbar = () => {
 
   // Contact information
   const phoneNumbers = [
-    { number: '+250788457408', display: '+250 788 457 408' },
-    { number: '+250795570541', display: '+250 795 570 541' },
+
+    { number: '+250796087267', display: '+250 796 087 267' },
     { number: '+250783251199', display: '+250 783 251 199' },
     { number: '+250725169154', display: '+250 725 196 154' }
   ];
 
   const emails = [
-    'ltdanaweza@gmail.com',
-    'princemugabe567@gmail.com'
+    'ltdanaweza@gmail.com'
   ];
 
   const getEmailLink = (email) => {

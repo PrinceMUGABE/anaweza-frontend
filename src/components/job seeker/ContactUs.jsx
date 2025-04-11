@@ -6,16 +6,15 @@ const Job_Seeker_ContactUs = () => {
     const {t} = useTranslation();
     const phoneNumbers = [
         
-        { number: '+250788457408', display: '+250 788 457 408' },
-        { number: '+250795570541', display: '+250 795 570 541' },
+
+        { number: '+250796087267', display: '+250 796 087 267' },
         { number: '+250783251199', display: '+250 783 251 199' },
         { number: '+250725169154', display: '+250 725 196 154' }
 
     ];
 
     const emails = [
-        'ltdanaweza@gmail.com',
-        'princemugabe567@gmail.com'
+        'ltdanaweza@gmail.com'
 
     ];
 
