@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { AiOutlineLoading3Quarters, AiOutlineArrowLeft } from 'react-icons/ai';
 
 const CreateUser = () => {
   const navigate = useNavigate();
@@ -69,7 +69,7 @@ const CreateUser = () => {
       );
 
       if (response.status === 201) {
-        setMessage('Registration successful!');
+        setMessage('Registration successful! Redirecting...');
         setTimeout(() => navigate('/admin/users'), 2000);
       }
     } catch (error) {
@@ -100,7 +100,6 @@ const CreateUser = () => {
     }
   };
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -115,70 +114,113 @@ const CreateUser = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <div className="flex justify-center items-center rounded-lg shadow-xl w-full max-w-4xl bg-white p-8">
-        <div className="w-full sm:max-w-md">
-          <h2 className="mt-3 text-center text-2xl font-bold text-green-900">Create New User</h2>
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        <div className="flex items-center mb-6">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <AiOutlineArrowLeft className="mr-2" />
+            Back to Users
+          </button>
+        </div>
 
-          {errors.form && <p className="text-red-500 text-sm">{errors.form}</p>}
-          {message && <p className="text-green-500 text-sm">{message}</p>}
+        <div className="bg-white shadow rounded-lg p-8">
+          <div className="border-b border-gray-200 pb-4 mb-6">
+            <h2 className="text-2xl font-semibold text-gray-800">Create New User</h2>
+            <p className="text-gray-600 mt-1">Fill in the details to register a new user</p>
+          </div>
 
-          <form className="mt-8 space-y-2" onSubmit={handleSubmit}>
+          {errors.form && (
+            <div className="mb-6 p-4 bg-red-50 rounded-md">
+              <p className="text-red-600">{errors.form}</p>
+            </div>
+          )}
+
+          {message && (
+            <div className="mb-6 p-4 bg-green-50 rounded-md">
+              <p className="text-green-600">{message}</p>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                Phone Number
+                <span className="text-red-500">*</span>
+              </label>
               <input
                 id="phone"
                 name="phone"
                 type="tel"
                 value={formData.phone}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900"
+                className={`mt-1 text-gray-700 block w-full rounded-md border ${errors.phone ? 'border-red-300' : 'border-gray-300'} p-2.5 focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                placeholder="e.g. 0781234567"
                 required
               />
-              {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
+              {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone}</p>}
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                Email {formData.role === 'admin' && <span className="text-red-500">*</span>}
+              </label>
               <input
                 id="email"
                 name="email"
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900"
-                required={formData.role === "admin"} // Required only if role is admin
+                className={`mt-1 block text-gray-700 w-full rounded-md border ${errors.email ? 'border-red-300' : 'border-gray-300'} p-2.5 focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                placeholder="e.g. user@example.com"
+                required={formData.role === "admin"}
+                disabled={loading}
               />
-              {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+              {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+              {formData.role !== 'admin' && (
+                <p className="mt-1 text-sm text-gray-500">Optional for non-admin roles</p>
+              )}
             </div>
 
-
             <div>
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
+              <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
+                Role
+                <span className="text-red-500">*</span>
+              </label>
               <select
                 id="role"
                 name="role"
                 value={formData.role}
                 onChange={handleChange}
-                className="mt-1 block w-full text-gray-900 rounded-md border border-gray-300 p-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className={`mt-1 block text-gray-700 w-full rounded-md border ${errors.role ? 'border-red-300' : 'border-gray-300'} p-2.5 focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
                 required
+                disabled={loading}
               >
-                <option value="Choose Role" disabled>Choose Role</option>
+                <option value="Choose Role" disabled>Select a role</option>
                 <option value="admin">Admin</option>
                 <option value="employee">Employee</option>
                 <option value="job_offer">Job Provider</option>
                 <option value="job_seeker">Job Seeker</option>
               </select>
-              {errors.role && <p className="text-red-500 text-sm">{errors.role}</p>}
+              {errors.role && <p className="mt-1 text-sm text-red-600">{errors.role}</p>}
             </div>
 
-            <div>
+            <div className="pt-4">
               <button
                 type="submit"
-                className="w-full bg-green-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className={`w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${loading ? 'opacity-75 cursor-not-allowed' : ''}`}
                 disabled={loading}
               >
-                {loading ? <AiOutlineLoading3Quarters className="animate-spin h-5 w-5" /> : 'Save'}
+                {loading ? (
+                  <>
+                    <AiOutlineLoading3Quarters className="animate-spin mr-2 h-4 w-4" />
+                    Processing...
+                  </>
+                ) : (
+                  'Create User'
+                )}
               </button>
             </div>
           </form>

@@ -840,7 +840,7 @@ function Users() {
                       setUsersPerPage(Number(e.target.value));
                       setCurrentPage(1);
                     }}
-                    className="border border-gray-300 rounded-md px-2 py-1 text-sm text-gray-700"
+                    className="border text-blue-700 border-gray-300 rounded-md px-2 py-1 text-sm "
                   >
                     {[5, 10, 25, 50, 100].map((option) => (
                       <option key={option} value={option}>
@@ -848,11 +848,11 @@ function Users() {
                       </option>
                     ))}
                   </select>
-                  <span className="text-sm text-gray-700 ml-2">entries</span>
+                  <span className="text-sm text-blue-700 ml-2">entries</span>
                 </div>
                 
                 <div className="flex items-center space-x-1">
-                  <span className="text-sm text-gray-700">
+                  <span className="text-sm text-blue-700">
                     Showing {(currentPage - 1) * usersPerPage + 1} to{' '}
                     {Math.min(currentPage * usersPerPage, filteredData.length)} of{' '}
                     {filteredData.length} entries
@@ -863,31 +863,31 @@ function Users() {
                   <button
                     onClick={() => setCurrentPage(1)}
                     disabled={currentPage === 1}
-                    className="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-3 py-1 border text-blue-700 border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     First
                   </button>
                   <button
                     onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                     disabled={currentPage === 1}
-                    className="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-3 py-1 border text-blue-700 border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Previous
                   </button>
-                  <div className="px-3 py-1 border border-gray-300 rounded-md text-sm bg-gray-100">
+                  <div className="px-3 py-1 text-blue-700 border border-gray-300 rounded-md text-sm bg-gray-100">
                     {currentPage}
                   </div>
                   <button
                     onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                     disabled={currentPage === totalPages || totalPages === 0}
-                    className="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-3 py-1 border text-blue-700 border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Next
                   </button>
                   <button
                     onClick={() => setCurrentPage(totalPages)}
                     disabled={currentPage === totalPages || totalPages === 0}
-                    className="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-3 py-1 text-blue-700 border border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Last
                   </button>

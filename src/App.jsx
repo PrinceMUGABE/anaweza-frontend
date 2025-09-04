@@ -62,6 +62,9 @@ import Employer_RegisterAsJobSeeker from "./components/pages/job_provider/pages/
 import Employer_Manage_Job_Applications from "./components/pages/job_provider/pages/My_Job_Applications.jsx";
 import Job_Seeker_Manage_Job_Applications from "./components/job seeker/My_Job_Applications.jsx";
 import Job_Seeker_JobManagement from "./components/job seeker/My_job_offers.jsx";
+import Job_Provider_Chat_Page from "./components/pages/job_provider/pages/chat_page.jsx";
+import Admin_Chat_Page from "./components/pages/admin/chat_page.jsx";
+import Job_Seeker_Chat_Page from "./components/job seeker/chat_page.jsx";
 
 
 
@@ -121,6 +124,7 @@ const App = () => {
             <Route path="/admin/job_applications" element={<Admin_Job_Applications />} />
             <Route path="/admin/testimonials" element={<Admin_ManageTestimonials />} />
             <Route path="/admin/profile/:id" element={<AdminProfile />} />
+            <Route path="/admin/chat" element={<Admin_Chat_Page />} />
 
           </Route>
 
@@ -139,6 +143,7 @@ const App = () => {
              <Route path="/job_seeker/testimonials" element={<Job_Seeker_ManageTestimonials />} />
              <Route path="/job_seeker/my_jobs" element={<Job_Seeker_JobManagement />} />
              <Route path="/job_seeker/applications" element={<Job_Seeker_Manage_Job_Applications />} />
+             <Route path="/job_seeker/chat/:id" element={<Job_Seeker_Chat_Page />} />
 
 
           </Route>
@@ -158,6 +163,7 @@ const App = () => {
              <Route path="/employer/jobs" element={<Employer_Manage_Jobs />} />
              <Route path="/employer/register_as_job_seeker" element={<Employer_RegisterAsJobSeeker />} />
              <Route path="/employer/applications" element={<Employer_Manage_Job_Applications />} />
+             <Route path="/employer/chat" element={<Job_Provider_Chat_Page />} />
              
 
 

@@ -81,7 +81,7 @@ const StatCards = ({ jobSeekerData }) => {
             </div>
             <div>
               <p className="text-xs text-gray-500">{card.title}</p>
-              <p className="font-bold text-lg">{card.value}</p>
+              <p className="font-bold text-blue-700 text-lg">{card.value}</p>
             </div>
           </div>
         </div>
@@ -791,7 +791,7 @@ function Admin_Manage_JobSeekers() {
                 <select
                   value={itemsPerPage}
                   onChange={handleItemsPerPageChange}
-                  className="border rounded px-2 py-1 text-sm"
+                  className="border text-gray-700 rounded px-2 py-1 text-sm"
                 >
                   {[5, 10, 20, 50, 100].map(size => (
                     <option key={size} value={size}>{size}</option>

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { LockClosedIcon, ArrowPathIcon } from "@heroicons/react/20/solid";
+import { ArrowPathIcon, ArrowLeftIcon } from "@heroicons/react/20/solid";
 
 const EditUser = () => {
   const { id } = useParams();
@@ -14,6 +14,7 @@ const EditUser = () => {
   });
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +35,6 @@ const EditUser = () => {
       })
       .then((res) => {
         if (res.data) {
-          console.log("The related data is:", res.data);
           const userData = {
             ...res.data,
             status: Boolean(res.data.status),
@@ -66,10 +66,10 @@ const EditUser = () => {
       status: Boolean(data.status)
     };
   
-    console.log("Sending data to server:", updatedData);
-  
     setLoading(true);
     setErrorMessage("");
+    setSuccessMessage("");
+    
     axios
       .put(`https://anaweza-backend.up.railway.app/update/${id}/`, updatedData, {
         headers: {
@@ -78,14 +78,15 @@ const EditUser = () => {
       })
       .then((res) => {
         if (res.data) {
-          navigate("/admin/users");
+          setSuccessMessage("User updated successfully! Redirecting...");
+          setTimeout(() => navigate("/admin/users"), 2000);
         }
       })
       .catch((err) => {
         console.error("Error updating user:", err);
         const backendMessage = err.response?.data?.message || 
                               err.response?.data?.detail || 
-                              "Error updating user.";
+                              "Error updating user. Please try again.";
         setErrorMessage(backendMessage);
       })
       .finally(() => {
@@ -93,76 +94,93 @@ const EditUser = () => {
       });
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-white">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-green-900">
-          Update User
-        </h2>
-      </div>
-
-      {errorMessage && (
-        <div className="text-red-600 text-center">
-          <p>{errorMessage}</p>
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        <div className="flex items-center mb-6">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <ArrowLeftIcon className="h-5 w-5 mr-2" />
+            Back to Users
+          </button>
         </div>
-      )}
 
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <div>
-            <label
-              htmlFor="phone_number"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Phone Number
-            </label>
-            <div className="mt-2">
+        <div className="bg-white shadow rounded-lg p-8">
+          <div className="border-b border-gray-200 pb-4 mb-6">
+            <h2 className="text-2xl font-semibold text-gray-800">Edit User</h2>
+            <p className="text-gray-600 mt-1">Update the user details below</p>
+          </div>
+
+          {errorMessage && (
+            <div className="mb-6 p-4 bg-red-50 rounded-md">
+              <p className="text-red-600">{errorMessage}</p>
+            </div>
+          )}
+
+          {successMessage && (
+            <div className="mb-6 p-4 bg-green-50 rounded-md">
+              <p className="text-green-600">{successMessage}</p>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label htmlFor="phone_number" className="block text-sm font-medium text-gray-700 mb-1">
+                Phone Number
+                <span className="text-red-500">*</span>
+              </label>
               <input
                 id="phone_number"
                 name="phone_number"
                 type="text"
                 value={data.phone_number || ""}
-                onChange={(e) => setData({ ...data, phone_number: e.target.value })}
+                onChange={handleChange}
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className={`mt-1 block w-full text-gray-700 rounded-md border ${errorMessage?.includes('phone') ? 'border-red-300' : 'border-gray-300'} p-2.5 focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                placeholder="e.g. 0781234567"
+                disabled={loading}
               />
             </div>
-          </div>
 
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Email Address
-            </label>
-            <div className="mt-2">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                Email Address
+              </label>
               <input
                 id="email"
                 name="email"
                 type="email"
                 value={data.email || ""}
-                onChange={(e) => setData({ ...data, email: e.target.value })}
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                onChange={handleChange}
+                className={`mt-1 block text-gray-700 w-full rounded-md border ${errorMessage?.includes('email') ? 'border-red-300' : 'border-gray-300'} p-2.5 focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                placeholder="e.g. user@example.com"
+                disabled={loading}
               />
             </div>
-          </div>
 
-          <div>
-            <label
-              htmlFor="role"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Role
-            </label>
-            <div className="mt-2">
+            <div>
+              <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
+                Role
+                <span className="text-red-500">*</span>
+              </label>
               <select
                 id="role"
                 name="role"
                 value={data.role || ""}
-                onChange={(e) => setData({ ...data, role: e.target.value })}
+                onChange={handleChange}
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className={`mt-1 block text-gray-700 w-full rounded-md border ${errorMessage?.includes('role') ? 'border-red-300' : 'border-gray-300'} p-2.5 focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                disabled={loading}
               >
                 <option value="">Select a role</option>
                 <option value="admin">Admin</option>
@@ -171,16 +189,12 @@ const EditUser = () => {
                 <option value="job_seeker">Job Seeker</option>
               </select>
             </div>
-          </div>
 
-          <div>
-            <label
-              htmlFor="status"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Status
-            </label>
-            <div className="mt-2">
+            <div>
+              <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
+                Status
+                <span className="text-red-500">*</span>
+              </label>
               <select
                 id="status"
                 name="status"
@@ -189,37 +203,32 @@ const EditUser = () => {
                   const boolValue = e.target.value === "true";
                   setData({ ...data, status: boolValue });
                 }}
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className={`mt-1 block text-gray-700 w-full rounded-md border ${errorMessage?.includes('status') ? 'border-red-300' : 'border-gray-300'} p-2.5 focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                disabled={loading}
               >
                 <option value="true">Active</option>
                 <option value="false">Inactive</option>
               </select>
             </div>
-          </div>
 
-          <div>
-            <button
-              type="submit"
-              className="group relative flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              disabled={loading}
-            >
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+            <div className="pt-4">
+              <button
+                type="submit"
+                className={`w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${loading ? 'opacity-75 cursor-not-allowed' : ''}`}
+                disabled={loading}
+              >
                 {loading ? (
-                  <ArrowPathIcon
-                    className="h-5 w-5 text-white animate-spin"
-                    aria-hidden="true"
-                  />
+                  <>
+                    <ArrowPathIcon className="animate-spin mr-2 h-4 w-4" />
+                    Updating...
+                  </>
                 ) : (
-                  <LockClosedIcon
-                    className="h-5 w-5 text-purple-400 group-hover:text-indigo-400"
-                    aria-hidden="true"
-                  />
+                  'Update User'
                 )}
-              </span>
-              {loading ? "Updating..." : "Update"}
-            </button>
-          </div>
-        </form>
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

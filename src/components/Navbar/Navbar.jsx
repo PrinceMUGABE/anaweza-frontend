@@ -2,18 +2,58 @@
 import React, { useState, useEffect } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { IoMdClose } from "react-icons/io";
+import { 
+  AiOutlineHome, 
+  AiOutlineUser, 
+  AiOutlineInfoCircle, 
+  AiOutlineMail 
+} from "react-icons/ai";
+import { 
+  BsBriefcase, 
+  BsTools 
+} from "react-icons/bs";
 import ResponsiveMenu from "./ResponsiveMenu";
 import Logo from "../../assets/pictures/system/anaweza.jpg";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export const MenuLinks = [
-  { id: 1, name: "home", link: "/" },
-  { id: 2, name: "jobs", link: "/jobs" },
-  { id: 3, name: "Job Seekers", link: "/job_seekers" },
-  { id: 4, name: "about", link: "/about" },
-  { id: 5, name: "services", link: "/#service" },
-  { id: 6, name: "contact", link: "#contact" },
+  { 
+    id: 1, 
+    name: "home", 
+    link: "/", 
+    icon: AiOutlineHome 
+  },
+  { 
+    id: 2, 
+    name: "jobs", 
+    link: "/jobs", 
+    icon: BsBriefcase 
+  },
+  { 
+    id: 3, 
+    name: "Job Seekers", 
+    link: "/job_seekers", 
+    icon: AiOutlineUser 
+  },
+  { 
+    id: 4, 
+    name: "about", 
+    link: "/about", 
+    icon: AiOutlineInfoCircle 
+  },
+  { 
+    id: 5, 
+    name: "services", 
+    link: "/#service", 
+    icon: BsTools 
+  },
+  { 
+    id: 6, 
+    name: "contact", 
+    link: "#contact", 
+    icon: AiOutlineMail 
+  },
 ];
 
 const Navbar = () => {
@@ -62,7 +102,6 @@ const Navbar = () => {
 
   // Contact information
   const phoneNumbers = [
-
     { number: '+250796087267', display: '+250 796 087 267' },
     { number: '+250783251199', display: '+250 783 251 199' },
     { number: '+250725169154', display: '+250 725 196 154' }
@@ -88,16 +127,16 @@ const Navbar = () => {
                 e.preventDefault();
                 navigate('/');
               }}
-              className="flex items-center gap-3 bg-white p-1 rounded"
+              className="flex items-center gap-3 bg-white p-1 rounded flex-shrink-0"
               aria-label="Anaweza Home"
             >
-              <img src={Logo} alt="Anaweza Logo" className="w-1/2 h-3/4 object-contain" />
+              <img src={Logo} alt="Anaweza Logo" className="w-12 h-12 md:w-16 md:h-16 object-contain" />
             </a>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-4">
-              <ul className="flex items-center gap-6">
-                {MenuLinks.map(({ id, name, link }) => {
+            <nav className="hidden lg:flex items-center gap-2 xl:gap-4">
+              <ul className="flex items-center gap-3 xl:gap-6">
+                {MenuLinks.map(({ id, name, link, icon: Icon }) => {
                   const isActive = location.pathname === link || 
                     (location.pathname === '/' && link === '/');
                   
@@ -105,17 +144,18 @@ const Navbar = () => {
                     <li key={id} className="py-2">
                       <a
                         href={link}
-                        className={`text-lg font-medium py-2 transition-colors duration-300 ${
+                        className={`flex items-center gap-2 text-sm xl:text-lg font-medium py-2 px-2 xl:px-3 rounded-lg transition-all duration-300 ${
                           isActive 
-                            ? 'text-blue-700 border-b-2 border-blue-700' 
-                            : 'text-gray-800 hover:text-blue-700 hover:border-b-2 hover:border-blue-700'
+                            ? 'text-blue-700 bg-blue-50 border border-blue-200' 
+                            : 'text-gray-800 hover:text-blue-700 hover:bg-blue-50 hover:border hover:border-blue-200'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
                           handleLinkClick(name, link);
                         }}
                       >
-                        {t(name)}
+                        <Icon className="w-4 h-4 xl:w-5 xl:h-5" />
+                        <span className="whitespace-nowrap">{t(name)}</span>
                       </a>
                     </li>
                   );
@@ -125,7 +165,7 @@ const Navbar = () => {
               {/* Login Button */}
               <button 
                 onClick={handleLoginClick} 
-                className="bg-blue-700 text-white py-2 px-5 rounded hover:bg-blue-800 transition-colors duration-300 font-medium shadow-sm"
+                className="bg-blue-700 text-white py-2 px-4 xl:px-5 rounded-lg hover:bg-blue-800 transition-colors duration-300 font-medium shadow-sm text-sm xl:text-base ml-2"
                 aria-label="Login"
               >
                 {t("login")}
@@ -134,7 +174,7 @@ const Navbar = () => {
               {/* Language Selector */}
               <select
                 onChange={(e) => i18n.changeLanguage(e.target.value)}
-                className="border text-gray-500 rounded px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border text-gray-500 rounded-lg px-2 xl:px-3 py-1.5 text-xs xl:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 ml-1"
                 value={i18n.language}
                 aria-label="Select language"
               >
@@ -147,7 +187,7 @@ const Navbar = () => {
             {/* Mobile Menu Toggle */}
             <button 
               onClick={toggleMenu} 
-              className="md:hidden flex items-center text-gray-800 hover:text-blue-700 transition-colors"
+              className="lg:hidden flex items-center text-gray-800 hover:text-blue-700 transition-colors p-2 rounded-lg hover:bg-gray-100"
               aria-label={showMenu ? "Close menu" : "Open menu"}
             >
               {showMenu ? (
